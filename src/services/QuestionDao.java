@@ -6,6 +6,7 @@
 package services;
 
 import database.Database;
+import entities.Question;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,9 +26,9 @@ public class QuestionDao {
     private ResultSet rs ;
     
     private QuestionDao(){
-        Database cs=Database.getInstance();
+        Database db=Database.getInstance();
         try {
-            st=cs.getConnection().createStatement();
+            st=db.getConnection().createStatement();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDao.class.getName()).log(Level.SEVERE, null, ex);
         }
