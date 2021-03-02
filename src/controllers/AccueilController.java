@@ -6,13 +6,22 @@
 package controllers;
 
 import entities.User;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -61,6 +70,27 @@ public class AccueilController implements Initializable {
 
     @FXML
     private void handleTestQuizBtn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Test.fxml"));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setScene(
+                    new Scene(loader.load())
+            );
+            stage.setTitle("E-SENPAI | E-Learning Platform");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+            stage.setResizable(false);
+
+            TestController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.close();
+
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
