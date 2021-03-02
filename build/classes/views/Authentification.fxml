@@ -40,7 +40,7 @@
                <children>
                   <TextField fx:id="loginInput" layoutX="132.0" layoutY="119.0" prefHeight="25.0" prefWidth="262.0" promptText="Login" />
                   <PasswordField fx:id="passwordInput" layoutX="132.0" layoutY="169.0" prefHeight="25.0" prefWidth="262.0" promptText="Mot De Passe" />
-                  <Hyperlink layoutX="273.0" layoutY="201.0" prefHeight="23.0" prefWidth="123.0" style="-fx-text-fill: #8A2C02;" text="Mot de passe oublié?" />
+                  <Hyperlink layoutX="273.0" layoutY="201.0" prefHeight="29.0" prefWidth="161.0" style="-fx-text-fill: #8A2C02;" text="Mot de passe oublié?" />
                   <Button fx:id="authentifierBt" layoutX="192.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleAuthentifierBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'authentifier" />
                   <Hyperlink fx:id="inscrireBtn" alignment="CENTER" layoutX="192.0" layoutY="309.0" onAction="#handleInscrireAction" prefHeight="23.0" prefWidth="161.0" style="-fx-text-fill: #8A2C02; -fx-border-color: #8A2C02;" text="S'inscrire" />
                   <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="96.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
