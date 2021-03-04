@@ -6,6 +6,7 @@
 package entities;
 
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -31,7 +32,6 @@ public class Quiz {
         this.sujet = sujet;
         this.questions = questions;
     }
-    
 
     public int getId() {
         return id;

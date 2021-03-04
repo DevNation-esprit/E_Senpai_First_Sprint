@@ -116,7 +116,7 @@ public class TestDao {
             int updatedRow = st.executeUpdate(query );
             QuestionDao qdao = QuestionDao.getInstance() ;
             for(Question question : t.getQuestions()){
-                qdao.updateQuestion(question, "quiz", t.getId()) ;
+                qdao.updateQuestion(question, "quiz") ;
             }
             if(updatedRow > 0)
                 return true ;

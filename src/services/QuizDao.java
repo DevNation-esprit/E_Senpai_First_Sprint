@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -65,7 +67,7 @@ public class QuizDao{
           try {
               QuestionDao questDao = QuestionDao.getInstance() ;
               for(Question question : q.getQuestions()){
-                  questDao.deleteQuestion(question, "quiz");
+                  questDao.deleteQuestionByIdParent(question,"quiz", q.getId());
               }
               st.executeUpdate(query );
           } catch (SQLException ex) {
@@ -81,8 +83,26 @@ public class QuizDao{
             rs = st.executeQuery(query) ;
             QuestionDao qdao = QuestionDao.getInstance() ;
             while(rs.next()){
-                ArrayList<Question> questions = (ArrayList<Question>) qdao.displayAllQuestions("quiz", rs.getInt(1)) ;
+                ArrayList<Question> questions =  qdao.displayAllQuestions("quiz", rs.getInt(1)) ;
                 Quiz quiz = new Quiz(rs.getInt(1), rs.getString(3), questions);
+                listQuiz.add(quiz) ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return listQuiz ;
+    }
+    
+     public ObservableList<Quiz> displayQuizList(int idFormateur) {
+        String query = "SELECT *FROM quiz WHERE id_formateur = "+ idFormateur+" " ;
+        ObservableList<Quiz> listQuiz = FXCollections.observableArrayList() ;       
+        try {
+            rs = st.executeQuery(query) ;
+            QuestionDao qdao = QuestionDao.getInstance() ;
+            while(rs.next()){
+                ArrayList<Question> questions = qdao.displayAllQuestions("quiz", rs.getInt("id")) ;
+                Quiz quiz = new Quiz(rs.getInt("id"), rs.getString("sujet"),questions);
                 listQuiz.add(quiz) ;
             }
         } catch (SQLException ex) {
@@ -114,10 +134,10 @@ public class QuizDao{
         String query = "UPDATE quiz SET sujet = '"+ q.getSujet() +"' " ;
         try {
             int updatedRow = st.executeUpdate(query );
-            QuestionDao qdao = QuestionDao.getInstance() ;
+           /* QuestionDao qdao = QuestionDao.getInstance() ;
             for(Question question : q.getQuestions()){
-                qdao.updateQuestion(question, "quiz", q.getId()) ;
-            }
+                qdao.updateQuestionByIdParent(question, "quiz", q.getId()) ;
+            }*/
             if(updatedRow > 0)
                 return true ;
         } catch (SQLException ex) {
