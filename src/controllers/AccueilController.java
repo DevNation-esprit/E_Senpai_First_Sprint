@@ -6,13 +6,28 @@
 package controllers;
 
 import entities.User;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -35,40 +50,180 @@ public class AccueilController implements Initializable {
     private Button deconnectBtn;
     @FXML
     private Label welcomeLabel;
-    
+
     User currentUser;
+    
+    @FXML
+    private Button blogBtn;
+    @FXML
+    private SplitPane splitPane;
+    @FXML
+    private AnchorPane leftPane;
+    @FXML
+    private AnchorPane rightPane;
+    @FXML
+    private ImageView notifications;
+    @FXML
+    private HBox hboxHeader;
+    @FXML
+    private AnchorPane profilPane;
+    @FXML
+    private AnchorPane formationsPane;
+    @FXML
+    private AnchorPane testPane;
+    @FXML
+    private AnchorPane accueilPane;
+    @FXML
+    private AnchorPane chatPane;
+    @FXML
+    private AnchorPane blogPane;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label bioLabel;
+    @FXML
+    private ImageView editBtn;
+    @FXML
+    private AnchorPane profilImagePane;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         
+        accueilPane.setVisible(true);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(false);
+        testPane.setVisible(false);
+        chatPane.setVisible(false);
+        blogPane.setVisible(false);
     }
 
-    public void initData(User u){
-        this.currentUser=u;
-        welcomeLabel.setText("Bienvenue "+currentUser.getNom());
+    public void initData(User u) {
+        ImageView imageprofil;
+        ImageView profilPic;
+        this.currentUser = u;
+        if (currentUser.getRole().get().toLowerCase().equals("formateur")) {
+            if (currentUser.getSexe().get().toLowerCase().equals("homme")) {
+                welcomeLabel.setText("Bienvenue Mr " + currentUser.getNom().get());
+            } else {
+                welcomeLabel.setText("Bienvenue Mme " + currentUser.getNom().get());
+            }
+        } else {
+            welcomeLabel.setText("Bienvenue " + currentUser.getNom().get());
+        }
+
+        if (currentUser.getPhoto_profil().get().equals("")) {
+            imageprofil = new ImageView("/assets/userRandom.png");
+        } else {
+            imageprofil = new ImageView(currentUser.getPhoto_profil().get());
+        }
+        profilPic = imageprofil;
+        imageprofil.setFitHeight(30.0);
+        imageprofil.setFitWidth(30.0);
+        hboxHeader.getChildren().add(imageprofil);
+        profilPic.setFitHeight(129);
+        profilPic.setFitWidth(127);
+        nameLabel.setText(currentUser.getNom().get());
+        
+        profilImagePane.getChildren().add(profilPic);
     }
 
     @FXML
     private void handleAccueilBtn(ActionEvent event) {
-    }
+        accueilPane.setVisible(true);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(false);
+        testPane.setVisible(false);
+        chatPane.setVisible(false);
+        blogPane.setVisible(false);
 
-    @FXML
-    private void HandleAccueilBtn(ActionEvent event) {
     }
 
     @FXML
     private void handleTestQuizBtn(ActionEvent event) {
+        accueilPane.setVisible(false);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(false);
+        testPane.setVisible(true);
+        chatPane.setVisible(false);
+        blogPane.setVisible(false);
+
     }
 
     @FXML
     private void handleChatBtn(ActionEvent event) {
+        accueilPane.setVisible(false);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(false);
+        testPane.setVisible(false);
+        chatPane.setVisible(true);
+        blogPane.setVisible(false);
     }
 
     @FXML
     private void handleDeconnectBtn(ActionEvent event) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Authentification.fxml"));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setScene(
+                    new Scene(loader.load())
+            );
+            stage.setTitle("E-SENPAI | E-Learning Platform");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+            stage.setResizable(false);
+
+            AuthentificationController controller = loader.getController();
+            controller.changeConnected();
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.close();
+
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    
+
+    @FXML
+    private void handleBlogBtn(ActionEvent event) {
+        accueilPane.setVisible(false);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(false);
+        testPane.setVisible(false);
+        chatPane.setVisible(false);
+        blogPane.setVisible(true);
+    }
+
+    @FXML
+    private void handleNotifications(MouseEvent event) {
+    }
+
+    @FXML
+    private void handleProfilBtn(ActionEvent event) {
+        accueilPane.setVisible(false);
+        profilPane.setVisible(true);
+        formationsPane.setVisible(false);
+        testPane.setVisible(false);
+        chatPane.setVisible(false);
+        blogPane.setVisible(false);
+    }
+
+    @FXML
+    private void HandleFormationsBtn(ActionEvent event) {
+        accueilPane.setVisible(false);
+        profilPane.setVisible(false);
+        formationsPane.setVisible(true);
+        testPane.setVisible(false);
+        chatPane.setVisible(false);
+        blogPane.setVisible(false);
+    }
+
+    @FXML
+    private void handleEditBtn(MouseEvent event) {
+    }
+
 }
