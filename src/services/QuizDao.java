@@ -51,8 +51,9 @@ public class QuizDao{
         }
         
          QuestionDao qdao = QuestionDao.getInstance() ;
+         Quiz qz = getQuizbySujet(q.getSujet(), idFormateur) ;
             for (Question question : q.getQuestions()) {
-                qdao.insertQuestion(question, q.getId(), "quiz");
+                qdao.insertQuestion(question, qz.getId(), "quiz");
             }
         
     }
@@ -123,6 +124,21 @@ public class QuizDao{
             Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
         }
       return false ;
+    }
+    
+    public Quiz getQuizbySujet(String sujet,int idFormateur){
+        Quiz q = new Quiz() ;
+        String query = "SELECT *from quiz WHERE sujet='"+ sujet +"' and id_formateur="+ idFormateur +"" ;
+        try {
+            rs = st.executeQuery(query) ;
+            while(rs.next()){
+                q.setId(rs.getInt("id"));
+                q.setSujet(rs.getString("sujet"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return q ;
     }
     
 }

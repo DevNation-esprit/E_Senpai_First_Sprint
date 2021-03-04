@@ -1,14 +1,183 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TestController">
+<AnchorPane id="AnchorPane" prefHeight="1000.0" prefWidth="1800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllers.TestController">
     <stylesheets>
-        <URL value="@/assets/test.css"/>
+        <URL value="@/assets/test.css" />
     </stylesheets>
+   <children>
+      <VBox prefHeight="1000.0" prefWidth="460.0" spacing="30.0" style="-fx-background-color: black;">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Acceuil">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Profil">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="384.0" text="Formations">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Tests &amp; Quiz">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="383.0" text="Chat">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="376.0" text="Button">
+               <VBox.margin>
+                  <Insets top="300.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="25.0" top="150.0" />
+         </padding>
+      </VBox>
+      <TabPane layoutX="460.0" layoutY="113.0" prefHeight="888.0" prefWidth="1340.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab closable="false" text="AJOUTER QUIZ">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="1340.0">
+                     <children>
+                        <VBox layoutX="36.0" layoutY="193.0" prefHeight="470.0" prefWidth="197.0" spacing="40.0">
+                           <children>
+                              <Label text="Sujet ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Question posée  ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Reponse correcte ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Mauvaise reponse 1 ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Mauvaise reponse 2 ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Mauvaise reponse 3 ">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Note pour la question">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <Label layoutX="331.0" layoutY="49.0" prefHeight="53.0" prefWidth="436.0" text="AJOUTER UN QUIZ">
+                           <font>
+                              <Font name="System Bold" size="36.0" />
+                           </font>
+                        </Label>
+                        <VBox layoutX="233.0" layoutY="185.0" prefHeight="489.0" prefWidth="511.0" spacing="29.0">
+                           <children>
+                              <TextField fx:id="tfSujet">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfQposee">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfRcorrecte">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfMrep1">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfMrep2">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfMrep3">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="tfnote">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </VBox>
+                        <Label fx:id="labelQuestion" layoutX="784.0" layoutY="184.0" prefHeight="36.0" prefWidth="545.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <RadioButton fx:id="rbtn1" layoutX="832.0" layoutY="277.0" mnemonicParsing="false" />
+                        <RadioButton fx:id="rbtn3" layoutX="832.0" layoutY="394.0" mnemonicParsing="false" />
+                        <RadioButton fx:id="rbtn2" layoutX="832.0" layoutY="337.0" mnemonicParsing="false" />
+                        <RadioButton fx:id="rbtn4" layoutX="834.0" layoutY="457.0" mnemonicParsing="false" />
+                        <Button fx:id="btnPrev" layoutX="840.0" layoutY="563.0" mnemonicParsing="false" onAction="#prevQuestion" prefHeight="31.0" prefWidth="114.0" text="&lt;&lt;  prev" />
+                        <Button fx:id="btnNext" layoutX="1057.0" layoutY="563.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="31.0" prefWidth="140.0" text="next  &gt;&gt;" />
+                        <Button fx:id="btnAddQuestion" layoutX="424.0" layoutY="699.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="31.0" prefWidth="187.0" text="ajouter" />
+                        <Button fx:id="btnAddTest" layoutX="976.0" layoutY="747.0" mnemonicParsing="false" onAction="#addTest" prefHeight="51.0" prefWidth="305.0" text="Enregistrer">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Liste Quiz">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Statitistiques">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
 </AnchorPane>

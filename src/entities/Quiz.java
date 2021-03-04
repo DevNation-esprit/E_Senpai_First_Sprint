@@ -17,7 +17,7 @@ public class Quiz {
     protected ArrayList<Question> questions ;
     
     public Quiz(){
-        
+        this.questions = new ArrayList<>() ;
     }
     
     public Quiz(int id, String sujet) {
@@ -66,6 +66,8 @@ public class Quiz {
     }
     
     public boolean checkQuestion(Question q){
+        if(this.questions.isEmpty())
+            return false ;
         if(this.questions.contains(q)){
             return true ;
         }
