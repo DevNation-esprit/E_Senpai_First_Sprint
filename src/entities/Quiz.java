@@ -6,7 +6,6 @@
 package entities;
 
 import java.util.ArrayList;
-import javafx.collections.ObservableList;
 
 /**
  *
@@ -15,6 +14,8 @@ import javafx.collections.ObservableList;
 public class Quiz {
     protected int id ;
     protected String sujet ;
+    protected int idFormation ;
+    protected int idFormateur ;
     protected ArrayList<Question> questions ;
     
     public Quiz(){
@@ -85,6 +86,34 @@ public class Quiz {
     public void deleteQuestion(Question q){
         this.questions.remove(q );
     }
+    public boolean verifierQuestion(Question q){
+        for(Question qq : this.questions){
+            if(qq.getQuestionPosee().equals(q.getQuestionPosee()) && qq.getReponseCorrecte().equals(q.getReponseCorrecte()) &&
+                    qq.getReponseFausse1().equals(q.getReponseFausse1()) && qq.getReponseFausse2().equals(q.getReponseFausse2())
+                    && qq.getReponseFausse3().equals(q.getReponseFausse3())){
+                return true ;
+            }
+        }
+        return false ;
+    }
+
+    public int getIdFormation() {
+        return idFormation;
+    }
+
+    public void setIdFormation(int idFormation) {
+        this.idFormation = idFormation;
+    }
+
+    public int getIdFormateur() {
+        return idFormateur;
+    }
+
+    public void setIdFormateur(int idFormateur) {
+        this.idFormateur = idFormateur;
+    }
+    
+    
     
     
 }

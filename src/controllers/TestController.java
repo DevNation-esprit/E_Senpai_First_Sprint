@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -126,6 +125,8 @@ public class TestController implements Initializable {
     private Tab listQuiz;
     @FXML
     private Button btnUpdateAdd;
+    @FXML
+    private Tab tabAdd;
 
     /**
      * Initializes the controller class.
@@ -179,30 +180,48 @@ public class TestController implements Initializable {
             if(!sujet.isEmpty())
                 tfSujet.setEditable(false);
             
-            int note = Integer.parseInt(tfnote.getText()) ;
-            Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ;      
-            if(q.addQuestion(question )){
-                 showAddedQuestion(q.getQuestions().size()-1);
-                 currentQuestionIndex = q.getQuestions().size() - 1 ;
-            }
-            else{
-                q.getQuestion(currentQuestionIndex).setQuestionPosee(qPosee);
-                q.getQuestion(currentQuestionIndex).setReponseCorrecte(rCorrecte);
-                q.getQuestion(currentQuestionIndex).setReponseFausse1(mRep1);
-                q.getQuestion(currentQuestionIndex).setReponseFausse2(mRep2);
-                q.getQuestion(currentQuestionIndex).setReponseFausse3(mRep3);
-                q.getQuestion(currentQuestionIndex).setNote(note);
+            try {
                 
-            }
-            
-            tfQposee.setText("");
-            tfRcorrecte.setText("");
-            tfMrep1.setText("");
-            tfMrep2.setText("");
-            tfMrep3.setText("");
-            tfnote.setText("");
-           
+                int note = Integer.parseInt(tfnote.getText()) ;
+                Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ; 
 
+                if(!q.verifierQuestion(question)){
+                        if(q.addQuestion(question )){
+                         showAddedQuestion(q.getQuestions().size()-1);
+                         currentQuestionIndex = q.getQuestions().size() - 1 ;
+                    }
+                    else{
+                        q.getQuestion(currentQuestionIndex).setQuestionPosee(qPosee);
+                        q.getQuestion(currentQuestionIndex).setReponseCorrecte(rCorrecte);
+                        q.getQuestion(currentQuestionIndex).setReponseFausse1(mRep1);
+                        q.getQuestion(currentQuestionIndex).setReponseFausse2(mRep2);
+                        q.getQuestion(currentQuestionIndex).setReponseFausse3(mRep3);
+                        q.getQuestion(currentQuestionIndex).setNote(note);
+
+                    }
+
+                    tfQposee.setText("");
+                    tfRcorrecte.setText("");
+                    tfMrep1.setText("");
+                    tfMrep2.setText("");
+                    tfMrep3.setText("");
+                    tfnote.setText("");
+
+
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ajouter Quiz");
+                        alert.setHeaderText(null);
+                        alert.setContentText("la question existe dejà!");
+                        alert.show();
+                    }
+                } catch (NumberFormatException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Ajouter Quiz");
+                        alert.setHeaderText(null);
+                        alert.setContentText("la note doit etre numique > 0!");
+                        alert.show();
+             }                      
         }else{
              Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ajouter Quiz");

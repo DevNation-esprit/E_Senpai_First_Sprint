@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/entities/Quiz.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/entities/Question.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/entities/User.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/services/TestDao.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/services/QuestionDao.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/services/QuizDao.java</file>
-            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/TestController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -71,22 +71,46 @@ public class AccueilController implements Initializable {
     @FXML
     private void handleTestQuizBtn(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Test.fxml"));
-            Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setScene(
-                    new Scene(loader.load())
-            );
-            stage.setTitle("E-SENPAI | E-Learning Platform");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
-            stage.setResizable(false);
+             
+            if(currentUser.getRole().equals("Etudiant")){
+                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/acceuilEtudiant.fxml"));
+                 Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(
+                        new Scene(loader.load())
+                );
+                stage.setTitle("E-SENPAI | E-Learning Platform");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                stage.setResizable(false);
 
-            TestController controller = loader.getController();
-            controller.initData(currentUser);
+               AcceuilEtudiantController controller = loader.getController() ;
+               controller.initData(currentUser);
 
-            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            oldStage.close();
+                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                oldStage.close();
 
-            stage.show();
+                stage.show();
+            }
+            else{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Test.fxml"));
+                 Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(
+                        new Scene(loader.load())
+                );
+                stage.setTitle("E-SENPAI | E-Learning Platform");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                stage.setResizable(false);
+
+                TestController controller = loader.getController();
+                controller.initData(currentUser);
+
+                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                oldStage.close();
+
+                stage.show();
+            }
+           // loader = new FXMLLoader(getClass().getResource("/views/Test.fxml"));
+           
 
         } catch (IOException ex) {
             Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);

@@ -94,6 +94,25 @@ public class QuizDao{
       return listQuiz ;
     }
     
+    public List<Quiz> getAllQuiz( ) {
+        String query = "SELECT *FROM quiz " ;
+        ArrayList<Quiz> listQuiz = new ArrayList<>() ;       
+        try {
+            rs = st.executeQuery(query) ;
+            QuestionDao qdao = QuestionDao.getInstance() ;
+            while(rs.next()){
+                ArrayList<Question> questions =  qdao.displayAllQuestions("quiz", rs.getInt(1)) ;
+                Quiz quiz = new Quiz(rs.getInt(1), rs.getString(3), questions);
+                quiz.setIdFormateur(rs.getInt("id_formateur"));
+                listQuiz.add(quiz) ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return listQuiz ;
+    }
+    
      public ObservableList<Quiz> displayQuizList(int idFormateur) {
         String query = "SELECT *FROM quiz WHERE id_formateur = "+ idFormateur+" " ;
         ObservableList<Quiz> listQuiz = FXCollections.observableArrayList() ;       

@@ -1,0 +1,27 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+
+.buttons{
+    -fx-text-fill: #EECC8D ;
+    -fx-border-color:  #EECC8D ;
+    -fx-background-color: none ;
+}
+
+.buttons:hover{
+    -fx-background-color: #EECC8D ;
+    -fx-text-fill: black ;
+}
+
+.labels{
+    -fx-text-fill: black ;
+
+}
+.boxes{
+    -fx-border-radius : 10 ;
+    -fx-background-color : lightgrey ;
+}

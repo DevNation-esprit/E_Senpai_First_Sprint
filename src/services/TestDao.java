@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class TestDao {
     
     private static TestDao instance ;
-    private Statement st ;
+    private Statement st ; 
     private ResultSet rs ;
     
     private TestDao(){

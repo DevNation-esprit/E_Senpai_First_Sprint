@@ -107,6 +107,22 @@ public class UserService {
         return pat.matcher(email).matches(); 
     }
     
+    public User getUserById(int id){
+        User u = new User();
+        String query = "select *from user where id = "+id+"" ;
+        try {
+           rs = st.executeQuery(query );
+            while(rs.next()){
+                u.setNom(rs.getString("nom"));
+                u.setId(rs.getInt("id"));
+                u.setPrenom(rs.getString("prenom"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return u ;
+    }
+    
 //    public User getUserByLogin(String login){
 //        String req = "";
 //    }
