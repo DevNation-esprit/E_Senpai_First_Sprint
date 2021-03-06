@@ -296,6 +296,15 @@
                            </graphic>
                         </Button>
                         <ComboBox fx:id="comboApplyOn" layoutX="1224.0" layoutY="516.0" prefWidth="150.0" promptText="Appliquer sur" />
+                        <Button fx:id="btnUpdateAdd" layoutX="1269.0" layoutY="781.0" mnemonicParsing="false" onAction="#updateAddQuestion" prefHeight="51.0" prefWidth="50.0">
+                           <graphic>
+                              <ImageView fitHeight="43.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/icons8_add_30px.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children></AnchorPane>
             </content>
           </Tab>

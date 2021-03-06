@@ -124,6 +124,8 @@ public class TestController implements Initializable {
     private ComboBox<String> comboApplyOn;
     @FXML
     private Tab listQuiz;
+    @FXML
+    private Button btnUpdateAdd;
 
     /**
      * Initializes the controller class.
@@ -361,9 +363,10 @@ public class TestController implements Initializable {
                 }
                 else{
                      Quiz quiz = new Quiz() ;
-                     Quiz selectedQuiz = showSelectedQuiz(null) ;
+                     MouseEvent e = null ;
+                     Quiz selectedQuiz = showSelectedQuiz(e) ;
                      quiz.setSujet(tfSujetShow.getText());
-                     quiz.setId(selectedQuiz.getId());
+                     quiz.setId(selectedQuiz.getId());                       
                      
                      QuizDao qdao = QuizDao.getInstance() ;
                      if(qdao.updateQuiz(quiz, currentUser.getId())){
@@ -493,15 +496,78 @@ public class TestController implements Initializable {
         Question quest = questions.get(0) ;
        
        tfSujetShow.setText(quiz.getSujet());
-       tfQposeeShow.setText(quest.getQuestionPosee());
+       /*tfQposeeShow.setText(quest.getQuestionPosee());
        tfRcorrShow.setText(quest.getReponseCorrecte());
        tfMrep1Show.setText(quest.getReponseFausse1());
        tfMrep2Show.setText(quest.getReponseFausse2());
        tfMrep3Show.setText(quest.getReponseFausse3());
-       tfMrepNoteShow.setText(quest.getNote()+"");
+       tfMrepNoteShow.setText(quest.getNote()+"");*/
        
        return quiz ;
         
     }   
+
+    @FXML
+    private void updateAddQuestion(ActionEvent event) {
+        if(tfSujetShow.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ajouter Question");
+            alert.setHeaderText(null);
+            alert.setContentText("veullez selectionner le quiz où ajouter la question !!!");
+            alert.show();
+        }
+        else{
+            Quiz quiz = showSelectedQuiz(null) ;
+            
+            String qPosee = tfQposeeShow.getText() ;
+            String rCorrecte = tfRcorrShow.getText() ;
+            String mRep1 = tfMrep1Show.getText() ;
+            String mRep2 = tfMrep2Show.getText() ;
+            String mRep3 = tfMrep3Show.getText() ;
+            
+            boolean exists = false ;
+            for(Question qq : quiz.getQuestions()){
+                if(qq.getQuestionPosee().equals(qPosee) && qq.getReponseCorrecte().equals(rCorrecte) &&
+                        qq.getReponseFausse1().equals(mRep1) && qq.getReponseFausse2().equals(mRep2)){
+                    exists = true ;
+                   // break ;
+                }
+            }
+            
+            if(exists){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ajouter Question");
+                alert.setHeaderText(null);
+                alert.setContentText("la question existe déjà!!!");
+                alert.show();
+            }
+            if(!exists){
+                if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
+                            && !tfMrepNoteShow.getText().isEmpty()){
+                    int note = Integer.parseInt(tfMrepNoteShow.getText()) ;
+                    
+                    Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ;
+                    QuestionDao qdao = QuestionDao.getInstance() ;
+                    qdao.insertQuestion(question, quiz.getId(), "quiz");
+                    showTest(); 
+                    
+                    tfQposeeShow.setText("");
+                    tfRcorrShow.setText("");
+                    tfMrep1Show.setText("");
+                    tfMrep2Show.setText("");
+                    tfMrep3Show.setText("");
+                    tfMrepNoteShow.setText("");
+                    tfSujetShow.setText("");
+                }
+                else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Ajouter Question");
+                    alert.setHeaderText(null);
+                    alert.setContentText("veuillez rensigner tous les champs!!!");
+                    alert.show();
+                }
+            }
+        }
+    }
       
 }

@@ -131,7 +131,7 @@ public class QuizDao{
     }
 
     public boolean updateQuiz(Quiz q, int idFromateur) {
-        String query = "UPDATE quiz SET sujet = '"+ q.getSujet() +"' " ;
+        String query = "UPDATE quiz SET sujet = '"+ q.getSujet() +"' WHERE id = "+ q.getId() +"" ;
         try {
             int updatedRow = st.executeUpdate(query );
            /* QuestionDao qdao = QuestionDao.getInstance() ;
