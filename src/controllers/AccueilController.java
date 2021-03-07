@@ -30,7 +30,7 @@ import javafx.stage.StageStyle;
  */
 public class AccueilController implements Initializable {
 
-    @FXML
+     @FXML
     private Button accueilBtn;
     @FXML
     private Button profilBtn;
@@ -49,6 +49,8 @@ public class AccueilController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

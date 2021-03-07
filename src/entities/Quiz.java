@@ -113,6 +113,13 @@ public class Quiz {
         this.idFormateur = idFormateur;
     }
     
+    public int getTotalNote(){
+        int sumNote = 0 ;
+        for(Question q : this.questions){
+            sumNote += q.getNote() ;
+        }
+        return sumNote ;
+    }
     
     
     
