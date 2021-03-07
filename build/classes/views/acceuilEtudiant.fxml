@@ -15,7 +15,7 @@
    <top>
       <HBox prefHeight="75.0" prefWidth="1900.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="116.0" prefWidth="352.0" />
+            <Label fx:id="idEtudiant" prefHeight="116.0" prefWidth="352.0" />
             <Label fx:id="welcomeLabel" prefHeight="104.0" prefWidth="336.0" />
          </children>
       </HBox>

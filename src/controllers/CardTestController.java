@@ -8,18 +8,27 @@ package controllers;
 import entities.Quiz;
 import entities.Test;
 import entities.User;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import services.QuizDao;
 
 /**
@@ -43,6 +52,8 @@ public class CardTestController implements Initializable {
     private ImageView formateurImage;
     @FXML
     private Label testId;
+    
+    private User currentUser ;
 
     /**
      * Initializes the controller class.
@@ -54,6 +65,9 @@ public class CardTestController implements Initializable {
         // TODO
     }    
     
+    public void setCurrentUser(User u){
+        currentUser = u ;
+    }
     public void setData(Quiz q,User u){
         if(q instanceof Quiz){
             lbType.setText("Quiz");
@@ -93,9 +107,35 @@ public class CardTestController implements Initializable {
         Optional<ButtonType> result =  alert.showAndWait() ;
         if(result.get() == ButtonType.OK){
           if(type.toLowerCase().equals("quiz")){
+              
               QuizDao qdao = QuizDao.getInstance() ;
               Quiz quiz = qdao.getQuizById(idTest) ;
-              System.out.println(quiz.getQuestions().size());
+            //  System.out.println(quiz.getQuestions().size() + currentUser.getNom());
+           try {   
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PasserQuiz.fxml"));
+                    Stage stage = new Stage(StageStyle.DECORATED);
+
+                     stage.setScene(
+                             new Scene(loader.load())
+                     );
+            
+                    stage.setTitle("E-SENPAI | E-Learning Platform");
+                    stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                    stage.setResizable(false);
+                    
+                    PasserQuizController controller = loader.getController();
+                    controller.setQuiz(quiz);
+                   // controller.setUser(currentUser);
+
+                    Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    
+                    oldStage.close();
+
+                    stage.show();
+          
+              } catch (IOException ex) {
+                  Logger.getLogger(CardTestController.class.getName()).log(Level.SEVERE, null, ex);
+              }
           }
         }
     }

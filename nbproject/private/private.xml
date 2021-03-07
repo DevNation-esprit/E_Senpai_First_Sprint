@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/entities/Quiz.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/PasserQuizController.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/assets/acceuiletudiant.css</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/AccueilController.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/entities/User.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/AcceuilEtudiantController.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/CardTestController.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/services/QuizDao.java</file>
+            <file>file:/E:/3A18/Semestre%202/PIDEV/Projet/E_Senpai_First_Sprint/src/controllers/TestController.java</file>
+        </group>
     </open-files>
 </project-private>

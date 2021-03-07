@@ -31,27 +31,42 @@ import services.UserService;
  */
 public class AcceuilEtudiantController implements Initializable {
     
-        User currentUser;
+    private User currentUser ;
+    
     @FXML
     private Label welcomeLabel;
     @FXML
     private GridPane testContainer;
     
     private List<Quiz> quiz ;
-
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        quiz = new ArrayList<>(getAllQuiz_Test()) ;
+    @FXML
+    private Label idEtudiant;  
+    
+    public void initData(User u){
+        welcomeLabel.setText("Bienvenue "+u.getNom() +"  "+ u.getPrenom());   
+        idEtudiant.setText(u.getId()+"");
+        idEtudiant.setVisible(false);
+    }
+    
+    public User getCurrentUser(){
+        return currentUser ;
+    }
+    
+    private List<Quiz> getAllQuiz_Test(){
+       List<Quiz> list  ;
+       
+        QuizDao qdao = QuizDao.getInstance() ;
+        list = qdao.getAllQuiz() ;
+       
+       return list ;
+    }
+    
+    private void setData(){
+         quiz = new ArrayList<>(getAllQuiz_Test()) ;
         int column = 0;
         int row = 1 ;
          try {
-                for(Quiz q : quiz){
+               for(Quiz q : quiz){
                     FXMLLoader fxmlloader = new FXMLLoader() ;
                     fxmlloader.setLocation(getClass().getResource("/views/cardTest.fxml"));
                     VBox testBox = fxmlloader.load() ;
@@ -68,23 +83,23 @@ public class AcceuilEtudiantController implements Initializable {
                     testContainer.add(testBox, column++, row);
                     GridPane.setMargin(testBox, new Insets(10));
 
-                }
+                } 
+              // System.out.println(idEtudiant.getText() + "j");
+               
         } catch (IOException ex) {
                 Logger.getLogger(AcceuilEtudiantController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }   
-    
-    public void initData(User u){
-        this.currentUser=u;
-        welcomeLabel.setText("Bienvenue "+currentUser.getNom());
     }
     
-    private List<Quiz> getAllQuiz_Test(){
-       List<Quiz> list  ;
-       
-        QuizDao qdao = QuizDao.getInstance() ;
-        list = qdao.getAllQuiz() ;
-       
-       return list ;
+    /**
+     * Initializes the controller class.
+     * @param url
+     * @param rb
+     */
+      @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+       setData() ;
     }
+    
 }
