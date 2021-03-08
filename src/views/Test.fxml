@@ -24,32 +24,32 @@
    <children>
       <VBox prefHeight="1000.0" prefWidth="434.0" spacing="30.0" style="-fx-background-color: black;">
          <children>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Acceuil">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Acceuil">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Profil">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Profil">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="384.0" text="Formations">
+            <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="384.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Formations">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" text="Tests &amp; Quiz">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="384.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quiz">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="383.0" text="Chat">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="383.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Chat">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="376.0" text="Button">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="376.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Deconnecter">
                <VBox.margin>
                   <Insets top="300.0" />
                </VBox.margin>
@@ -66,9 +66,9 @@
         <tabs>
           <Tab fx:id="tabAdd" closable="false" text="AJOUTER QUIZ">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="1340.0" style="-fx-background-color: #f9ebd2;">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="745.0" prefWidth="1340.0" style="-fx-background-color: lightgrey;">
                      <children>
-                        <VBox layoutX="36.0" layoutY="193.0" prefHeight="470.0" prefWidth="197.0" spacing="40.0">
+                        <VBox layoutX="36.0" layoutY="193.0" prefHeight="470.0" prefWidth="197.0" spacing="40.0" stylesheets="@../assets/test.css">
                            <children>
                               <Label text="Sujet ">
                                  <font>
@@ -100,14 +100,14 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Note pour la question">
+                              <Label stylesheets="@../assets/test.css" text="Note pour la question">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
                            </children>
                         </VBox>
-                        <Label layoutX="331.0" layoutY="49.0" prefHeight="53.0" prefWidth="436.0" text="AJOUTER UN QUIZ">
+                        <Label layoutX="469.0" layoutY="40.0" prefHeight="53.0" prefWidth="436.0" text="AJOUTER UN QUIZ/TEST">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
@@ -160,19 +160,19 @@
                         <RadioButton fx:id="rbtn3" layoutX="832.0" layoutY="394.0" mnemonicParsing="false" />
                         <RadioButton fx:id="rbtn2" layoutX="832.0" layoutY="337.0" mnemonicParsing="false" />
                         <RadioButton fx:id="rbtn4" layoutX="834.0" layoutY="457.0" mnemonicParsing="false" />
-                        <Button fx:id="btnPrev" layoutX="840.0" layoutY="563.0" mnemonicParsing="false" onAction="#prevQuestion" prefHeight="31.0" prefWidth="114.0" text="&lt;&lt;  prev">
+                        <Button fx:id="btnPrev" layoutX="840.0" layoutY="563.0" mnemonicParsing="false" onAction="#prevQuestion" prefHeight="31.0" prefWidth="114.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="&lt;&lt;  prev">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font></Button>
-                        <Button fx:id="btnNext" layoutX="1057.0" layoutY="563.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="39.0" prefWidth="130.0" text="next  &gt;&gt;">
+                        <Button fx:id="btnNext" layoutX="1057.0" layoutY="563.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="39.0" prefWidth="130.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="next  &gt;&gt;">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font></Button>
-                        <Button fx:id="btnAddQuestion" layoutX="424.0" layoutY="699.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="31.0" prefWidth="187.0" text="ajouter">
+                        <Button fx:id="btnAddQuestion" layoutX="424.0" layoutY="699.0" mnemonicParsing="false" onAction="#addQuestion" prefHeight="31.0" prefWidth="187.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="ajouter">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font></Button>
-                        <Button fx:id="btnAddTest" layoutX="976.0" layoutY="747.0" mnemonicParsing="false" onAction="#addTest" prefHeight="77.0" prefWidth="334.0" text="Enregistrer">
+                        <Button fx:id="btnAddTest" layoutX="976.0" layoutY="747.0" mnemonicParsing="false" onAction="#addTest" prefHeight="77.0" prefWidth="334.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Enregistrer">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
@@ -182,13 +182,15 @@
                               <Image url="@../assets/icons8_save_30px_1.png" />
                            </image>
                         </ImageView>
+                        <ComboBox fx:id="comboType" layoutX="75.0" layoutY="110.0" onAction="#changeComboType" prefHeight="43.0" prefWidth="247.0" promptText="Choisir le type " />
+                        <ComboBox fx:id="comboFormation" layoutX="450.0" layoutY="110.0" onAction="#changeComboFormation" prefHeight="45.0" prefWidth="591.0" promptText="Choisir la formation" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
           <Tab fx:id="listQuiz" onSelectionChanged="#displayTest" text="Liste Quiz">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="910.0" prefWidth="1448.0" style="-fx-background-color: #f9ebd2;">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="910.0" prefWidth="1448.0" style="-fx-background-color: lightgrey;">
                      <children>
                         <TableView fx:id="tvQuiz" editable="true" layoutX="56.0" layoutY="463.0" onMouseClicked="#showSelectedQuiz" prefHeight="393.0" prefWidth="413.0">
                           <columns>
@@ -291,7 +293,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <Button fx:id="btnUpdateItem" layoutX="1271.0" layoutY="604.0" mnemonicParsing="false" onAction="#updateTest" prefHeight="51.0" prefWidth="56.0">
+                        <Button fx:id="btnUpdateItem" layoutX="1271.0" layoutY="604.0" mnemonicParsing="false" onAction="#updateTest" prefHeight="51.0" prefWidth="56.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css">
                            <graphic>
                               <ImageView fitHeight="38.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -300,7 +302,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnDeleteItem" layoutX="1269.0" layoutY="702.0" mnemonicParsing="false" onAction="#deleteTest" prefHeight="51.0" prefWidth="54.0">
+                        <Button fx:id="btnDeleteItem" layoutX="1269.0" layoutY="702.0" mnemonicParsing="false" onAction="#deleteTest" prefHeight="51.0" prefWidth="54.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css">
                            <graphic>
                               <ImageView fitHeight="44.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -310,7 +312,7 @@
                            </graphic>
                         </Button>
                         <ComboBox fx:id="comboApplyOn" layoutX="1224.0" layoutY="516.0" prefWidth="150.0" promptText="Appliquer sur" style="-fx-background-color: #EECC8D;" />
-                        <Button fx:id="btnUpdateAdd" layoutX="1269.0" layoutY="781.0" mnemonicParsing="false" onAction="#updateAddQuestion" prefHeight="51.0" prefWidth="50.0">
+                        <Button fx:id="btnUpdateAdd" layoutX="1269.0" layoutY="781.0" mnemonicParsing="false" onAction="#updateAddQuestion" prefHeight="51.0" prefWidth="50.0" stylesheets="@../assets/acceuiletudiant.css">
                            <graphic>
                               <ImageView fitHeight="43.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -324,7 +326,7 @@
           </Tab>
             <Tab fx:id="stat" text="Statitistiques">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #f9ebd2;" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" />
                </content>
             </Tab>
         </tabs>

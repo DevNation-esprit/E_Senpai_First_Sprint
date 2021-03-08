@@ -5,11 +5,14 @@
  */
 package controllers;
 
+import entities.Formation;
 import entities.Question;
 import entities.Quiz;
+import entities.Test;
 import entities.User;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -33,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import services.QuestionDao;
 import services.QuizDao;
+import services.TestDao;
 
 /**
  * FXML Controller class
@@ -41,7 +45,7 @@ import services.QuizDao;
  */
 public class TestController implements Initializable {
      User currentUser;
-     Quiz q =new Quiz() ;
+     Quiz q ;
      int currentQuestionIndex = 0;
     @FXML
     private TextField tfSujet;
@@ -127,6 +131,12 @@ public class TestController implements Initializable {
     private Button btnUpdateAdd;
     @FXML
     private Tab tabAdd;
+    @FXML
+    private ComboBox<String> comboType;
+    @FXML
+    private ComboBox<String> comboFormation;
+    @FXML
+    private Tab stat;
 
     /**
      * Initializes the controller class.
@@ -140,10 +150,15 @@ public class TestController implements Initializable {
     
     public void initData(User u){
         this.currentUser=u;   
+        ObservableList<String> options = FXCollections.observableArrayList("Quiz","Test");
+        comboType.setItems(options);
+        comboFormation.setVisible(false);
+        btnAddTest.setDisable(true);
     }
 
     @FXML
     private void prevQuestion(ActionEvent event) {
+        System.out.println(currentQuestionIndex);
         if(currentQuestionIndex > 0 && currentQuestionIndex < q.getQuestions().size()){
             currentQuestionIndex -= 1 ;
             showAddedQuestion(currentQuestionIndex);
@@ -165,89 +180,119 @@ public class TestController implements Initializable {
 
     @FXML
     private void addQuestion(ActionEvent event) {
-        
-        String sujet = tfSujet.getText() ;
-        String qPosee = tfQposee.getText() ;
-        String rCorrecte = tfRcorrecte.getText() ;
-        String mRep1 = tfMrep1.getText() ;
-        String mRep2 = tfMrep2.getText() ;
-        String mRep3 = tfMrep3.getText() ;
-
-        if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
-                && !tfnote.getText().isEmpty()){
-            q.setSujet(tfSujet.getText());
-            
-            if(!sujet.isEmpty())
-                tfSujet.setEditable(false);
-            
-            try {
-                
-                int note = Integer.parseInt(tfnote.getText()) ;
-                Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ; 
-
-                if(!q.verifierQuestion(question)){
-                        if(q.addQuestion(question )){
-                         showAddedQuestion(q.getQuestions().size()-1);
-                         currentQuestionIndex = q.getQuestions().size() - 1 ;
-                    }
-                    else{
-                        q.getQuestion(currentQuestionIndex).setQuestionPosee(qPosee);
-                        q.getQuestion(currentQuestionIndex).setReponseCorrecte(rCorrecte);
-                        q.getQuestion(currentQuestionIndex).setReponseFausse1(mRep1);
-                        q.getQuestion(currentQuestionIndex).setReponseFausse2(mRep2);
-                        q.getQuestion(currentQuestionIndex).setReponseFausse3(mRep3);
-                        q.getQuestion(currentQuestionIndex).setNote(note);
-
-                    }
-
-                    tfQposee.setText("");
-                    tfRcorrecte.setText("");
-                    tfMrep1.setText("");
-                    tfMrep2.setText("");
-                    tfMrep3.setText("");
-                    tfnote.setText("");
-
-
-                    }else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ajouter Quiz");
-                        alert.setHeaderText(null);
-                        alert.setContentText("la question existe dejà!");
-                        alert.show();
-                    }
-                } catch (NumberFormatException e) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Ajouter Quiz");
-                        alert.setHeaderText(null);
-                        alert.setContentText("la note doit etre numique > 0!");
-                        alert.show();
-             }                      
-        }else{
-             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ajouter Quiz");
-            alert.setHeaderText(null);
-            alert.setContentText("veuillez remplir tous les champs!");
-            alert.show();
+        int idTest = 0 ;
+        if(comboType.getValue() == null){
+            showAlertMessageError("Ajouter Quiz/Test", "Veuillez choisir le type de devoir");
         }
+        else{
+            if(comboType.getValue().toLowerCase().equals("test")){
+                if(comboFormation.getValue() == null){
+                    showAlertMessageError("Ajouter Quiz/Test", "Veuillez choisir la formation");
+                }
+                else{
+                    TestDao tdao = TestDao.getInstance() ;
+                    Formation f = tdao.getFormationbyTitre(comboFormation.getValue()) ;
+                    idTest = f.getId() ;
+                }
+            }
+            
+            if((comboFormation.getValue() != null) || (comboType.getValue()!= null)){
+                
+                String sujet = tfSujet.getText() ;
+                String qPosee = tfQposee.getText() ;
+                String rCorrecte = tfRcorrecte.getText() ;
+                String mRep1 = tfMrep1.getText() ;
+                String mRep2 = tfMrep2.getText() ;
+                String mRep3 = tfMrep3.getText() ;
+                
+                if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
+                        && !tfnote.getText().isEmpty()){
+                    q.setSujet(tfSujet.getText());
+
+                    if(!sujet.isEmpty())
+                        tfSujet.setEditable(false);
+
+                    try {
+                        
+                        q.setIdFormation(idTest);
+                        q.setSujet(sujet);
+                        q.setIdFormateur(currentUser.getId());
+
+                        int note = Integer.parseInt(tfnote.getText()) ;
+                        Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ; 
+
+                        if(!q.verifierQuestion(question)){
+                                if(q.addQuestion(question )){
+                                 showAddedQuestion(q.getQuestions().size()-1);
+                                 currentQuestionIndex = q.getQuestions().size() - 1 ;
+                                 btnAddTest.setDisable(false);
+                            }
+                            else{
+                                q.getQuestion(currentQuestionIndex).setQuestionPosee(qPosee);
+                                q.getQuestion(currentQuestionIndex).setReponseCorrecte(rCorrecte);
+                                q.getQuestion(currentQuestionIndex).setReponseFausse1(mRep1);
+                                q.getQuestion(currentQuestionIndex).setReponseFausse2(mRep2);
+                                q.getQuestion(currentQuestionIndex).setReponseFausse3(mRep3);
+                                q.getQuestion(currentQuestionIndex).setNote(note);
+
+                            }
+
+                            tfQposee.setText("");
+                            tfRcorrecte.setText("");
+                            tfMrep1.setText("");
+                            tfMrep2.setText("");
+                            tfMrep3.setText("");
+                            tfnote.setText("");
+
+
+                            }else{
+                                showAlertMessageError("Ajouter Quiz","la question existe dejà!");
+                         }
+                        } catch (NumberFormatException e) {
+                                showAlertMessageError("Ajouter Quiz", "la note doit etre numique > 0!");
+                     }                      
+                }else{
+                    showAlertMessageError("Ajouter Quiz", "veuillez remplir tous les champs!");
+                }               
+                
+            }
+        }
+     
     }
     
-
+    private void showAlertMessageError(String title,String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
+    }
+    
+    private void showAlertMessageInfo(String title,String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
+    }  
+    
     @FXML
     private void addTest(ActionEvent event) {
         if(q.getQuestions().isEmpty() || q.getQuestions().size() < 3){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ajouter Quiz");
-            alert.setHeaderText(null);
-            alert.setContentText("Entrez au moins 3 questions pour enregistrer!");
-            alert.show();
+            showAlertMessageError("Ajouter Quiz/Test", "Entrez au moins 3 questions pour enregistrer!");
         }else{
-            QuizDao qdao = QuizDao.getInstance() ;
-            qdao.insertQuiz(q, currentUser.getId());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ajouter Quiz");
-            alert.setHeaderText(null);
-            alert.setContentText("Quiz ajouter avec succès !");
-            alert.show();
+            if(comboType.getValue().toLowerCase().equals("quiz")){
+                QuizDao qdao = QuizDao.getInstance() ;
+                qdao.insertQuiz(q, currentUser.getId());         
+                showAlertMessageInfo("Ajouter Quiz", "Quiz/Test ajouter avec succès") ;
+            }
+            
+            if(comboType.getValue().toLowerCase().equals("test")){
+                TestDao tdao = TestDao.getInstance();
+                tdao.insertTest((Test)q, currentUser.getId());         
+                showAlertMessageInfo("Ajouter Test", "Test ajouter avec succès") ;
+            }
+            
             
             q = new  Quiz() ;
             
@@ -265,6 +310,9 @@ public class TestController implements Initializable {
             tfMrep2.setText("");
             tfMrep3.setText("");
             tfnote.setText("");
+            
+            comboFormation.setVisible(false);
+            comboType.setValue(null); 
             
         }
     }
@@ -288,24 +336,26 @@ public class TestController implements Initializable {
     
     public void showTest(){
        QuizDao qdao = QuizDao.getInstance() ;
-       ObservableList<Quiz> listQuiz = qdao.displayQuizList(currentUser.getId() );
+       ObservableList<Quiz> allQuiz = qdao.displayQuizList(currentUser.getId() );
        
-       tvQuiz.setItems(listQuiz);
+       TestDao tdao = TestDao.getInstance() ;
+       ObservableList<Test> listTest = tdao.displayTestList(currentUser.getId());
+       
+       allQuiz.addAll(listTest );
+       
+       tvQuiz.setItems(allQuiz);
        colidQuiz.setCellValueFactory(new PropertyValueFactory<>("id"));
        colSujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
        colIdF.setCellValueFactory(new PropertyValueFactory<>("id"));
        
         ArrayList<Question> questions = new ArrayList<>() ;
        
-       for(Quiz quiz : listQuiz)
+       for(Quiz quiz : allQuiz)
           questions.addAll(quiz.getQuestions()) ;
        
        ObservableList<Question> listQuestion = FXCollections.observableArrayList();
-       
-       for(Question qt : questions)
-           listQuestion.add(qt );
-       
-       
+       listQuestion.addAll(questions) ;
+   
         tvQuestion.setItems(listQuestion);
         colIdquestion.setCellValueFactory(new PropertyValueFactory<>("id"));
         colQposee.setCellValueFactory(new PropertyValueFactory<>("questionPosee"));
@@ -323,12 +373,8 @@ public class TestController implements Initializable {
     @FXML
     private void updateTest(ActionEvent event) {
         String option = comboApplyOn.getValue() ;
-        if(option == null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Update Quiz");
-            alert.setHeaderText(null);
-            alert.setContentText("veullez selectionner l'objet !!!");
-            alert.show();
+        if(option == null){  
+            showAlertMessageError("Update Quiz", "veullez selectionner l'objet !!!");
         }
         else{
             if(option.toLowerCase().equals("question")){
@@ -350,11 +396,7 @@ public class TestController implements Initializable {
                         qqdao.updateQuestion(question, "quiz") ;
                         showTest();
                         
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("update Question");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Question mise à jour !");
-                        alert.show();
+                        showAlertMessageInfo("update Question", "Question mise à jour !");
 
                         tfQposeeShow.setText("");
                         tfRcorrShow.setText("");
@@ -364,21 +406,13 @@ public class TestController implements Initializable {
                         tfMrepNoteShow.setText("");
 
                     }else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("modifier Question");
-                        alert.setHeaderText(null);
-                        alert.setContentText("veuillez remplir tous les champs!");
-                        alert.show();
+                        showAlertMessageError("modifier Question", "veuillez remplir tous les champs!");
                     }                 
              }
             
             if(option.toLowerCase().equals("quiz")){
-                 if(tfSujetShow.getText().isEmpty()){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Update Quiz");
-                    alert.setHeaderText(null);
-                    alert.setContentText("veullez selectionner le quiz à modifier !!!");
-                    alert.show();
+                 if(tfSujetShow.getText().isEmpty()){       
+                     showAlertMessageError("Update Quiz", "veuillez selectionner le quiz à modifier !!!");
                 }
                 else{
                      Quiz quiz = new Quiz() ;
@@ -388,12 +422,8 @@ public class TestController implements Initializable {
                      quiz.setId(selectedQuiz.getId());                       
                      
                      QuizDao qdao = QuizDao.getInstance() ;
-                     if(qdao.updateQuiz(quiz, currentUser.getId())){
-                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                         alert.setTitle("update Quiz");
-                         alert.setHeaderText(null);
-                         alert.setContentText("Quiz mis à jour !");
-                         alert.show();
+                     if(qdao.updateQuiz(quiz, currentUser.getId())){   
+                         showAlertMessageInfo("update Quiz", "Quiz mis à jour !");
                          showTest();
                      }
                  }
@@ -406,20 +436,12 @@ public class TestController implements Initializable {
     private void deleteTest(ActionEvent event) {
          String option = comboApplyOn.getValue() ;
         if(option == null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Update Quiz");
-            alert.setHeaderText(null);
-            alert.setContentText("veullez selectionner l'objet !!!");
-            alert.show();
+            showAlertMessageError("Update Quiz", "veuillez selectionner l'objet !!!");
         }
         else{
             if(option.toLowerCase().equals("quiz")){
-                if(tfSujetShow.getText().isEmpty()){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Delete Quiz");
-                    alert.setHeaderText(null);
-                    alert.setContentText("veullez selectionner le quiz à supprimer !!!");
-                    alert.show();
+                if(tfSujetShow.getText().isEmpty()){  
+                    showAlertMessageError("Delete Quiz", "veullez selectionner le quiz à supprimer !!!");
                 }
                 else{
                     MouseEvent e = null ;
@@ -456,12 +478,8 @@ public class TestController implements Initializable {
                   String mRep3 = tfMrep3Show.getText() ;                  
                   
                   if(qPosee.isEmpty() && rCorrecte.isEmpty() && mRep1.isEmpty() && mRep2.isEmpty() && mRep3.isEmpty()
-                            && tfnote.getText().isEmpty()){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Delete Question");
-                        alert.setHeaderText(null);
-                        alert.setContentText("veullez selectionner la question à supprimer !!!");
-                        alert.show();
+                            && tfnote.getText().isEmpty()){                      
+                        showAlertMessageError("Delete Question", "veullez selectionner la question à supprimer !!!");
                   }
                   else{
                         MouseEvent e = null ;
@@ -511,6 +529,7 @@ public class TestController implements Initializable {
     @FXML
     private Quiz showSelectedQuiz(MouseEvent event) {
         Quiz quiz = tvQuiz.getSelectionModel().getSelectedItem() ;
+        Quiz t = new Test() ;
         ArrayList<Question> questions = quiz.getQuestions() ;
         Question quest = questions.get(0) ;
        
@@ -529,11 +548,7 @@ public class TestController implements Initializable {
     @FXML
     private void updateAddQuestion(ActionEvent event) {
         if(tfSujetShow.getText().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ajouter Question");
-            alert.setHeaderText(null);
-            alert.setContentText("veullez selectionner le quiz où ajouter la question !!!");
-            alert.show();
+            showAlertMessageError("Ajouter Question", "veullez selectionner le quiz où ajouter la question !!!");
         }
         else{
             Quiz quiz = showSelectedQuiz(null) ;
@@ -554,11 +569,7 @@ public class TestController implements Initializable {
             }
             
             if(exists){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Ajouter Question");
-                alert.setHeaderText(null);
-                alert.setContentText("la question existe déjà!!!");
-                alert.show();
+                showAlertMessageError("Ajouter Question", "la question existe déjà!!!");
             }
             if(!exists){
                 if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
@@ -579,14 +590,36 @@ public class TestController implements Initializable {
                     tfSujetShow.setText("");
                 }
                 else{
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ajouter Question");
-                    alert.setHeaderText(null);
-                    alert.setContentText("veuillez rensigner tous les champs!!!");
-                    alert.show();
+                    showAlertMessageError("Ajouter Question", "veuillez rensigner tous les champs!!!");
                 }
             }
         }
+    }
+
+    @FXML
+    private void changeComboType(ActionEvent event) {
+       if(comboType.getValue().toLowerCase().equals("test")){
+           
+           q = new Test() ;
+           ObservableList<String> options = FXCollections.observableArrayList();
+           TestDao tdao = TestDao.getInstance() ;
+           List<Formation> formations =  tdao.getFormations(currentUser.getId()) ;
+           for(Formation f : formations){
+               options.add(f.getTitre()) ;
+           }
+           comboFormation.setItems(options);
+           comboFormation.setVisible(true);
+       }
+       else if(comboType.getValue().toLowerCase().equals("quiz")){
+           q = new Quiz() ;
+       }
+       else{
+           comboFormation.setVisible(false);
+       }
+    }
+
+    @FXML
+    private void changeComboFormation(ActionEvent event) {
     }
       
 }
