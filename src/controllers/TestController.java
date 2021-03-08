@@ -81,14 +81,12 @@ public class TestController implements Initializable {
     private Label labelQuestion;
     @FXML
     private TableColumn<Quiz, Integer> colidQuiz;
-    @FXML
     private TableColumn<Quiz, Integer> colIdF;
     @FXML
     private TableColumn<Quiz, String> colSujet;
-    @FXML
     private TableColumn<Question, Integer> colIdquestion;
     @FXML
-    private TableColumn<Question, Integer> colQuiz;
+    private TableColumn<Question, String> colQuiz;
     @FXML
     private TableColumn<Question, String> colQposee;
     @FXML
@@ -330,7 +328,7 @@ public class TestController implements Initializable {
      @FXML
     private void displayTest(Event event) {
         showTest();
-        ObservableList<String> options = FXCollections.observableArrayList("Quiz","Question");
+        ObservableList<String> options = FXCollections.observableArrayList("Quiz","Test","Question");
         comboApplyOn.setItems(options);
     }
     
@@ -346,18 +344,20 @@ public class TestController implements Initializable {
        tvQuiz.setItems(allQuiz);
        colidQuiz.setCellValueFactory(new PropertyValueFactory<>("id"));
        colSujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
-       colIdF.setCellValueFactory(new PropertyValueFactory<>("id"));
        
         ArrayList<Question> questions = new ArrayList<>() ;
        
-       for(Quiz quiz : allQuiz)
+       for(Quiz quiz : allQuiz){
           questions.addAll(quiz.getQuestions()) ;
+           //System.out.println(quiz.getClass().getSimpleName());
+       }
+       
        
        ObservableList<Question> listQuestion = FXCollections.observableArrayList();
        listQuestion.addAll(questions) ;
    
         tvQuestion.setItems(listQuestion);
-        colIdquestion.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colQuiz.setCellValueFactory(new PropertyValueFactory<>("type"));
         colQposee.setCellValueFactory(new PropertyValueFactory<>("questionPosee"));
         colRep.setCellValueFactory(new PropertyValueFactory<>("reponseCorrecte"));
         colMrep1.setCellValueFactory(new PropertyValueFactory<>("reponseFausse1"));
@@ -410,21 +410,31 @@ public class TestController implements Initializable {
                     }                 
              }
             
-            if(option.toLowerCase().equals("quiz")){
+            if((option.toLowerCase().equals("quiz")) || (option.toLowerCase().equals("test"))){
                  if(tfSujetShow.getText().isEmpty()){       
                      showAlertMessageError("Update Quiz", "veuillez selectionner le quiz à modifier !!!");
                 }
                 else{
-                     Quiz quiz = new Quiz() ;
+                     Quiz quiz ;
+                     Test test ;
                      MouseEvent e = null ;
-                     Quiz selectedQuiz = showSelectedQuiz(e) ;
-                     quiz.setSujet(tfSujetShow.getText());
-                     quiz.setId(selectedQuiz.getId());                       
-                     
-                     QuizDao qdao = QuizDao.getInstance() ;
-                     if(qdao.updateQuiz(quiz, currentUser.getId())){   
-                         showAlertMessageInfo("update Quiz", "Quiz mis à jour !");
-                         showTest();
+                     if(showSelectedQuiz(e).getClass().getSimpleName().toLowerCase().equals("quiz")){
+                         quiz = showSelectedQuiz(e) ;
+                         quiz.setSujet(tfSujetShow.getText());
+                          QuizDao qdao = QuizDao.getInstance() ;
+                        if(qdao.updateQuiz(quiz, currentUser.getId())){   
+                            showAlertMessageInfo("update Quiz", "Quiz mis à jour !");
+                            showTest();
+                        }
+                     }
+                     else if(showSelectedQuiz(e).getClass().getSimpleName().toLowerCase().equals("test")){
+                         test = (Test)showSelectedQuiz(e) ;
+                         test.setSujet(tfSujetShow.getText());
+                         TestDao tdao = TestDao.getInstance() ;
+                         if(tdao.updateTest(test, currentUser.getId())){
+                            showAlertMessageInfo("update Test", "test mis à jour !");
+                            showTest();
+                         }
                      }
                  }
             }
@@ -438,76 +448,87 @@ public class TestController implements Initializable {
         if(option == null){
             showAlertMessageError("Update Quiz", "veuillez selectionner l'objet !!!");
         }
-        else{
-            if(option.toLowerCase().equals("quiz")){
+        else{ 
+            
+            if(option.toLowerCase().equals("question")){
+                        String qPosee = tfQposeeShow.getText() ;
+                        String rCorrecte = tfRcorrShow.getText() ;
+                        String mRep1 = tfMrep1Show.getText() ;
+                        String mRep2 = tfMrep2Show.getText() ;
+                        String mRep3 = tfMrep3Show.getText() ;                  
+
+                        if(qPosee.isEmpty() && rCorrecte.isEmpty() && mRep1.isEmpty() && mRep2.isEmpty() && mRep3.isEmpty()
+                                  && tfnote.getText().isEmpty()){                      
+                              showAlertMessageError("Delete Question", "veullez selectionner la question à supprimer !!!");
+                        }
+                        else{
+                              MouseEvent ev = null ;
+                              Question question = showSelectedItem(ev);
+
+                              Alert.AlertType Atype = Alert.AlertType.CONFIRMATION ;
+                              Alert a = new Alert(Atype,"" );
+                              a.initModality(Modality.APPLICATION_MODAL);
+                              a.getDialogPane().setContentText("Cette action suprimera la question");
+                              a.getDialogPane().setHeaderText("Supprimer Question");
+                             // alert.show(); 
+
+                              Optional<ButtonType> resultat =  a.showAndWait() ;
+                              if(resultat.get() == ButtonType.OK){
+                                  QuestionDao qdao = QuestionDao.getInstance();
+                                  qdao.deleteQuestion(question, question.getType());
+                                  showTest();
+
+                                  tfQposeeShow.setText("");
+                                  tfRcorrShow.setText("");
+                                  tfMrep1Show.setText("");
+                                  tfMrep2Show.setText("");
+                                  tfMrep3Show.setText("");
+                                  tfMrepNoteShow.setText("");
+
+                          }                 
+                      }             
+              }
+            else{
                 if(tfSujetShow.getText().isEmpty()){  
                     showAlertMessageError("Delete Quiz", "veullez selectionner le quiz à supprimer !!!");
                 }
-                else{
-                    MouseEvent e = null ;
-                    Quiz quiz = showSelectedQuiz(e);
-                   
-                    Alert.AlertType type = Alert.AlertType.CONFIRMATION ;
-                    Alert alert = new Alert(type,"" );
-                    alert.initModality(Modality.APPLICATION_MODAL);
-                    alert.getDialogPane().setContentText("Cette action suprimera le quiz et toutes ces questions");
-                    alert.getDialogPane().setHeaderText("Supprimer Quiz");
-                   // alert.show(); 
-                    
-                    Optional<ButtonType> result =  alert.showAndWait() ;
-                    if(result.get() == ButtonType.OK){
-                        QuizDao qdao = QuizDao.getInstance() ;
-                        qdao.deleteQuiz(quiz);
-                        showTest();
-                        
-                        tfQposeeShow.setText("");
-                        tfRcorrShow.setText("");
-                        tfMrep1Show.setText("");
-                        tfMrep2Show.setText("");
-                        tfMrep3Show.setText("");
-                        tfMrepNoteShow.setText("");
-                    }
-                }
-            }
-            
-           if(option.toLowerCase().equals("question")){
-                  String qPosee = tfQposeeShow.getText() ;
-                  String rCorrecte = tfRcorrShow.getText() ;
-                  String mRep1 = tfMrep1Show.getText() ;
-                  String mRep2 = tfMrep2Show.getText() ;
-                  String mRep3 = tfMrep3Show.getText() ;                  
-                  
-                  if(qPosee.isEmpty() && rCorrecte.isEmpty() && mRep1.isEmpty() && mRep2.isEmpty() && mRep3.isEmpty()
-                            && tfnote.getText().isEmpty()){                      
-                        showAlertMessageError("Delete Question", "veullez selectionner la question à supprimer !!!");
-                  }
-                  else{
+             else{                                         
                         MouseEvent e = null ;
-                        Question question = showSelectedItem(e);
+                        Quiz quiz = showSelectedQuiz(e);
 
                         Alert.AlertType type = Alert.AlertType.CONFIRMATION ;
                         Alert alert = new Alert(type,"" );
                         alert.initModality(Modality.APPLICATION_MODAL);
-                        alert.getDialogPane().setContentText("Cette action suprimera la question");
-                        alert.getDialogPane().setHeaderText("Supprimer Question");
+                        alert.getDialogPane().setContentText("Cette action suprimera le quiz et toutes ces questions");
+                        alert.getDialogPane().setHeaderText("Supprimer Quiz");
                        // alert.show(); 
 
                         Optional<ButtonType> result =  alert.showAndWait() ;
                         if(result.get() == ButtonType.OK){
-                            QuestionDao qdao = QuestionDao.getInstance();
-                            qdao.deleteQuestion(question, "quiz");
-                            showTest();
-                            
+                            if(option.toLowerCase().equals("quiz")){
+                                QuizDao qdao = QuizDao.getInstance() ;
+                                qdao.deleteQuiz(quiz);
+                                showTest();
+                            }
+
+                            if(option.toLowerCase().equals("test")){
+                                TestDao tdao = TestDao.getInstance() ;
+                                tdao.deleteTest((Test)quiz);
+                                showTest();
+                            }
+
                             tfQposeeShow.setText("");
                             tfRcorrShow.setText("");
                             tfMrep1Show.setText("");
                             tfMrep2Show.setText("");
                             tfMrep3Show.setText("");
                             tfMrepNoteShow.setText("");
-                            
-                    }                 
-                }             
+
+                         }                           
+
+                }
             }
+                 
         }
     }
 
@@ -531,7 +552,7 @@ public class TestController implements Initializable {
         Quiz quiz = tvQuiz.getSelectionModel().getSelectedItem() ;
         Quiz t = new Test() ;
         ArrayList<Question> questions = quiz.getQuestions() ;
-        Question quest = questions.get(0) ;
+      //  Question quest = questions.get(0) ;
        
        tfSujetShow.setText(quiz.getSujet());
        /*tfQposeeShow.setText(quest.getQuestionPosee());

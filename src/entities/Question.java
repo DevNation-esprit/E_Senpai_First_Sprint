@@ -19,6 +19,7 @@ public class Question {
     private String reponseFausse2 ;
     private String reponseFausse3 ;
     private int note ;
+    private String type ;
     
     public Question(){
         
@@ -120,6 +121,15 @@ public class Question {
         }
         return true;
     }
-          
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+     
+    
     
 }

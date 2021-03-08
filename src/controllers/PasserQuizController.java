@@ -7,6 +7,7 @@ package controllers;
 
 import entities.Question;
 import entities.Quiz;
+import entities.Session;
 import entities.Test;
 import entities.User;
 import java.net.URL;
@@ -83,6 +84,9 @@ public class PasserQuizController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+         Session s = new Session() ;
+        System.out.println(Session.getUser().getNom() + " "+ Session.getUser().getPrenom() +
+                " "+ Session.getUser().getId());
         
     }
  

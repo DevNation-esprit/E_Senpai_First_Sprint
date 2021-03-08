@@ -45,7 +45,7 @@ public class AcceuilEtudiantController implements Initializable {
     public void initData(User u){
         welcomeLabel.setText("Bienvenue "+u.getNom() +"  "+ u.getPrenom());   
         idEtudiant.setText(u.getId()+"");
-        idEtudiant.setVisible(false);
+        idEtudiant.setVisible(false);     
     }
     
     public User getCurrentUser(){

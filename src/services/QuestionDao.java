@@ -90,7 +90,7 @@ public class QuestionDao {
             query += "DELETE FROM `questionquiz` WHERE id = "+ q.getId() +" and id_quiz ="+ idParent +" ";
         }
         else if(type.equals("test")){
-            query += "DELETE FROM `questiontest` WHERE id = "+ q.getId() +" and id_quiz ="+ idParent +" " ;
+            query += "DELETE FROM `questiontest` WHERE id = "+ q.getId() +" and id_test ="+ idParent +" " ;
         }
         
         Question quest = this.getQuestionById(q.getId(), type);
@@ -122,6 +122,7 @@ public class QuestionDao {
             while (rs.next()) {
                 Question q = new Question(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
                         , rs.getString(7), rs.getInt(8)) ;
+                q.setType(type); 
                 questions.add(q) ;               
             }
             
@@ -148,6 +149,7 @@ public class QuestionDao {
             while (rs.next()) {
                 Question q = new Question(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
                         , rs.getString(7), rs.getInt(8)) ;
+                q.setType(type);
                 questions.add(q) ;               
             }
             
@@ -177,6 +179,7 @@ public class QuestionDao {
                 q.setReponseFausse1(rs.getString(5)) ;
                 q.setReponseFausse2(rs.getString(6)) ;
                 q.setReponseFausse3(rs.getString(7)) ;
+                q.setType(type);
                 q.setNote(rs.getInt(8));
             }
         } catch (SQLException ex) {

@@ -6,6 +6,7 @@
 package controllers;
 
 import entities.Quiz;
+import entities.Session;
 import entities.Test;
 import entities.User;
 import java.io.IOException;
@@ -67,6 +68,7 @@ public class CardTestController implements Initializable {
     
     public void setCurrentUser(User u){
         currentUser = u ;
+        System.out.println(u.getNom());
     }
     public void setData(Quiz q,User u){
         if(q instanceof Quiz){
@@ -86,7 +88,7 @@ public class CardTestController implements Initializable {
             testId.setText(t.getId()+"");
             testId.setVisible(false);
             
-        }
+        }    
     }
 
     @FXML

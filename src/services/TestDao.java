@@ -8,7 +8,6 @@ package services;
 import database.Database;
 import entities.Formation;
 import entities.Question;
-import entities.Quiz;
 import entities.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 
 /**
  *
@@ -71,7 +69,7 @@ public class TestDao {
           try {
               QuestionDao questDao = QuestionDao.getInstance() ;
               for(Question question : t.getQuestions()){
-                  questDao.deleteQuestion(question, "test");
+                  questDao.deleteQuestionByIdParent(question, "test",t.getId());
               }
               st.executeUpdate(query );
           } catch (SQLException ex) {
@@ -162,7 +160,7 @@ public class TestDao {
     }
     
     public boolean updateTest(Test t, int idFromateur) {
-        String query = "UPDATE test SET sujet = '"+ t.getSujet() +"' " ;
+        String query = "UPDATE test SET sujet = '"+ t.getSujet() +"' where id = "+t.getId()+"" ;
         try {
             int updatedRow = st.executeUpdate(query );
            /* QuestionDao qdao = QuestionDao.getInstance() ;

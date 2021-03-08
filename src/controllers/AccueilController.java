@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import entities.Session;
 import entities.User;
 import java.io.IOException;
 import java.net.URL;
@@ -87,6 +88,9 @@ public class AccueilController implements Initializable {
 
                AcceuilEtudiantController controller = loader.getController() ;
                controller.initData(currentUser);
+               
+               Session  s = new Session() ;
+               Session.setUser(currentUser);
 
                 Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 oldStage.close();

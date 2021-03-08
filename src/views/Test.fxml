@@ -195,14 +195,12 @@
                         <TableView fx:id="tvQuiz" editable="true" layoutX="56.0" layoutY="463.0" onMouseClicked="#showSelectedQuiz" prefHeight="393.0" prefWidth="413.0">
                           <columns>
                             <TableColumn fx:id="colidQuiz" prefWidth="75.0" text="id" />
-                            <TableColumn fx:id="colIdF" minWidth="0.0" prefWidth="152.0" text="id formateur" />
                               <TableColumn fx:id="colSujet" prefWidth="185.0" text="sujet" />
                           </columns>
                         </TableView>
                         <TableView fx:id="tvQuestion" layoutX="56.0" layoutY="39.0" onMouseClicked="#showSelectedItem" prefHeight="411.0" prefWidth="1261.0">
                           <columns>
-                            <TableColumn fx:id="colIdquestion" prefWidth="54.0" text="id" />
-                            <TableColumn fx:id="colQuiz" prefWidth="60.0" text="id quiz" />
+                            <TableColumn fx:id="colQuiz" prefWidth="60.0" text="type" />
                               <TableColumn fx:id="colQposee" prefWidth="166.0" text="Q posée" />
                               <TableColumn fx:id="colRep" prefWidth="170.0" text="Rep Correcte" />
                               <TableColumn fx:id="colMrep1" prefWidth="301.0" text="Mauvaise rep 1" />
