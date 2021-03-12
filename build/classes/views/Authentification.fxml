@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -38,10 +39,13 @@
             </ImageView>
             <AnchorPane layoutX="95.0" layoutY="138.0" prefHeight="402.0" prefWidth="525.0" style="-fx-background-color: #EECC8D; -fx-border-color: #8A2C02;">
                <children>
-                  <TextField fx:id="loginInput" layoutX="132.0" layoutY="119.0" prefHeight="25.0" prefWidth="262.0" promptText="Login" />
-                  <PasswordField fx:id="passwordInput" layoutX="132.0" layoutY="169.0" prefHeight="25.0" prefWidth="262.0" promptText="Mot De Passe" />
+                  <TextField fx:id="loginInput" layoutX="132.0" layoutY="119.0" prefHeight="25.0" prefWidth="262.0" promptText="Login" style="-fx-border-color: #8A2C02;" />
+                  <PasswordField fx:id="passwordInput" layoutX="132.0" layoutY="169.0" prefHeight="25.0" prefWidth="262.0" promptText="Mot De Passe" style="-fx-border-color: #8A2C02;" />
                   <Hyperlink layoutX="273.0" layoutY="201.0" prefHeight="23.0" prefWidth="123.0" style="-fx-text-fill: #8A2C02;" text="Mot de passe oublié?" />
-                  <Button fx:id="authentifierBt" layoutX="192.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleAuthentifierBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'authentifier" />
+                  <Button fx:id="authentifierBt" layoutX="192.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleAuthentifierBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'authentifier">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                   <Hyperlink fx:id="inscrireBtn" alignment="CENTER" layoutX="192.0" layoutY="309.0" onAction="#handleInscrireAction" prefHeight="23.0" prefWidth="161.0" style="-fx-text-fill: #8A2C02; -fx-border-color: #8A2C02;" text="S'inscrire" />
                   <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="96.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -56,6 +56,10 @@ public class AuthentificationController implements Initializable {
         // TODO
 
     }
+    
+    public void changeConnected(){
+        this.connected=!this.connected;
+    }
 
     @FXML
     private void handleAuthentifierBt(ActionEvent event) {
@@ -66,34 +70,34 @@ public class AuthentificationController implements Initializable {
             String passwd = passwordInput.getText();
 
             for (User u : users) {
-                if (u.getLogin().equals(login) && u.getPassword().equals(passwd)) {
-                    if (u.getRole().toLowerCase().equals("admin")) {
+                if (u.getLogin().get().equals(login) && u.getPassword().get().equals(passwd)) {
+                    if (u.getRole().get().toLowerCase().equals("admin")) {
                         System.out.println("Admin connecté");
                         connected = true;
                         try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Accueil.fxml"));
-                            Stage stage = new Stage(StageStyle.DECORATED);
-                            stage.setScene(
-                                    new Scene(loader.load())
-                            );
-                            stage.setTitle("E-SENPAI | E-Learning Platform");
-                            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
-                            stage.setResizable(false);
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Accueil.fxml"));
+                                    Stage stage = new Stage(StageStyle.DECORATED);
+                                    stage.setScene(
+                                            new Scene(loader.load())
+                                    );
+                                    stage.setTitle("E-SENPAI | E-Learning Platform");
+                                    stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                                    stage.setResizable(false);
 
-                            AccueilController controller = loader.getController();
-                            controller.initData(u);
+                                    AccueilController controller = loader.getController();
+                                    controller.initData(u);
 
-                            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            oldStage.close();
+                                    Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                    oldStage.close();
 
-                            stage.show();
+                                    stage.show();
 
-                        } catch (IOException ex) {
-                            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                                } catch (IOException ex) {
+                                    Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                     } else {
-                        if (u.getRole().toLowerCase().equals("formateur")) {
-                            if (u.getStatus().toLowerCase().equals("en attente")) {
+                        if (u.getRole().get().toLowerCase().equals("formateur")) {
+                            if (u.getStatus().get().toLowerCase().equals("en attente")) {
                                 System.out.println("formateur en attente");
 
                             } else {
@@ -147,9 +151,7 @@ public class AuthentificationController implements Initializable {
                             }
                         }
                     }
-
                 }
-
             }
             if (!connected) {
                 erreurLabel.setText("Vérifier Login & Mot De Passe");
