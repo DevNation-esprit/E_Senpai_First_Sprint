@@ -2,6 +2,9 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -198,7 +201,7 @@
                               <TableColumn fx:id="colSujet" prefWidth="185.0" text="sujet" />
                           </columns>
                         </TableView>
-                        <TableView fx:id="tvQuestion" layoutX="56.0" layoutY="39.0" onMouseClicked="#showSelectedItem" prefHeight="411.0" prefWidth="1261.0">
+                        <TableView fx:id="tvQuestion" layoutX="56.0" layoutY="62.0" onMouseClicked="#showSelectedItem" prefHeight="388.0" prefWidth="1261.0">
                           <columns>
                             <TableColumn fx:id="colQuiz" prefWidth="60.0" text="type" />
                               <TableColumn fx:id="colQposee" prefWidth="166.0" text="Q posée" />
@@ -319,12 +322,43 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <TextField fx:id="tfSearch" layoutX="282.0" layoutY="9.0" onAction="#searchQuestion" prefHeight="44.0" prefWidth="676.0" style="-fx-background-radius: 50,50;">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                        </TextField>
+                        <ImageView fitHeight="36.0" fitWidth="47.0" layoutX="911.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/icons8_search_32px_1.png" />
+                           </image>
+                        </ImageView>
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="stat" text="Statitistiques">
+            <Tab fx:id="stat" onSelectionChanged="#displayNoteTableView" text="Statitistiques">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+                     <children>
+                        <TableView fx:id="tvNote" layoutX="114.0" layoutY="14.0" prefHeight="382.0" prefWidth="927.0">
+                          <columns>
+                            <TableColumn fx:id="colSujetNote" prefWidth="398.0" text="Sujet Test" />
+                              <TableColumn fx:id="colEtudStat" prefWidth="217.0" text="Etudiant" />
+                              <TableColumn fx:id="colNoteStat" prefWidth="102.0" text="Note" />
+                              <TableColumn fx:id="colFormation" prefWidth="209.0" text="Formation" />
+                          </columns>
+                        </TableView>
+                        <LineChart fx:id="chart" layoutX="47.0" layoutY="412.0" prefHeight="476.0" prefWidth="909.0" style="-fx-background-radius: 12; -fx-background-color: white;" styleClass="r" title="Stats Note Test">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" fx:id="x" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="y" side="LEFT" upperBound="50.0" />
+                          </yAxis>
+                        </LineChart>
+                     </children></AnchorPane>
                </content>
             </Tab>
         </tabs>

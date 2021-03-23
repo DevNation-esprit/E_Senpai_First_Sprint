@@ -94,8 +94,8 @@ public class QuizDao{
       return listQuiz ;
     }
     
-    public List<Quiz> getAllQuiz( ) {
-        String query = "SELECT *FROM quiz " ;
+    public List<Quiz> getAllQuiz(String value) {
+        String query = "SELECT *FROM quiz where sujet LIKE '%"+value+"%' " ;
         ArrayList<Quiz> listQuiz = new ArrayList<>() ;       
         try {
             rs = st.executeQuery(query) ;

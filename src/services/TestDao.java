@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -98,8 +99,8 @@ public class TestDao {
       return listTest ;
     }
     
-    public List<Test> getAllTest( ) {
-        String query = "SELECT *FROM test" ;
+    public List<Test> getAllTest(String value ) {
+        String query = "SELECT *FROM test where sujet LIKE '%"+value+"%'" ;
         ArrayList<Test> listTest = new ArrayList<>() ;       
         try {
             rs = st.executeQuery(query) ;
@@ -108,7 +109,7 @@ public class TestDao {
                 ArrayList<Question> questions = (ArrayList<Question>) qdao.displayAllQuestions("test", rs.getInt(1)) ;
                 Test t = new Test(rs.getInt(1), rs.getString("sujet"), questions);
                 t.setIdFormateur(rs.getInt("id_formateur"));
-                t.setIdFormateur(rs.getInt("id_formation"));
+                t.setIdFormation(rs.getInt("id_formation"));
                 listTest.add(t) ;
             }
         } catch (SQLException ex) {
@@ -209,6 +210,30 @@ public class TestDao {
         
       return listTest ;
     }
+     
+    public boolean updateNbreEtudiantsPasses(int idTest){
+        String query = "UPDATE test set nb_etudiant_passes = nb_etudiant_passes + 1 where id="+idTest+ "" ;
+        try {
+            int updatedRow = st.executeUpdate(query);
+            if(updatedRow > 0)
+                return true ;
+        } catch (SQLException ex) {
+            Logger.getLogger(TestDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false ;
+    }
+    
+    public boolean updateNbreEtudiantsAdmis(int idTest){
+        String query = "UPDATE test set nb_etudiants_admis = nb_etudiants_admis + 1 where id="+idTest+ "" ;
+        try {
+            int updatedRow = st.executeUpdate(query);
+            if(updatedRow > 0)
+                return true ;
+        } catch (SQLException ex) {
+            Logger.getLogger(TestDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false ;
+    }
     
      public List<Formation> getFormations(int idFormateur){
          ArrayList<Formation> list = new ArrayList<>() ;
@@ -249,5 +274,5 @@ public class TestDao {
             Logger.getLogger(TestDao.class.getName()).log(Level.SEVERE, null, ex);
         }
          return f ;
-     }
+     }     
 }

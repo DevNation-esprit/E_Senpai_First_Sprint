@@ -5,11 +5,13 @@
  */
 package controllers;
 
+import entities.Note;
 import entities.Question;
 import entities.Quiz;
 import entities.Session;
 import entities.Test;
 import entities.User;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +20,22 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import services.NoteDao;
+import services.TestDao;
 
 /**
  * FXML Controller class
@@ -61,6 +71,7 @@ public class PasserQuizController implements Initializable {
     int currentQuestionIndex = 0;
     private HashMap<String,String> reponses ;
     private int note = 0 , nbrReponse = 0;
+    private float percent;
     @FXML
     private Label lbResultat;
     @FXML
@@ -75,6 +86,8 @@ public class PasserQuizController implements Initializable {
     private Button btnPrevAnswer;
     @FXML
     private Button btnNextAnswer;
+    @FXML
+    private Button btnTestQuiz;
 
     /**
      * Initializes the controller class.
@@ -85,8 +98,7 @@ public class PasserQuizController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
          Session s = new Session() ;
-        System.out.println(Session.getUser().getNom() + " "+ Session.getUser().getPrenom() +
-                " "+ Session.getUser().getId());
+         currentUser = Session.getUser() ;
         
     }
  
@@ -98,7 +110,10 @@ public class PasserQuizController implements Initializable {
             reponses = new HashMap<>(quiz.getQuestions().size()) ;
         }
         else if(q instanceof Test){
-            quiz = (Test)q ;       
+            quiz = (Test)q ;  
+            lbSujet.setText(q.getSujet());
+            showQuestion(currentQuestionIndex) ;
+            reponses = new HashMap<>(quiz.getQuestions().size()) ;
         }
         rbtn1.setSelected(false);
         rbtn2.setSelected(false);
@@ -179,7 +194,7 @@ public class PasserQuizController implements Initializable {
                      }
                     
                 }
-                 float percent = (nbrReponse*100)/quiz.getQuestions().size() ;
+                 percent = (nbrReponse*100)/quiz.getQuestions().size() ;
                  lbResultat.setText("Pourcentage bonnes reponses "+ percent +"%" +
                                    "\n Note obténue : " + note + "/"+ quiz.getTotalNote());
                  lbResultat.setVisible(true);
@@ -187,6 +202,18 @@ public class PasserQuizController implements Initializable {
                  if(percent < 100){
                      btnReessayer.setVisible(true);
                      btnVoirReponses.setVisible(true);
+                 }
+                 
+                 Note n = new Note(quiz.getId(), currentUser.getId(), note) ;
+                 NoteDao ndao = NoteDao.getInstance() ;
+                 boolean isAdded = ndao.insertNote(n) ;
+                 if(isAdded){
+                     TestDao tdao = TestDao.getInstance() ;
+                     tdao.updateNbreEtudiantsPasses(quiz.getId()) ;
+                     
+                     if(percent >= 50){
+                         tdao.updateNbreEtudiantsAdmis(quiz.getId()) ;
+                     }
                  }
             }
         
@@ -294,6 +321,7 @@ public class PasserQuizController implements Initializable {
         showQuestion(currentQuestionIndex);
         note = 0 ;
         nbrReponse = 0 ;
+        percent = 0 ;
         reponses = new HashMap<>() ;
     }
 
@@ -391,5 +419,28 @@ public class PasserQuizController implements Initializable {
             btnNextAnswer.setDisable(true);
             showCorrectAnswers(quiz.getQuestions().size()-1);          
         }
+    }
+
+    @FXML
+    private void retourAcceuilTest(ActionEvent event) throws IOException {
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/acceuilEtudiant.fxml"));
+                 Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(
+                        new Scene(loader.load())
+                );
+                stage.setTitle("E-SENPAI | E-Learning Platform");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                stage.setResizable(false);
+
+               AcceuilEtudiantController controller = loader.getController() ;
+               controller.initData(currentUser);
+               
+               Session  s = new Session() ;
+               Session.setUser(currentUser);
+
+                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                oldStage.close();
+
+                stage.show();
     }
 }

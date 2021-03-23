@@ -32,7 +32,7 @@
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Profil" />
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Formations" />
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Chat" />
-                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quiz" />
+                  <Button fx:id="btnTestQuiz" mnemonicParsing="false" onAction="#retourAcceuilTest" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quiz" />
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="350.0" styleClass="buttons" stylesheets="@../assets/acceuiletudiant.css" text="Blog &amp; Post" />
                </children>
             </VBox>
@@ -66,9 +66,9 @@
             </HBox>
             <VBox prefHeight="812.0" prefWidth="1454.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="86.0" prefWidth="1454.0">
+                  <HBox alignment="CENTER" prefHeight="155.0" prefWidth="1454.0">
                      <children>
-                        <Label fx:id="qposee" prefHeight="83.0" prefWidth="1080.0">
+                        <Label fx:id="qposee" alignment="TOP_LEFT" prefHeight="103.0" prefWidth="1080.0">
                            <font>
                               <Font name="Berlin Sans FB" size="31.0" />
                            </font>

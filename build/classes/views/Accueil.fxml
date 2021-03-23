@@ -5,22 +5,21 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1100.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllers.AccueilController">
+<AnchorPane id="AnchorPane" prefHeight="1000.0" prefWidth="1900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AccueilController">
    <children>
-      <SplitPane dividerPositions="0.2586520947176685" prefHeight="650.0" prefWidth="1100.0">
+      <SplitPane dividerPositions="0.2586520947176685" prefHeight="1000.0" prefWidth="1900.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #07000E;" SplitPane.resizableWithParent="false">
                <children>
-                  <Button fx:id="accueilBtn" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="38.0" prefWidth="258.0" text="Accueil" />
-                  <Button fx:id="profilBtn" layoutX="14.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="38.0" prefWidth="258.0" text="Profil" />
-                  <Button fx:id="formationsBtn" layoutX="12.0" layoutY="144.0" mnemonicParsing="false" onAction="#HandleAccueilBtn" prefHeight="38.0" prefWidth="258.0" text="Formations" />
-                  <Button fx:id="test_quizBtn" layoutX="12.0" layoutY="199.0" mnemonicParsing="false" onAction="#handleTestQuizBtn" prefHeight="38.0" prefWidth="258.0" text="Tests &amp; Quizs" />
-                  <Button fx:id="chatBtn" layoutX="12.0" layoutY="258.0" mnemonicParsing="false" onAction="#handleChatBtn" prefHeight="38.0" prefWidth="258.0" text="Chat" />
-                  <Button fx:id="deconnectBtn" layoutX="12.0" layoutY="596.0" mnemonicParsing="false" onAction="#handleDeconnectBtn" prefHeight="38.0" prefWidth="258.0" text="Déconnecter" />
+                  <Button fx:id="accueilBtn" layoutX="60.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Accueil" />
+                  <Button fx:id="profilBtn" layoutX="60.0" layoutY="223.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Profil" />
+                  <Button fx:id="formationsBtn" layoutX="60.0" layoutY="324.0" mnemonicParsing="false" onAction="#HandleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Formations" />
+                  <Button fx:id="test_quizBtn" layoutX="60.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleTestQuizBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quizs" />
+                  <Button fx:id="chatBtn" layoutX="60.0" layoutY="538.0" mnemonicParsing="false" onAction="#handleChatBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Chat" />
+                  <Button fx:id="deconnectBtn" layoutX="69.0" layoutY="854.0" mnemonicParsing="false" onAction="#handleDeconnectBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Déconnecter" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="665.0" prefWidth="900.0" SplitPane.resizableWithParent="false">
                <children>
                   <Label fx:id="welcomeLabel" layoutX="67.0" layoutY="40.0" prefHeight="29.0" prefWidth="338.0" text="Bienvenue " />
                </children>

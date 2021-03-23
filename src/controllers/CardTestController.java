@@ -6,7 +6,6 @@
 package controllers;
 
 import entities.Quiz;
-import entities.Session;
 import entities.Test;
 import entities.User;
 import java.io.IOException;
@@ -31,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.QuizDao;
+import services.TestDao;
 
 /**
  * FXML Controller class
@@ -71,24 +71,23 @@ public class CardTestController implements Initializable {
         System.out.println(u.getNom());
     }
     public void setData(Quiz q,User u){
-        if(q instanceof Quiz){
+        if(q.getClass().getSimpleName().toLowerCase().equals("quiz")){
             lbType.setText("Quiz");
             lbSujet.setText(q.getSujet());
             totalQuestion.setText(q.getQuestions().size() + "  Questions");
             formateur.setText("par Mr/Mme " + u.getNom() +" " + u.getPrenom());
             testId.setText(q.getId()+ "");
             testId.setVisible(false);
-        }
-        else if(q instanceof Test){
-            Test t = (Test)q ;
+        } 
+        
+        if(q.getClass().getSimpleName().toLowerCase().equals("test")){
             lbType.setText("Test");
-            lbSujet.setText(t.getSujet());
-            totalQuestion.setText(t.getQuestions().size()+ " Questions");
+            lbSujet.setText(q.getSujet());
+            totalQuestion.setText(q.getQuestions().size()+ " Questions");
             formateur.setText("par Mr/Mme " + u.getNom() +" " + u.getPrenom());
-            testId.setText(t.getId()+"");
+            testId.setText(q.getId()+"");
             testId.setVisible(false);
-            
-        }    
+        }
     }
 
     @FXML
@@ -107,11 +106,19 @@ public class CardTestController implements Initializable {
         alert.getDialogPane().setHeaderText("Passer Quiz/Test");
         
         Optional<ButtonType> result =  alert.showAndWait() ;
+        Quiz quiz = null ;
         if(result.get() == ButtonType.OK){
           if(type.toLowerCase().equals("quiz")){
               
               QuizDao qdao = QuizDao.getInstance() ;
-              Quiz quiz = qdao.getQuizById(idTest) ;
+               quiz = qdao.getQuizById(idTest) ;
+          }
+          
+          if(type.toLowerCase().equals("test")){
+              
+              TestDao tdao = TestDao.getInstance();
+               quiz = (Test)tdao.getTestById(idTest) ;
+          }
             //  System.out.println(quiz.getQuestions().size() + currentUser.getNom());
            try {   
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PasserQuiz.fxml"));
@@ -139,6 +146,6 @@ public class CardTestController implements Initializable {
                   Logger.getLogger(CardTestController.class.getName()).log(Level.SEVERE, null, ex);
               }
           }
-        }
+        
     }
 }

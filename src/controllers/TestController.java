@@ -6,12 +6,14 @@
 package controllers;
 
 import entities.Formation;
+import entities.ListNote;
 import entities.Question;
 import entities.Quiz;
 import entities.Test;
 import entities.User;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,6 +23,10 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -34,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
+import services.NoteDao;
 import services.QuestionDao;
 import services.QuizDao;
 import services.TestDao;
@@ -135,6 +142,24 @@ public class TestController implements Initializable {
     private ComboBox<String> comboFormation;
     @FXML
     private Tab stat;
+    @FXML
+    private TableView<ListNote> tvNote;
+    @FXML
+    private TableColumn<ListNote, String> colSujetNote;
+    @FXML
+    private TableColumn<ListNote, String> colEtudStat;
+    @FXML
+    private TableColumn<ListNote, Integer> colNoteStat;
+    @FXML
+    private TableColumn<ListNote, String> colFormation;
+    @FXML
+    private LineChart<?, ?> chart;
+    @FXML
+    private NumberAxis y;
+    @FXML
+    private CategoryAxis x;
+    @FXML
+    private TextField tfSearch;
 
     /**
      * Initializes the controller class.
@@ -535,16 +560,16 @@ public class TestController implements Initializable {
     @FXML
     private Question showSelectedItem(MouseEvent event) {
         Question question = tvQuestion.getSelectionModel().getSelectedItem() ;
-        
-       tfQposeeShow.setText(question.getQuestionPosee());
-       tfRcorrShow.setText(question.getReponseCorrecte());
-       tfMrep1Show.setText(question.getReponseFausse1());
-       tfMrep2Show.setText(question.getReponseFausse2());
-       tfMrep3Show.setText(question.getReponseFausse3());
-       tfMrepNoteShow.setText(question.getNote()+"");
-       
-       return question ;
-                   
+       if(question != null){
+        tfQposeeShow.setText(question.getQuestionPosee());
+        tfRcorrShow.setText(question.getReponseCorrecte());
+        tfMrep1Show.setText(question.getReponseFausse1());
+        tfMrep2Show.setText(question.getReponseFausse2());
+        tfMrep3Show.setText(question.getReponseFausse3());
+        tfMrepNoteShow.setText(question.getNote()+"");
+       }
+     
+       return question ;                  
     }
 
     @FXML
@@ -640,7 +665,55 @@ public class TestController implements Initializable {
     }
 
     @FXML
-    private void changeComboFormation(ActionEvent event) {
+    private void changeComboFormation(ActionEvent event) {     
+    }
+    
+    private void setNoteToTableView(){
+        NoteDao ndao = NoteDao.getInstance() ;
+        ObservableList<ListNote> list = ndao.getAllNote(currentUser.getId() );
+        
+        setDataToLineChart(list);
+  
+        
+        tvNote.setItems(list);
+        colSujetNote.setCellValueFactory(new PropertyValueFactory<>("sujet"));
+        colFormation.setCellValueFactory(new PropertyValueFactory<>("formation"));
+        colEtudStat.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        colNoteStat.setCellValueFactory(new PropertyValueFactory<>("noteObtnue"));
+    }
+    
+    private void setDataToLineChart(ObservableList<ListNote> list){
+        HashSet<String> test = new HashSet<>() ;
+      for(ListNote l : list){
+         test.add(l.getSujet()) ;
+      }
+      
+      
+      for(String name : test){
+          XYChart.Series s = new XYChart.Series<>() ;
+          for(ListNote l : list){
+              if(name.equals(l.getSujet())){             
+                    s.getData().add(new XYChart.Data<>(l.getNom(),l.getNoteObtnue())) ;
+
+              }
+           
+          }
+           s.setName(name);
+           chart.getData().addAll(s );
+      }
+        
+       
+        
+      
+    }
+
+    @FXML
+    private void displayNoteTableView(Event event) {
+        setNoteToTableView() ;
+    }
+
+    @FXML
+    private void searchQuestion(ActionEvent event) {
     }
       
 }
