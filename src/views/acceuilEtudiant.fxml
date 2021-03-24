@@ -67,7 +67,7 @@
                         <Font name="Berlin Sans FB" size="45.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfSearch" onAction="#searchQuiz" prefHeight="47.0" prefWidth="691.0" promptText="    Rechercher . . ." style="-fx-background-radius: 50,50;">
+                  <TextField fx:id="tfSearch" onKeyTyped="#searchQuiz" prefHeight="47.0" prefWidth="691.0" promptText="    Rechercher . . ." style="-fx-background-radius: 50,50;">
                      <font>
                         <Font size="26.0" />
                      </font>

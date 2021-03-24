@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class Test extends Quiz{
     private int nbEtudiantsPasses ;
     private int nbEtudiantsAdmis ;
+    private int duree ;
+    private String temps ;
     
     public Test() {
         
@@ -28,6 +30,15 @@ public class Test extends Quiz{
         this.nbEtudiantsAdmis = nbEtudiantsAdmis ;
         this.nbEtudiantsPasses = nbEtudiantsPasses ;
     }
+
+    public Test(int nbEtudiantsPasses, int nbEtudiantsAdmis, int duree, int id, String sujet) {
+        super(id, sujet);
+        this.nbEtudiantsPasses = nbEtudiantsPasses;
+        this.nbEtudiantsAdmis = nbEtudiantsAdmis;
+        this.duree = duree;
+    }
+    
+    
 
     public Test(int nbEtudiantsPasses, int nbEtudiantsAdmis, int id, String sujet, ArrayList<Question> questions) {
         super(id, sujet, questions);
@@ -50,6 +61,24 @@ public class Test extends Quiz{
     public void setNbEtudiantsAdmis(int nbEtudiantsAdmis) {
         this.nbEtudiantsAdmis = nbEtudiantsAdmis;
     }
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public String getTemps() {
+        return temps;
+    }
+
+    public void setTemps(String temps) {
+        this.temps = temps;
+    }
+    
+    
     
     
 }

@@ -18,7 +18,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -46,8 +50,6 @@ public class PasserQuizController implements Initializable {
     
     private Quiz quiz ;
     private User currentUser ;
-    @FXML
-    private Label welcomeLabel;
     @FXML
     private Label lbSujet;
     @FXML
@@ -88,6 +90,16 @@ public class PasserQuizController implements Initializable {
     private Button btnNextAnswer;
     @FXML
     private Button btnTestQuiz;
+    @FXML
+    private Label labelHeure;
+    @FXML
+    private Label labelMin;
+    @FXML
+    private Label labelSec;
+
+    private Integer seconds ;
+    @FXML
+    private HBox hboxTimer;
 
     /**
      * Initializes the controller class.
@@ -99,21 +111,27 @@ public class PasserQuizController implements Initializable {
         // TODO
          Session s = new Session() ;
          currentUser = Session.getUser() ;
+         hboxTimer.setVisible(false);
         
     }
  
     public void setQuiz(Quiz q){
-        if(q instanceof Quiz){
+        if(q.getClass().getSimpleName().toLowerCase().equals("quiz")){
             quiz = q ;
             lbSujet.setText(q.getSujet());
             showQuestion(currentQuestionIndex) ;
             reponses = new HashMap<>(quiz.getQuestions().size()) ;
+            System.out.println("cava ");
         }
-        else if(q instanceof Test){
+        else if(q.getClass().getSimpleName().toLowerCase().equals("test")){
+            hboxTimer.setVisible(true);
             quiz = (Test)q ;  
             lbSujet.setText(q.getSujet());
             showQuestion(currentQuestionIndex) ;
             reponses = new HashMap<>(quiz.getQuestions().size()) ;
+            seconds = ((Test) q).getDuree();
+            setTimer() ;
+            
         }
         rbtn1.setSelected(false);
         rbtn2.setSelected(false);
@@ -125,9 +143,43 @@ public class PasserQuizController implements Initializable {
         btnVoirReponses.setVisible(false);
         btnValider.setDisable(false);
         btnNextAnswer.setVisible(false);
-        btnPrevAnswer.setVisible(false);
-    }   
+        btnPrevAnswer.setVisible(false);   
+       
+    } 
     
+    private void setTimer(){
+        //Duration duration = Duration.ofSeconds(10000);
+        Timeline time = new Timeline();
+        time.setCycleCount(Timeline.INDEFINITE);
+        if(time != null){//if the time is equal to zero it is finished but if it is not equal to something then it is //doing something
+            time.stop();
+        }
+        KeyFrame frame = new KeyFrame(javafx.util.Duration.seconds(1), new EventHandler<ActionEvent>(){
+                        //every one second of the timeline the keyframe will do something (i.e., perform a job and that job //is defined by the event handler)
+                        @Override
+                        public void handle(ActionEvent event){  
+                            seconds--;
+                          int hours = (seconds/3600) ;
+                          int min = ((seconds%3600)/60) ;
+                          int sec = ((seconds % 3600)%60);
+                           labelSec.setText(sec + "");
+                           labelMin.setText(min+"");
+                           labelHeure.setText(hours+"");
+                    
+                            if(seconds <= 0){
+                                time.stop();
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setHeaderText("temps de devoir écoulé!");
+                                alert.show();
+                                checkAnswers();
+                            }
+                        }
+                    });
+        time.getKeyFrames().add(frame);
+        time.playFromStart();
+
+    }
+       
     public void setUser(User u){
      /*  currentUser = u ;
        welcomeLabel.setText("Welcome "+ currentUser.getNom() + " " + currentUser.getPrenom());*/
@@ -178,45 +230,49 @@ public class PasserQuizController implements Initializable {
             Optional<ButtonType> result =  alert.showAndWait() ;
             
             if(result.get() == ButtonType.OK){
-                 btnValider.setDisable(true);
-                 
-                 for (Map.Entry<String, String> entry : reponses.entrySet()) {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    
-                     for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                         if(value.equals(quiz.getQuestion(i).getReponseCorrecte()) &&
-                                 key.equals(quiz.getQuestion(i).getQuestionPosee())){
-                             note += quiz.getQuestion(i).getNote() ;
-                             nbrReponse += 1 ;
-                         }
-                         
-                     }
-                    
-                }
-                 percent = (nbrReponse*100)/quiz.getQuestions().size() ;
-                 lbResultat.setText("Pourcentage bonnes reponses "+ percent +"%" +
-                                   "\n Note obténue : " + note + "/"+ quiz.getTotalNote());
-                 lbResultat.setVisible(true);
-                 
-                 if(percent < 100){
-                     btnReessayer.setVisible(true);
-                     btnVoirReponses.setVisible(true);
-                 }
-                 
-                 Note n = new Note(quiz.getId(), currentUser.getId(), note) ;
-                 NoteDao ndao = NoteDao.getInstance() ;
-                 boolean isAdded = ndao.insertNote(n) ;
-                 if(isAdded){
-                     TestDao tdao = TestDao.getInstance() ;
-                     tdao.updateNbreEtudiantsPasses(quiz.getId()) ;
-                     
-                     if(percent >= 50){
-                         tdao.updateNbreEtudiantsAdmis(quiz.getId()) ;
-                     }
-                 }
+                 checkAnswers();
             }
         
+    }
+    
+    private void checkAnswers(){
+        btnValider.setDisable(true);
+                 
+        for (Map.Entry<String, String> entry : reponses.entrySet()) {
+           String key = entry.getKey();
+           String value = entry.getValue();
+
+            for (int i = 0; i < quiz.getQuestions().size(); i++) {
+                if(value.equals(quiz.getQuestion(i).getReponseCorrecte()) &&
+                        key.equals(quiz.getQuestion(i).getQuestionPosee())){
+                    note += quiz.getQuestion(i).getNote() ;
+                    nbrReponse += 1 ;
+                }
+
+            }
+
+       }
+        percent = (nbrReponse*100)/quiz.getQuestions().size() ;
+        lbResultat.setText("Pourcentage bonnes reponses "+ percent +"%" +
+                          "\n Note obténue : " + note + "/"+ quiz.getTotalNote());
+        lbResultat.setVisible(true);
+
+        if(percent < 100){
+            btnReessayer.setVisible(true);
+            btnVoirReponses.setVisible(true);
+        }
+
+        Note n = new Note(quiz.getId(), currentUser.getId(), note) ;
+        NoteDao ndao = NoteDao.getInstance() ;
+        boolean isAdded = ndao.insertNote(n) ;
+        if(isAdded){
+            TestDao tdao = TestDao.getInstance() ;
+            tdao.updateNbreEtudiantsPasses(quiz.getId()) ;
+
+            if(percent >= 50){
+                tdao.updateNbreEtudiantsAdmis(quiz.getId()) ;
+            }
+        }
     }
 
     private void showQuestion(int index){

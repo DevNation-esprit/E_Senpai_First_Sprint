@@ -38,6 +38,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import services.NoteDao;
@@ -86,7 +87,6 @@ public class TestController implements Initializable {
     private Button btnAddTest;
     @FXML
     private Label labelQuestion;
-    @FXML
     private TableColumn<Quiz, Integer> colidQuiz;
     private TableColumn<Quiz, Integer> colIdF;
     @FXML
@@ -160,6 +160,18 @@ public class TestController implements Initializable {
     private CategoryAxis x;
     @FXML
     private TextField tfSearch;
+    @FXML
+    private ComboBox<Integer> comboHeure;
+    @FXML
+    private ComboBox<Integer> comboMinutes;
+    @FXML
+    private Label labelDuree;
+    @FXML
+    private ComboBox<Integer> comboHeureUpdate;
+    @FXML
+    private ComboBox<Integer> comboMinUpdate;
+    @FXML
+    private TableColumn<Quiz, String> colDuree;
 
     /**
      * Initializes the controller class.
@@ -169,6 +181,11 @@ public class TestController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        labelDuree.setVisible(false);
+        comboHeure.setVisible(false);
+        comboMinutes.setVisible(false);
+        comboHeureUpdate.setVisible(false);
+        comboMinUpdate.setVisible(false);
     }   
     
     public void initData(User u){
@@ -176,7 +193,7 @@ public class TestController implements Initializable {
         ObservableList<String> options = FXCollections.observableArrayList("Quiz","Test");
         comboType.setItems(options);
         comboFormation.setVisible(false);
-        btnAddTest.setDisable(true);
+        btnAddTest.setDisable(true);      
     }
 
     @FXML
@@ -212,6 +229,9 @@ public class TestController implements Initializable {
                 if(comboFormation.getValue() == null){
                     showAlertMessageError("Ajouter Quiz/Test", "Veuillez choisir la formation");
                 }
+                else if(comboHeure.getValue() == null || comboMinutes.getValue() == null){
+                    showAlertMessageError("Ajouter Quiz/Test", "Veuillez renseigner la durée");
+                }
                 else{
                     TestDao tdao = TestDao.getInstance() ;
                     Formation f = tdao.getFormationbyTitre(comboFormation.getValue()) ;
@@ -227,6 +247,7 @@ public class TestController implements Initializable {
                 String mRep1 = tfMrep1.getText() ;
                 String mRep2 = tfMrep2.getText() ;
                 String mRep3 = tfMrep3.getText() ;
+                int duree = (comboHeure.getValue()*3600) + (comboMinutes.getValue()*60) ;
                 
                 if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
                         && !tfnote.getText().isEmpty()){
@@ -240,6 +261,9 @@ public class TestController implements Initializable {
                         q.setIdFormation(idTest);
                         q.setSujet(sujet);
                         q.setIdFormateur(currentUser.getId());
+                        if(q instanceof Test)
+                             ((Test)q).setDuree(duree);
+                        
 
                         int note = Integer.parseInt(tfnote.getText()) ;
                         Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ; 
@@ -359,7 +383,7 @@ public class TestController implements Initializable {
     
     public void showTest(){
        QuizDao qdao = QuizDao.getInstance() ;
-       ObservableList<Quiz> allQuiz = qdao.displayQuizList(currentUser.getId() );
+       ObservableList<Quiz> allQuiz = qdao.displayQuizList(currentUser.getId());
        
        TestDao tdao = TestDao.getInstance() ;
        ObservableList<Test> listTest = tdao.displayTestList(currentUser.getId());
@@ -367,7 +391,7 @@ public class TestController implements Initializable {
        allQuiz.addAll(listTest );
        
        tvQuiz.setItems(allQuiz);
-       colidQuiz.setCellValueFactory(new PropertyValueFactory<>("id"));
+       colDuree.setCellValueFactory(new PropertyValueFactory<>("temps"));
        colSujet.setCellValueFactory(new PropertyValueFactory<>("sujet"));
        
         ArrayList<Question> questions = new ArrayList<>() ;
@@ -380,7 +404,10 @@ public class TestController implements Initializable {
        
        ObservableList<Question> listQuestion = FXCollections.observableArrayList();
        listQuestion.addAll(questions) ;
-   
+        afficherQuestion(listQuestion);
+    }
+    
+    private void afficherQuestion(ObservableList<Question> listQuestion){
         tvQuestion.setItems(listQuestion);
         colQuiz.setCellValueFactory(new PropertyValueFactory<>("type"));
         colQposee.setCellValueFactory(new PropertyValueFactory<>("questionPosee"));
@@ -389,10 +416,6 @@ public class TestController implements Initializable {
         colMrep2.setCellValueFactory(new PropertyValueFactory<>("reponseFausse2"));
         colMrep3.setCellValueFactory(new PropertyValueFactory<>("reponseFausse3"));
         colNote.setCellValueFactory(new PropertyValueFactory<>("note"));
-       
-     //   System.out.println(listQuestion.size());
-        
-       
     }
 
     @FXML
@@ -418,7 +441,10 @@ public class TestController implements Initializable {
                         Question question = new Question(qPosee, rCorrecte, mRep1, mRep2, mRep3, note) ;
                         question.setId(selectedQuestion.getId());
                         QuestionDao qqdao = QuestionDao.getInstance() ;
-                        qqdao.updateQuestion(question, "quiz") ;
+                        if(selectedQuestion.getType().toLowerCase().equals("test"))
+                            qqdao.updateQuestion(question, "test") ;
+                        else
+                            qqdao.updateQuestion(question, "quiz") ;
                         showTest();
                         
                         showAlertMessageInfo("update Question", "Question mise à jour !");
@@ -452,13 +478,17 @@ public class TestController implements Initializable {
                             showTest();
                         }
                      }
-                     else if(showSelectedQuiz(e).getClass().getSimpleName().toLowerCase().equals("test")){
+                     else if(showSelectedQuiz(e).getClass().getSimpleName().toLowerCase().equals("test")){                       
                          test = (Test)showSelectedQuiz(e) ;
                          test.setSujet(tfSujetShow.getText());
+                         int duree = (comboHeureUpdate.getValue()*3600) + (comboMinUpdate.getValue()*60) ;
+                         test.setDuree(duree);
                          TestDao tdao = TestDao.getInstance() ;
-                         if(tdao.updateTest(test, currentUser.getId())){
+                        if(tdao.updateTest(test, currentUser.getId())){
                             showAlertMessageInfo("update Test", "test mis à jour !");
                             showTest();
+                            comboHeureUpdate.setValue(null);
+                            comboMinUpdate.setValue(null);
                          }
                      }
                  }
@@ -575,8 +605,35 @@ public class TestController implements Initializable {
     @FXML
     private Quiz showSelectedQuiz(MouseEvent event) {
         Quiz quiz = tvQuiz.getSelectionModel().getSelectedItem() ;
-        Quiz t = new Test() ;
+        if(quiz.getClass().getSimpleName().toLowerCase().equals("test")){
+            
+           ObservableList<Integer> heures = FXCollections.observableArrayList();
+           ObservableList<Integer> minutes = FXCollections.observableArrayList();
+           
+           int i;
+           for(i = 0; i < 24; i++){
+               heures.add(i) ;
+           }
+           
+           for(i = 0; i < 60; i++){
+               minutes.add(i) ;
+           }
+           int duree = ((Test)quiz).getDuree() ;
+           int heure = duree / 3600 ;
+           int min = (duree%3600)/60 ;
+           comboHeureUpdate.setItems(heures);
+           comboMinUpdate.setItems(minutes);
+           comboHeureUpdate.setVisible(true);
+           comboMinUpdate.setVisible(true);
+        }
+        else{
+            comboHeureUpdate.setVisible(false);
+            comboMinUpdate.setVisible(false);
+        }
         ArrayList<Question> questions = quiz.getQuestions() ;
+        ObservableList<Question> listQuestion = FXCollections.observableArrayList() ;
+        listQuestion.addAll(questions) ;
+        afficherQuestion(listQuestion);
       //  Question quest = questions.get(0) ;
        
        tfSujetShow.setText(quiz.getSujet());
@@ -655,13 +712,34 @@ public class TestController implements Initializable {
            }
            comboFormation.setItems(options);
            comboFormation.setVisible(true);
+           
+           ObservableList<Integer> heures = FXCollections.observableArrayList();
+           ObservableList<Integer> minutes = FXCollections.observableArrayList();
+           
+           int i;
+           for(i = 0; i < 24; i++){
+               heures.add(i) ;
+           }
+           
+           for(i = 0; i < 60; i++){
+               minutes.add(i) ;
+           }
+           
+           labelDuree.setVisible(true);
+           comboHeure.setItems(heures);
+           comboMinutes.setItems(minutes);
+           comboHeure.setVisible(true);
+           comboMinutes.setVisible(true);
        }
        else if(comboType.getValue().toLowerCase().equals("quiz")){
            q = new Quiz() ;
-       }
-       else{
            comboFormation.setVisible(false);
+           comboHeure.setVisible(false);
+           comboMinutes.setVisible(false);
+           labelDuree.setVisible(false);
+           comboMinutes.setVisible(false);
        }
+       
     }
 
     @FXML
@@ -701,10 +779,7 @@ public class TestController implements Initializable {
            s.setName(name);
            chart.getData().addAll(s );
       }
-        
-       
-        
-      
+    
     }
 
     @FXML
@@ -713,7 +788,7 @@ public class TestController implements Initializable {
     }
 
     @FXML
-    private void searchQuestion(ActionEvent event) {
+    private void searchQuestion(KeyEvent event) {
     }
       
 }

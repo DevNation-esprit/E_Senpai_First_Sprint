@@ -47,7 +47,8 @@ public class TestDao {
     }
     
     public void insertTest(Test t,int idFormateur) {
-        String query = "INSERT INTO test(id_formateur,id_formation,sujet) VALUES("+ idFormateur +","+ t.getIdFormation() +",'"+ t.getSujet() +"')" ;
+        String query = "INSERT INTO test(id_formateur,id_formation,sujet,duree) "
+                + "VALUES("+ idFormateur +","+ t.getIdFormation() +",'"+ t.getSujet() +"'," +t.getDuree()+ ")" ;
         try {
             st.executeUpdate(query );
            
@@ -90,6 +91,11 @@ public class TestDao {
                 Test t = new Test(rs.getInt(1), rs.getString("sujet"), questions);
                 t.setIdFormateur(rs.getInt("id_formateur"));
                 t.setIdFormateur(rs.getInt("id_formation"));
+                t.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                t.setTemps(hours+"h"+min+"min");
                 listTest.add(t) ;
             }
         } catch (SQLException ex) {
@@ -110,6 +116,11 @@ public class TestDao {
                 Test t = new Test(rs.getInt(1), rs.getString("sujet"), questions);
                 t.setIdFormateur(rs.getInt("id_formateur"));
                 t.setIdFormation(rs.getInt("id_formation"));
+                t.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                t.setTemps(hours+"h"+min+"min");
                 listTest.add(t) ;
             }
         } catch (SQLException ex) {
@@ -130,6 +141,11 @@ public class TestDao {
                 Test t = new Test(rs.getInt(1), rs.getString("sujet"), questions);
                 t.setIdFormateur(rs.getInt("id_formateur"));
                 t.setIdFormateur(rs.getInt("id_formation"));
+                t.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                t.setTemps(hours+"h"+min+"min");
                 listTest.add(t) ;
             }
         } catch (SQLException ex) {
@@ -153,6 +169,11 @@ public class TestDao {
                 test.setQuestions(questions);
                 test.setIdFormation(rs.getInt("id_formation"));
                 test.setIdFormateur(rs.getInt("id_formateur"));
+                test.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                test.setTemps(hours+"h"+min+"min");
             }
         } catch (SQLException ex) {
             Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,7 +182,7 @@ public class TestDao {
     }
     
     public boolean updateTest(Test t, int idFromateur) {
-        String query = "UPDATE test SET sujet = '"+ t.getSujet() +"' where id = "+t.getId()+"" ;
+        String query = "UPDATE test SET sujet = '"+ t.getSujet() +"',duree = "+t.getDuree()+" where id = "+t.getId()+"" ;
         try {
             int updatedRow = st.executeUpdate(query );
            /* QuestionDao qdao = QuestionDao.getInstance() ;
@@ -185,6 +206,11 @@ public class TestDao {
                 t.setId(rs.getInt("id"));
                 t.setSujet(rs.getString("sujet"));
                 t.setIdFormation(rs.getInt("id_formation"));
+                t.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                t.setTemps(hours+"h"+min+"min");
             }
         } catch (SQLException ex) {
             Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,6 +228,11 @@ public class TestDao {
                 ArrayList<Question> questions = qdao.displayAllQuestions("test", rs.getInt("id")) ;
                 Test test = new Test(rs.getInt("id"), rs.getString("sujet"),questions);
                 test.setIdFormation(rs.getInt("id_formation"));
+                test.setDuree(rs.getInt("duree"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                test.setTemps(hours+"h"+min+"min");
                 listTest.add(test) ;
             }
         } catch (SQLException ex) {

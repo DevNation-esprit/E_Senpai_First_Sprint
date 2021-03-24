@@ -25,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import services.QuizDao;
@@ -129,16 +130,6 @@ public class AcceuilEtudiantController implements Initializable {
     }
 
     @FXML
-    private void searchQuiz(ActionEvent event) {
-        testContainer.getChildren().clear();
-        String search = tfSearch.getText() ;
-        quiz = getAllQuiz_Test(search);
-        List<Test> listTest = getAllTest(search) ;   
-        quiz.addAll(listTest) ;
-        setData(quiz);
-    }
-
-    @FXML
     private void trierQuiz(ActionEvent event) {
         String options = comboTrier.getValue() ;
         if(options.toLowerCase().equals("quiz")){
@@ -154,6 +145,16 @@ public class AcceuilEtudiantController implements Initializable {
            setData(quiz);
        }
         
+    }
+
+    @FXML
+    private void searchQuiz(KeyEvent event) {
+        testContainer.getChildren().clear();
+        String search = tfSearch.getText() ;
+        quiz = getAllQuiz_Test(search);
+        List<Test> listTest = getAllTest(search) ;   
+        quiz.addAll(listTest) ;
+        setData(quiz);
     }
     
 }
