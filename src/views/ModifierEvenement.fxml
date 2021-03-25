@@ -48,6 +48,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
+                  <Button layoutX="451.0" layoutY="106.0" mnemonicParsing="false" onAction="#handleUpload" text="Upload image" />
                </children>
             </AnchorPane>
          </items>

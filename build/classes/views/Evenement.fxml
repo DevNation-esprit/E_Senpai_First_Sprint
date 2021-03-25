@@ -24,23 +24,26 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
                <children>
-                  <TableView fx:id="tableEvent" layoutX="71.0" layoutY="165.0" prefHeight="286.0" prefWidth="604.0">
+                  <TableView fx:id="tableEvent" layoutX="10.0" layoutY="164.0" prefHeight="286.0" prefWidth="786.0">
                     <columns>
+                        <TableColumn fx:id="columnImage" prefWidth="101.0" />
                       <TableColumn fx:id="columnTitre" prefWidth="75.0" text="Titre" />
                       <TableColumn fx:id="columnEmplacement" prefWidth="107.0" text="Emplacement" />
                         <TableColumn fx:id="columnPrix" prefWidth="70.0" text="Prix" />
                         <TableColumn fx:id="columnDate" prefWidth="70.0" text="Date" />
                         <TableColumn fx:id="columnFondation" prefWidth="83.0" text="Fondation" />
                         <TableColumn fx:id="columnNbMax" prefWidth="101.0" text="Nombre max" />
-                        <TableColumn fx:id="columnDuree" prefWidth="101.0" text="Durée" />
+                        <TableColumn fx:id="columnDuree" minWidth="0.0" prefWidth="61.0" text="Durée" />
+                        <TableColumn fx:id="columnAction" prefWidth="120.0" text="Action" />
                     </columns>
                   </TableView>
-                  <Button fx:id="btnAfficherTous" layoutX="218.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleAfficherTous" text="Afficher tous" />
+                  <Button fx:id="btnAfficherTous" layoutX="230.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleAfficherTous" text="Actualiser" />
                   <Button fx:id="btnSupprimer" layoutX="420.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleSupprimer" text="Supprimer" />
                   <Button fx:id="btnAjouter" layoutX="517.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleAjouter" text="Ajouter" />
                   <Button fx:id="btnModifier" layoutX="334.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleModifier" text="Modifier" />
-                  <TextField fx:id="eventInput" layoutX="405.0" layoutY="23.0" />
+                  <TextField fx:id="eventInput" layoutX="405.0" layoutY="23.0" promptText="Search" />
                   <Button fx:id="btnChercher" layoutX="594.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleButtonChercher" text="Chercher" />
+                  <Button fx:id="btnConsulter" layoutX="601.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleConsulter" text="Consulter" />
                </children>
             </AnchorPane>
          </items>

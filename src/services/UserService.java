@@ -72,6 +72,29 @@ public class UserService {
         return list;
     }
     
+    public User getUserById(int id){
+        String req="select * from user where id="+id;
+                    User p=new User();
+
+        try {
+            rs=st.executeQuery(req);
+            rs.next();
+                p.setId(rs.getInt(1));
+                p.setNom(rs.getString("nom"));
+                p.setPrenom(rs.getString("prenom"));
+                p.setLogin(rs.getString("login"));
+                p.setPassword(rs.getString("password"));
+                p.setStatus(rs.getString("status"));
+                p.setRole(rs.getString("role"));
+                p.setEmail(rs.getString("email"));
+            
+            
+            } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+    
     public void insertEtudiant(User o) {
         String req="insert into user (nom,prenom,date_naissance,sexe,email,role,login,password,status,photo_profil,biography) values ('"+o.getNom()+"','"+o.getPrenom()+"','"+o.getDate_naissance()+"','"+o.getSexe()+"','"+o.getEmail()+"','Etudiant','"+o.getLogin()+"','"+o.getPassword()+"','Approuvé','','')";
         try {

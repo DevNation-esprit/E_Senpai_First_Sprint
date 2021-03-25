@@ -43,7 +43,7 @@ public class AccueilController implements Initializable {
     private Button deconnectBtn;
     @FXML
     private Label welcomeLabel;
-    
+
     User currentUser;
     @FXML
     private Button btnEvent;
@@ -53,12 +53,12 @@ public class AccueilController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         
+
     }
 
-    public void initData(User u){
-        this.currentUser=u;
-        welcomeLabel.setText("Bienvenue "+currentUser.getNom());
+    public void initData(User u) {
+        this.currentUser = u;
+        welcomeLabel.setText("Bienvenue " + currentUser.getNom());
     }
 
     @FXML
@@ -83,17 +83,31 @@ public class AccueilController implements Initializable {
 
     @FXML
     private void handleEvent(ActionEvent event) {
-        
-         try {
-            Parent page1 = FXMLLoader.load(getClass().getResource("/views/Evenement.fxml"));
-            Scene scene = new Scene(page1);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+
+        try {
+            if ("Admin".equals(this.currentUser.getRole())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Evenement.fxml"));
+                Scene scene = new Scene(loader.load());
+                EvenementController controller = loader.getController();
+                controller.initData(this.currentUser);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } else if ("Etudiant".equals(this.currentUser.getRole()) || "Formateur".equals(this.currentUser.getRole())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Participation.fxml"));
+                Scene scene = new Scene(loader.load());
+                ParticipationController controller = loader.getController();
+                controller.initData(this.currentUser);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            }
         } catch (IOException ex) {
             Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
+
 }

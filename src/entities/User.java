@@ -14,7 +14,7 @@ import javafx.beans.property.*;
  * @author Dahmani
  */
 public class User {
-    
+
     private int id;
     private String nom;
     private String prenom;
@@ -27,9 +27,9 @@ public class User {
     private String status;
     private String photo_profil;
     private String biography;
-    
-    public User(){
-        
+
+    public User() {
+
     }
 
     public int getId() {
@@ -79,7 +79,7 @@ public class User {
     public String getBiography() {
         return biography;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
@@ -127,7 +127,7 @@ public class User {
     public void setBiography(String biography) {
         this.biography = biography;
     }
-    
+
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -146,8 +146,5 @@ public class User {
     public String toString() {
         return "User{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", date_naissance=" + date_naissance + ", sexe=" + sexe + ", email=" + email + ", role=" + role + ", login=" + login + ", password=" + password + ", status=" + status + ", photo_profil=" + photo_profil + ", biography=" + biography + '}';
     }
-    
-    
-    
-    
+
 }

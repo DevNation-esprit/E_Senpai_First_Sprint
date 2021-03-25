@@ -7,7 +7,6 @@ package entities;
 
 import javafx.beans.property.*;
 
-
 /**
  *
  * @author hiche
@@ -27,14 +26,12 @@ public class Evenement {
     public Evenement() {
     }
 
-  
-
     public SimpleIntegerProperty getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id =new SimpleIntegerProperty(id);
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public SimpleStringProperty getTitre() {
@@ -42,7 +39,7 @@ public class Evenement {
     }
 
     public void setTitre(String titre) {
-        this.titre =new SimpleStringProperty(titre);
+        this.titre = new SimpleStringProperty(titre);
     }
 
     public SimpleStringProperty getEmplacement() {
@@ -50,7 +47,7 @@ public class Evenement {
     }
 
     public void setEmplacement(String emplacement) {
-        this.emplacement =new SimpleStringProperty(emplacement);
+        this.emplacement = new SimpleStringProperty(emplacement);
     }
 
     public SimpleIntegerProperty getPrix() {
@@ -58,7 +55,7 @@ public class Evenement {
     }
 
     public void setPrix(Integer prix) {
-        this.prix =new  SimpleIntegerProperty(prix);
+        this.prix = new SimpleIntegerProperty(prix);
     }
 
     public SimpleStringProperty getDate_event() {
@@ -66,7 +63,7 @@ public class Evenement {
     }
 
     public void setDate_event(String date_event) {
-        this.date_event =new SimpleStringProperty(date_event);
+        this.date_event = new SimpleStringProperty(date_event);
     }
 
     public SimpleStringProperty getImage_event() {
@@ -74,7 +71,7 @@ public class Evenement {
     }
 
     public void setImage_event(String image_event) {
-        this.image_event =new SimpleStringProperty(image_event);
+        this.image_event = new SimpleStringProperty(image_event);
     }
 
     public SimpleStringProperty getFondation() {
@@ -82,7 +79,7 @@ public class Evenement {
     }
 
     public void setFondation(String fondation) {
-        this.fondation =new  SimpleStringProperty(fondation);
+        this.fondation = new SimpleStringProperty(fondation);
     }
 
     public SimpleIntegerProperty getNbMaxParticipants() {
@@ -90,7 +87,7 @@ public class Evenement {
     }
 
     public void setNbMaxParticipants(int nbMaxParticipants) {
-        this.nbMaxParticipants =new SimpleIntegerProperty(nbMaxParticipants);
+        this.nbMaxParticipants = new SimpleIntegerProperty(nbMaxParticipants);
     }
 
     public SimpleStringProperty getDuree() {
@@ -98,7 +95,7 @@ public class Evenement {
     }
 
     public void setDuree(String duree) {
-        this.duree =new  SimpleStringProperty(duree);
+        this.duree = new SimpleStringProperty(duree);
     }
 
 }

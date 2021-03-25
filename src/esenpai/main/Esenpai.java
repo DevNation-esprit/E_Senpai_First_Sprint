@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import services.Mailing;
 
 /**
  *
@@ -21,7 +22,7 @@ import javafx.stage.StageStyle;
 public class Esenpai extends Application {
     
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, Exception {
         
         FXMLLoader laoder = new FXMLLoader(getClass().getResource("/views/Authentification.fxml"));
         Parent root = laoder.load();
@@ -36,7 +37,7 @@ public class Esenpai extends Application {
         primaryStage.setResizable(false);
         
         primaryStage.show();
-        
+       
     }
 
     /**

@@ -48,7 +48,7 @@ public class InscriptionController implements Initializable {
     @FXML
     private RadioButton rbFemme;
 
-    String sexe="Homme";
+    String sexe = "Homme";
 
     @FXML
     private DatePicker inputDateN;
@@ -81,7 +81,6 @@ public class InscriptionController implements Initializable {
     private void handleInscrireBt(ActionEvent event) {
 
         LocalDate dateN = inputDateN.getValue();
-        
 
         if (inputNom.getText().equals("") || inputPrenom.getText().equals("") || dateN.toString().equals("") || inputEmail.getText().equals("") || inputLogin.getText().equals("") || inputPassword.getText().equals("") || inputVPassword.getText().equals("")) {
             erreurLabel.setText("Vérifier que tous les champs sont remplis !");
