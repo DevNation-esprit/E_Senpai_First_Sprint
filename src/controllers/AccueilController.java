@@ -97,6 +97,24 @@ public class AccueilController implements Initializable {
 
                 stage.show();
             }
+            else if(currentUser.getRole().toLowerCase().equals("admin")){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/TestQuizAdmin.fxml"));
+                 Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(
+                        new Scene(loader.load())
+                );
+                stage.setTitle("E-SENPAI | E-Learning Platform");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                stage.setResizable(false);
+
+                TestQuizAdminController controller = loader.getController();
+                controller.initData(currentUser);
+
+                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                oldStage.close();
+
+                stage.show();
+            }
             else{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Test.fxml"));
                  Stage stage = new Stage(StageStyle.DECORATED);

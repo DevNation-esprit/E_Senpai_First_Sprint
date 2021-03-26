@@ -130,6 +130,24 @@ public class QuizDao{
         
       return listQuiz ;
     }
+     
+    public ObservableList<Quiz> displayQuizList( ) {
+        String query = "SELECT *FROM quiz " ;
+        ObservableList<Quiz> listQuiz = FXCollections.observableArrayList() ;       
+        try {
+            rs = st.executeQuery(query) ;
+            QuestionDao qdao = QuestionDao.getInstance() ;
+            while(rs.next()){
+                ArrayList<Question> questions = qdao.displayAllQuestions("quiz", rs.getInt("id")) ;
+                Quiz quiz = new Quiz(rs.getInt("id"), rs.getString("sujet"),questions);
+                listQuiz.add(quiz) ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return listQuiz ;
+    }
 
     public Quiz getQuizById(int id) {
         String query = "SELECT *FROM quiz WHERE id = "+id+" " ;

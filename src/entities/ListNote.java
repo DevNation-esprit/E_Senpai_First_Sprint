@@ -10,6 +10,7 @@ package entities;
  * @author damos
  */
 public class ListNote {
+    private int idEtudiant ;
     private String nom ;
     private int noteObtnue ;
     private String sujet ;
@@ -52,6 +53,14 @@ public class ListNote {
 
     public void setFormation(String formation) {
         this.formation = formation;
+    }
+
+    public int getIdEtudiant() {
+        return idEtudiant;
+    }
+
+    public void setIdEtudiant(int idEtudiant) {
+        this.idEtudiant = idEtudiant;
     }
     
     

@@ -129,7 +129,7 @@ public class NoteDao {
     
         public ObservableList<ListNote>  getAllNote(int idFormateur){
          ObservableList<ListNote> list = FXCollections.observableArrayList() ;
-         String query = "SELECT sujet,nom,prenom,note_obtenue,titre FROM user u inner join note n on u.id = n.id_etudiant "
+         String query = "SELECT u.id,sujet,nom,prenom,note_obtenue,titre FROM user u inner join note n on u.id = n.id_etudiant "
                  + " inner join test t on n.id_test = t.id inner join formation f on f.id = t.id_formation where "
                  + " t.id_formateur="+idFormateur+" order by nom";
         try {
@@ -137,6 +137,27 @@ public class NoteDao {
             while (rs.next()) {  
                 String nom = rs.getString("nom");/* +" "+  rs.getString("prenom") ;*/
                 ListNote note = new ListNote(nom, rs.getInt("note_obtenue"), rs.getString("sujet"), rs.getString("titre")) ;
+                note.setIdEtudiant(rs.getInt("u.id"));
+                list.add(note) ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TestDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+        return list ;
+     }
+        
+     public ObservableList<ListNote>  getNoteByUserId(int idFormateur,int idEtudiant){
+         ObservableList<ListNote> list = FXCollections.observableArrayList() ;
+         String query = "SELECT sujet,nom,prenom,note_obtenue,titre FROM user u inner join note n on u.id = n.id_etudiant "
+                 + " inner join test t on n.id_test = t.id inner join formation f on f.id = t.id_formation where "
+                 + " t.id_formateur="+idFormateur+" and n.id_etudiant = "+idEtudiant+" order by nom";
+        try {
+            rs = st.executeQuery(query) ;
+            while (rs.next()) {  
+                String nom = rs.getString("nom");/* +" "+  rs.getString("prenom") ;*/
+                ListNote note = new ListNote(nom, rs.getInt("note_obtenue"), rs.getString("sujet"), rs.getString("titre")) ;
+                note.setIdEtudiant(idEtudiant);
                 list.add(note) ;
             }
         } catch (SQLException ex) {

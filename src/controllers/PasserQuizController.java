@@ -163,8 +163,8 @@ public class PasserQuizController implements Initializable {
                           int min = ((seconds%3600)/60) ;
                           int sec = ((seconds % 3600)%60);
                            labelSec.setText(sec + "");
-                           labelMin.setText(min+"");
-                           labelHeure.setText(hours+"");
+                           labelMin.setText(min+"  :");
+                           labelHeure.setText(hours+"  :");
                     
                             if(seconds <= 0){
                                 time.stop();

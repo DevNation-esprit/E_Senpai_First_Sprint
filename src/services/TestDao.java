@@ -155,6 +155,33 @@ public class TestDao {
       return listTest ;
     }
     
+    public ObservableList<Test> getListTest(  ) {
+        String query = "SELECT *FROM test " ;
+        ObservableList<Test> listTest = FXCollections.observableArrayList() ;       
+        try {
+            rs = st.executeQuery(query) ;
+            QuestionDao qdao = QuestionDao.getInstance() ;
+            while(rs.next()){
+                ArrayList<Question> questions = (ArrayList<Question>) qdao.displayAllQuestions("test", rs.getInt(1)) ;
+                Test t = new Test(rs.getInt(1), rs.getString("sujet"), questions);
+                t.setIdFormateur(rs.getInt("id_formateur"));
+                t.setIdFormateur(rs.getInt("id_formation"));
+                t.setDuree(rs.getInt("duree"));
+                t.setNbEtudiantsAdmis(rs.getInt("nb_etudiants_admis"));
+                t.setNbEtudiantsPasses(rs.getInt("nb_etudiant_passes"));
+                int duree = rs.getInt("duree") ;
+                int hours = (duree/3600) ;
+                int min = ((duree%3600)/60) ;
+                t.setTemps(hours+"h"+min+"min");
+                listTest.add(t) ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return listTest ;
+    }
+    
     
     public Test getTestById(int id) {
         String query = "SELECT *FROM test WHERE id = "+id+" " ;
@@ -229,6 +256,8 @@ public class TestDao {
                 Test test = new Test(rs.getInt("id"), rs.getString("sujet"),questions);
                 test.setIdFormation(rs.getInt("id_formation"));
                 test.setDuree(rs.getInt("duree"));
+                test.setNbEtudiantsAdmis(rs.getInt("nb_etudiants_admis"));
+                test.setNbEtudiantsPasses(rs.getInt("nb_etudiant_passes"));
                 int duree = rs.getInt("duree") ;
                 int hours = (duree/3600) ;
                 int min = ((duree%3600)/60) ;

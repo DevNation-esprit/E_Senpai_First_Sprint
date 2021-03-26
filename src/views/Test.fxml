@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -347,7 +348,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
                      <children>
-                        <TableView fx:id="tvNote" layoutX="114.0" layoutY="14.0" prefHeight="382.0" prefWidth="927.0">
+                        <TableView fx:id="tvNote" layoutX="38.0" layoutY="14.0" onMouseClicked="#getClickedNote" prefHeight="382.0" prefWidth="927.0">
                           <columns>
                             <TableColumn fx:id="colSujetNote" prefWidth="398.0" text="Sujet Test" />
                               <TableColumn fx:id="colEtudStat" prefWidth="217.0" text="Etudiant" />
@@ -355,14 +356,27 @@
                               <TableColumn fx:id="colFormation" prefWidth="209.0" text="Formation" />
                           </columns>
                         </TableView>
-                        <LineChart fx:id="chart" layoutX="47.0" layoutY="412.0" prefHeight="476.0" prefWidth="909.0" style="-fx-background-radius: 12; -fx-background-color: white;" styleClass="r" title="Stats Note Test">
+                        <LineChart fx:id="lineChart" layoutX="38.0" layoutY="435.0" prefHeight="461.0" prefWidth="756.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" fx:id="x" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis fx:id="y" side="LEFT" upperBound="50.0" />
+                            <NumberAxis fx:id="y" side="LEFT" />
                           </yAxis>
                         </LineChart>
+                        <BarChart fx:id="barChart" layoutX="822.0" layoutY="444.0" prefHeight="425.0" prefWidth="595.0">
+                          <xAxis>
+                            <CategoryAxis fx:id="Xsujet" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="Ynote" side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                        <TableView fx:id="tvTestNote" layoutX="987.0" layoutY="17.0" onMouseClicked="#getClickedTest" prefHeight="375.0" prefWidth="414.0">
+                          <columns>
+                            <TableColumn fx:id="colTestNote" prefWidth="413.0" text="Test" />
+                          </columns>
+                        </TableView>
                      </children></AnchorPane>
                </content>
             </Tab>

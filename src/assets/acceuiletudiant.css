@@ -41,3 +41,6 @@
     -fx-border-color :  black;
     -fx-border-width : 5 ;
 }
+.vboxes{
+   -fx-border-radius : 15 ; 
+}

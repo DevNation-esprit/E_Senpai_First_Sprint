@@ -13,7 +13,6 @@ import entities.Test;
 import entities.User;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -23,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -153,12 +153,6 @@ public class TestController implements Initializable {
     @FXML
     private TableColumn<ListNote, String> colFormation;
     @FXML
-    private LineChart<?, ?> chart;
-    @FXML
-    private NumberAxis y;
-    @FXML
-    private CategoryAxis x;
-    @FXML
     private TextField tfSearch;
     @FXML
     private ComboBox<Integer> comboHeure;
@@ -172,6 +166,22 @@ public class TestController implements Initializable {
     private ComboBox<Integer> comboMinUpdate;
     @FXML
     private TableColumn<Quiz, String> colDuree;
+    @FXML
+    private LineChart<String, Number> lineChart;
+    @FXML
+    private NumberAxis y;
+    @FXML
+    private CategoryAxis x;
+    @FXML
+    private BarChart<String, Number> barChart;
+    @FXML
+    private NumberAxis Ynote;
+    @FXML
+    private CategoryAxis Xsujet;
+    @FXML
+    private TableView<Test> tvTestNote;
+    @FXML
+    private TableColumn<Test, String> colTestNote;
 
     /**
      * Initializes the controller class.
@@ -750,8 +760,9 @@ public class TestController implements Initializable {
         NoteDao ndao = NoteDao.getInstance() ;
         ObservableList<ListNote> list = ndao.getAllNote(currentUser.getId() );
         
-        setDataToLineChart(list);
-  
+        ListNote note = list.get(0) ;
+        ObservableList<ListNote> listUser = ndao.getNoteByUserId(currentUser.getId(), note.getIdEtudiant()) ;
+        setDataToLineChart(listUser);
         
         tvNote.setItems(list);
         colSujetNote.setCellValueFactory(new PropertyValueFactory<>("sujet"));
@@ -761,34 +772,61 @@ public class TestController implements Initializable {
     }
     
     private void setDataToLineChart(ObservableList<ListNote> list){
-        HashSet<String> test = new HashSet<>() ;
-      for(ListNote l : list){
-         test.add(l.getSujet()) ;
-      }
-      
-      
-      for(String name : test){
-          XYChart.Series s = new XYChart.Series<>() ;
-          for(ListNote l : list){
-              if(name.equals(l.getSujet())){             
-                    s.getData().add(new XYChart.Data<>(l.getNom(),l.getNoteObtnue())) ;
-
-              }
-           
+        ObservableList<String> test = FXCollections.observableArrayList( );
+        XYChart.Series s = new XYChart.Series<>() ;
+         for(ListNote l : list){
+             s.getData().add(new XYChart.Data<>(l.getSujet(),l.getNoteObtnue())) ; 
+             test.add(l.getSujet()) ;
           }
-           s.setName(name);
-           chart.getData().addAll(s );
-      }
-    
+         
+        x.setCategories(test);
+        s.setName(list.get(0).getNom());
+        lineChart.getData().addAll(s);
     }
 
     @FXML
     private void displayNoteTableView(Event event) {
         setNoteToTableView() ;
+        TestDao tdao = TestDao.getInstance() ;
+        ObservableList<Test> listTest = tdao.displayTestList(currentUser.getId());
+        tvTestNote.setItems(listTest);
+        colTestNote.setCellValueFactory(new PropertyValueFactory<>("sujet"));
+        setDataToBarChart(listTest.get(0));
+    }
+    
+    private void setDataToBarChart(Test t){
+        ObservableList<String> test = FXCollections.observableArrayList("admis","passées");
+        XYChart.Series s = new XYChart.Series<>() ;
+        s.getData().add(new XYChart.Data<>("admis",t.getNbEtudiantsAdmis())) ;
+        s.getData().add(new XYChart.Data<>("passées",t.getNbEtudiantsPasses())) ; 
+
+        Xsujet.setCategories(test);
+        s.setName(t.getSujet());
+        barChart.getData().addAll(s) ;
     }
 
     @FXML
     private void searchQuestion(KeyEvent event) {
+    }
+
+    @FXML
+    private void getClickedNote(MouseEvent event) {
+        lineChart.getData().clear();
+        NoteDao ndao = NoteDao.getInstance() ;
+        ListNote note = tvNote.getSelectionModel().getSelectedItem() ;
+        if(note != null){
+            ObservableList<ListNote> listUser = ndao.getNoteByUserId(currentUser.getId(), note.getIdEtudiant()) ;
+            setDataToLineChart(listUser);
+        }
+      }     
+
+    @FXML
+    private void getClickedTest(MouseEvent event) {
+        Test t = tvTestNote.getSelectionModel().getSelectedItem() ;
+        if(t != null){
+            barChart.getData().clear();
+            setDataToBarChart(t);
+        }
     }
       
 }
