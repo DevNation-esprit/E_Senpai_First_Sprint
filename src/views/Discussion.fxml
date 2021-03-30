@@ -40,7 +40,6 @@
                <children>
                   <AnchorPane fx:id="accueilPane" prefHeight="650.0" prefWidth="811.0">
                      <children>
-                        <Button fx:id="ajout_discussion" layoutX="574.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleAjoutDicussion" prefHeight="38.0" prefWidth="128.0" text="Ajouter Discussion" />
                         <Button fx:id="button_chatbot" layoutX="659.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleButton" prefHeight="38.0" prefWidth="128.0" text="Chat Bot" />
                         <VBox fx:id="vbox_discussion" layoutX="30.0" layoutY="276.0" prefHeight="151.0" prefWidth="732.0" spacing="8.0" />
                         <TextField fx:id="search_bar" layoutX="119.0" layoutY="24.0" prefHeight="25.0" prefWidth="211.0" promptText="Rechercher Utilisateur" style="-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #8A2C02;">
@@ -49,7 +48,6 @@
                            </font>
                         </TextField>
                         <VBox fx:id="vbox_utilisateur" layoutX="30.0" layoutY="96.0" prefHeight="151.0" prefWidth="732.0" spacing="8.0" />
-                        <TextField fx:id="inputUser" layoutX="517.0" layoutY="519.0" prefHeight="25.0" prefWidth="44.0" />
                         <Button fx:id="search" layoutX="354.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleSearchbtn" text="Search" />
                      </children>
                   </AnchorPane>

@@ -13,16 +13,16 @@ public class ChatBot {
 
     String[][] chat = {
         //        Message Bienvenu
-        {"ahla", "3aslema", "aaslema", "salut", "hi", "hey", "fraise", "whayed"},
-        {"Ahla bik Ena Walid", "Ahla cava ?", "Ya man"},
+        {"ahla", "3aslema", "aaslema", "salut", "hi", "hey", "fraise", "whayed","hello","greetings","man","khouna","slt","yo","sbah khir"},
+        {"Ahla bik Ena Walid", "Ahla cava ?", "Ya man","Hey",},
         //        Questions
-        {"cava?", "labess?", "how r u?", "finek"},
+        {"cava?", "labess?", "how r u ?", "finek","how are you ?","how you doing ?"},
         {"Walahy Hani mak ta3ref , Khedma (mine w fazet)", "Mak ta3ref el developer ta3abni", "Yooo"},
         //Yes
         {"yes"},
         {"no", "Sayeb 3lina", "Ti leeee 3aad"},
         //        Default
-        {"Yeeezi bla blada"}
+        {"Yeeezi bla blada","Fhemtekch"}
     };
 
     public ChatBot() {

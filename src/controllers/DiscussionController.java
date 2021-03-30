@@ -42,8 +42,6 @@ import services.UserService;
 public class DiscussionController implements Initializable {
 
     @FXML
-    private Button ajout_discussion;
-    @FXML
     private VBox vbox_discussion;
     @FXML
     private SplitPane splitPane;
@@ -68,7 +66,6 @@ public class DiscussionController implements Initializable {
     @FXML
     private AnchorPane accueilPane;
     User currentUser;
-    @FXML
     private TextField inputUser;
     @FXML
     private TextField search_bar;
@@ -106,7 +103,6 @@ public class DiscussionController implements Initializable {
                     }
     }
 
-    @FXML
     private void handleAjoutDicussion(ActionEvent event) {
         DiscussionService ds = DiscussionService.getInstance();
         Discussion d = new Discussion();

@@ -39,8 +39,8 @@ public class ChatBotController implements Initializable {
     private ChatBot ChatBot;
 
     String[][] str;
-    
-    User currentUser ;
+
+    User currentUser;
 
     /**
      * Initializes the controller class.
@@ -93,7 +93,7 @@ public class ChatBotController implements Initializable {
                 vbox_msg.getChildren().add(lbl);
 
             }
-            
+
         }
     }
 
