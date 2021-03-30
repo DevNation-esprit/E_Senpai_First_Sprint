@@ -57,8 +57,8 @@
                   <TextField fx:id="inputLogin" layoutX="215.0" layoutY="289.0" prefHeight="25.0" prefWidth="201.0" promptText="Login" />
                   <PasswordField fx:id="inputPassword" layoutX="215.0" layoutY="340.0" prefHeight="25.0" prefWidth="201.0" promptText="Mot de passe" />
                   <PasswordField fx:id="inputVPassword" layoutX="215.0" layoutY="390.0" prefHeight="25.0" prefWidth="201.0" promptText="Confirmer mot de passe" />
-                  <CheckBox fx:id="chkFormateur" layoutX="169.0" layoutY="436.0" mnemonicParsing="false" text="S'inscrire en tant que Formateur" />
-                  <Button fx:id="inscrireBtn" layoutX="183.0" layoutY="500.0" mnemonicParsing="false" onAction="#handleInscrireBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'inscrire">
+                  <CheckBox fx:id="chkFormateur" layoutX="167.0" layoutY="441.0" mnemonicParsing="false" onAction="#formateurSelected" text="S'inscrire en tant que Formateur" />
+                  <Button fx:id="inscrireBtn" layoutX="184.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleInscrireBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'inscrire">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -107,7 +107,13 @@
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <Label fx:id="erreurLabel" alignment="CENTER" layoutX="112.0" layoutY="469.0" prefHeight="17.0" prefWidth="302.0" textFill="#f50c0c" />
+                  <Label fx:id="erreurLabel" alignment="CENTER" layoutX="123.0" layoutY="508.0" prefHeight="17.0" prefWidth="282.0" textFill="#f50c0c" />
+                  <Button fx:id="importCV" layoutX="398.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleImportCv" prefHeight="27.0" prefWidth="99.0" style="-fx-text-fill: white; -fx-background-color: #F08B33; -fx-border-color: #8A2C02;" text="Importer CV">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Label fx:id="urllabel" alignment="CENTER" layoutX="392.0" layoutY="469.0" prefHeight="17.0" prefWidth="111.0" />
                </children>
             </AnchorPane>
             <Label layoutX="490.0" layoutY="623.0" prefHeight="17.0" prefWidth="201.0" style="-fx-text-fill: #8A2C02;" text="© 2020 E-Senpai. All rights reserved" />

@@ -41,7 +41,7 @@
                <children>
                   <TextField fx:id="loginInput" layoutX="132.0" layoutY="119.0" prefHeight="25.0" prefWidth="262.0" promptText="Login" style="-fx-border-color: #8A2C02;" />
                   <PasswordField fx:id="passwordInput" layoutX="132.0" layoutY="169.0" prefHeight="25.0" prefWidth="262.0" promptText="Mot De Passe" style="-fx-border-color: #8A2C02;" />
-                  <Hyperlink layoutX="273.0" layoutY="201.0" prefHeight="23.0" prefWidth="123.0" style="-fx-text-fill: #8A2C02;" text="Mot de passe oublié?" />
+                  <Hyperlink fx:id="mdpOublieBtn" layoutX="273.0" layoutY="201.0" onAction="#handleMdpOublieBtn" prefHeight="23.0" prefWidth="123.0" style="-fx-text-fill: #8A2C02;" text="Mot de passe oublié?" />
                   <Button fx:id="authentifierBt" layoutX="192.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleAuthentifierBt" prefHeight="25.0" prefWidth="161.0" style="-fx-text-fill: white; -fx-background-color: #8A2C02;" text="S'authentifier">
                      <cursor>
                         <Cursor fx:constant="HAND" />

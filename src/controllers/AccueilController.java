@@ -9,25 +9,40 @@ import entities.User;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import services.UserService;
 
 /**
  * FXML Controller class
@@ -51,8 +66,8 @@ public class AccueilController implements Initializable {
     @FXML
     private Label welcomeLabel;
 
-    User currentUser;
-    
+    private User currentUser;
+
     @FXML
     private Button blogBtn;
     @FXML
@@ -60,48 +75,92 @@ public class AccueilController implements Initializable {
     @FXML
     private AnchorPane leftPane;
     @FXML
-    private AnchorPane rightPane;
-    @FXML
-    private ImageView notifications;
-    @FXML
     private HBox hboxHeader;
-    @FXML
-    private AnchorPane profilPane;
-    @FXML
-    private AnchorPane formationsPane;
-    @FXML
-    private AnchorPane testPane;
+
     @FXML
     private AnchorPane accueilPane;
     @FXML
-    private AnchorPane chatPane;
+    private Button reclamationsBtn;
     @FXML
-    private AnchorPane blogPane;
+    private TextField searchInput;
     @FXML
-    private Label nameLabel;
+    private VBox searchVbox;
     @FXML
-    private Label bioLabel;
+    private Button chercherBtn;
     @FXML
-    private ImageView editBtn;
+    private Button voirFormationsBtn;
     @FXML
-    private AnchorPane profilImagePane;
+    private Button voirQuizsBtn;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        accueilPane.setVisible(true);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(false);
-        testPane.setVisible(false);
-        chatPane.setVisible(false);
-        blogPane.setVisible(false);
+        searchInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    String input = searchInput.getText();
+                    UserService us = UserService.getInstance();
+                    List<User> list = new ArrayList<User>();
+                    if (!input.equals("")) {
+                        list = us.searchUser(input);
+                    }
+                    searchVbox.getChildren().clear();
+
+                    for (User u : list) {
+                        HBox hbox = new HBox();
+                        ImageView imageprofil;
+                        Label name = new Label();
+                        if (!u.getPhoto_profil().get().equals("")) {
+                            imageprofil = new ImageView(u.getPhoto_profil().get());
+                        } else {
+                            imageprofil = new ImageView("/assets/userRandom.png");
+                        }
+                        imageprofil.setFitHeight(20.0);
+                        imageprofil.setFitWidth(20.0);
+                        name.setText(u.getNom().get() + " " + u.getPrenom().get());
+                        hbox.getChildren().add(imageprofil);
+                        hbox.getChildren().add(name);
+                        hbox.setSpacing(20);
+                        hbox.setPadding(new Insets(5));
+                        hbox.setBorder(new Border(new BorderStroke(Color.DARKSALMON, BorderStrokeStyle.SOLID, null, null)));
+                        hbox.setOnMouseClicked(e -> {
+                            ButtonType myBtn = new ButtonType("Chat");
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION,"",myBtn);
+                            alert.setTitle("E-SENPAI | E-Learning Platform");
+                            alert.setHeaderText("" + u.getNom().get() + " " + u.getPrenom().get());
+                            ImageView img ;
+                            if (u.getPhoto_profil().get().equals("")) {
+                                img = new ImageView("/assets/userRandom.png");
+                            } else {
+                                img = new ImageView(u.getPhoto_profil().get());
+                            }
+                            img.setFitHeight(40);
+                            img.setFitWidth(40);
+                            alert.setGraphic(img);
+                            
+                            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                            alert.setContentText("*" + u.getRole().get() + "\n" + "*" + u.getEmail().get());
+                            alert.showAndWait().ifPresent(rs -> {
+                                if (rs == myBtn) {
+                                    System.out.println("Pressed OK.");
+                                    //Redirect vers CHAT PAGE
+                                }
+                            });
+                        });
+                        searchVbox.getChildren().add(hbox);
+                    }
+                }
+            }
+
+        });
     }
 
     public void initData(User u) {
         ImageView imageprofil;
-        ImageView profilPic;
         this.currentUser = u;
         if (currentUser.getRole().get().toLowerCase().equals("formateur")) {
             if (currentUser.getSexe().get().toLowerCase().equals("homme")) {
@@ -113,52 +172,45 @@ public class AccueilController implements Initializable {
             welcomeLabel.setText("Bienvenue " + currentUser.getNom().get());
         }
 
-        if (currentUser.getPhoto_profil().get().equals("")) {
+        if (u.getPhoto_profil().get().equals("")) {
             imageprofil = new ImageView("/assets/userRandom.png");
         } else {
-            imageprofil = new ImageView(currentUser.getPhoto_profil().get());
+            imageprofil = new ImageView(u.getPhoto_profil().get());
         }
-        profilPic = imageprofil;
         imageprofil.setFitHeight(30.0);
         imageprofil.setFitWidth(30.0);
         hboxHeader.getChildren().add(imageprofil);
-        profilPic.setFitHeight(129);
-        profilPic.setFitWidth(127);
-        nameLabel.setText(currentUser.getNom().get());
-        
-        profilImagePane.getChildren().add(profilPic);
     }
 
     @FXML
     private void handleAccueilBtn(ActionEvent event) {
-        accueilPane.setVisible(true);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(false);
-        testPane.setVisible(false);
-        chatPane.setVisible(false);
-        blogPane.setVisible(false);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Accueil.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            AccueilController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     @FXML
     private void handleTestQuizBtn(ActionEvent event) {
-        accueilPane.setVisible(false);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(false);
-        testPane.setVisible(true);
-        chatPane.setVisible(false);
-        blogPane.setVisible(false);
 
     }
 
     @FXML
     private void handleChatBtn(ActionEvent event) {
-        accueilPane.setVisible(false);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(false);
-        testPane.setVisible(false);
-        chatPane.setVisible(true);
-        blogPane.setVisible(false);
+
     }
 
     @FXML
@@ -190,40 +242,116 @@ public class AccueilController implements Initializable {
 
     @FXML
     private void handleBlogBtn(ActionEvent event) {
-        accueilPane.setVisible(false);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(false);
-        testPane.setVisible(false);
-        chatPane.setVisible(false);
-        blogPane.setVisible(true);
-    }
 
-    @FXML
-    private void handleNotifications(MouseEvent event) {
     }
 
     @FXML
     private void handleProfilBtn(ActionEvent event) {
-        accueilPane.setVisible(false);
-        profilPane.setVisible(true);
-        formationsPane.setVisible(false);
-        testPane.setVisible(false);
-        chatPane.setVisible(false);
-        blogPane.setVisible(false);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Profil.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            ProfilController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @FXML
     private void HandleFormationsBtn(ActionEvent event) {
-        accueilPane.setVisible(false);
-        profilPane.setVisible(false);
-        formationsPane.setVisible(true);
-        testPane.setVisible(false);
-        chatPane.setVisible(false);
-        blogPane.setVisible(false);
+
     }
 
     @FXML
-    private void handleEditBtn(MouseEvent event) {
+    private void handleReclamationsBtn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AjouterReclamation.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            AjouterReclamationController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleChercherBtn(ActionEvent event) {
+        String input = searchInput.getText();
+        UserService us = UserService.getInstance();
+        List<User> list = new ArrayList<User>();
+        if (!input.equals("")) {
+            list = us.searchUser(input);
+        }
+        searchVbox.getChildren().clear();
+
+        for (User u : list) {
+            HBox hbox = new HBox();
+                        ImageView imageprofil;
+                        Label name = new Label();
+                        if (!u.getPhoto_profil().get().equals("")) {
+                            imageprofil = new ImageView(u.getPhoto_profil().get());
+                        } else {
+                            imageprofil = new ImageView("/assets/userRandom.png");
+                        }
+                        imageprofil.setFitHeight(20.0);
+                        imageprofil.setFitWidth(20.0);
+                        name.setText(u.getNom().get() + " " + u.getPrenom().get());
+                        hbox.getChildren().add(imageprofil);
+                        hbox.getChildren().add(name);
+                        hbox.setSpacing(20);
+                        hbox.setPadding(new Insets(5));
+                        hbox.setBorder(new Border(new BorderStroke(Color.DARKSALMON, BorderStrokeStyle.SOLID, null, null)));
+                        hbox.setOnMouseClicked(e -> {
+                            ButtonType myBtn = new ButtonType("Chat");
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION,"",myBtn);
+                            alert.setTitle("E-SENPAI | E-Learning Platform");
+                            alert.setHeaderText("" + u.getNom().get() + " " + u.getPrenom().get());
+                            ImageView img ;
+                            if (u.getPhoto_profil().get().equals("")) {
+                                img = new ImageView("/assets/userRandom.png");
+                            } else {
+                                img = new ImageView(u.getPhoto_profil().get());
+                            }
+                            img.setFitHeight(40);
+                            img.setFitWidth(40);
+                            alert.setGraphic(img);
+                            
+                            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                            stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                            alert.setContentText("*" + u.getRole().get() + "\n" + "*" + u.getEmail().get());
+                            alert.showAndWait().ifPresent(rs -> {
+                                if (rs == myBtn) {
+                                    System.out.println("Pressed OK.");
+                                    //Redirect vers CHAT PAGE
+                                }
+                            });
+                        });
+                        searchVbox.getChildren().add(hbox);
+        }
+    }
+
+    @FXML
+    private void handleVoirFormationsBtn(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleVoirQuizsBtn(ActionEvent event) {
     }
 
 }

@@ -6,8 +6,10 @@
 package controllers;
 
 import entities.User;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -27,7 +29,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.apache.commons.io.FileUtils;
 import services.UserService;
 
 /**
@@ -48,7 +54,7 @@ public class InscriptionController implements Initializable {
     @FXML
     private RadioButton rbFemme;
 
-    String sexe="Homme";
+    String sexe = "Homme";
 
     @FXML
     private DatePicker inputDateN;
@@ -68,20 +74,26 @@ public class InscriptionController implements Initializable {
     private CheckBox chkFormateur;
     @FXML
     private Label erreurLabel;
+    @FXML
+    private Button importCV;
+
+    String fileName="";
+    String fcs="";
+    @FXML
+    private Label urllabel;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        importCV.setDisable(true);
     }
 
     @FXML
-    private void handleInscrireBt(ActionEvent event) {
+    private void handleInscrireBt(ActionEvent event) throws NoSuchAlgorithmException {
 
         LocalDate dateN = inputDateN.getValue();
-        
 
         if (inputNom.getText().equals("") || inputPrenom.getText().equals("") || dateN.toString().equals("") || inputEmail.getText().equals("") || inputLogin.getText().equals("") || inputPassword.getText().equals("") || inputVPassword.getText().equals("")) {
             erreurLabel.setText("Vérifier que tous les champs sont remplis !");
@@ -100,14 +112,81 @@ public class InscriptionController implements Initializable {
                     u.setEmail(inputEmail.getText());
                     u.setLogin(inputLogin.getText());
                     u.setPassword(inputPassword.getText());
+
                     if (chkFormateur.isSelected()) {
-                        us.insertFormateur(u);
-                        //Show Dialog of wait approval
+                        if (fcs.equals("")) {
+                            erreurLabel.setText("Veuillez importer votre CV");
+                        } else {
+                            if (us.verifLogin(u.getLogin().get())) {
+                                if (us.verifEmail(u.getEmail().get())) {
+                                    File source = new File(fcs);
+                                    File dest = new File(System.getProperty("user.dir") + "\\src\\assets\\" + fileName);
+                                    String url = "/assets/" + fileName;
+                                    if (!dest.exists()) {
+                                        try {
+                                            FileUtils.copyFile(source, dest);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    u.setCv(url);
+                                    us.insertFormateur(u);
+                                    try {
+                                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/DialogWaitApproval.fxml"));
+                                        Stage stage = new Stage(StageStyle.DECORATED);
+                                        stage.setScene(
+                                                new Scene(loader.load())
+                                        );
+                                        stage.setTitle("E-SENPAI | E-Learning Platform");
+                                        stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                                        stage.setResizable(false);
+
+                                        stage.show();
+
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } else {
+                                    erreurLabel.setText("E-mail existe déja");
+                                }
+                            } else {
+                                erreurLabel.setText("Login existe déja");
+                            }
+                        }
+
                     } else {
-                        us.insertEtudiant(u);
-                        //redirect to home page
+                        if (us.verifLogin(u.getLogin().get())) {
+                            if (us.verifEmail(u.getEmail().get())) {
+                                us.insertEtudiant(u);
+                                try {
+                                    User userTmp = us.getUsetByLogin(u.getLogin().get());
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Accueil.fxml"));
+                                    Stage stage = new Stage(StageStyle.DECORATED);
+                                    stage.setScene(
+                                            new Scene(loader.load())
+                                    );
+                                    stage.setTitle("E-SENPAI | E-Learning Platform");
+                                    stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                                    stage.setResizable(false);
+
+                                    AccueilController controller = loader.getController();
+                                    controller.initData(userTmp);
+
+                                    Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                    oldStage.close();
+
+                                    stage.show();
+
+                                } catch (IOException ex) {
+                                    Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                erreurLabel.setText("E-mail existe déja");
+                            }
+                        } else {
+                            erreurLabel.setText("Login existe déja");
+                        }
                     }
-                    erreurLabel.setText("");
                 } else {
                     erreurLabel.setText("Vérifier votre mot de passe !");
                 }
@@ -137,6 +216,34 @@ public class InscriptionController implements Initializable {
         }
         if (rbFemme.isSelected()) {
             sexe = "Femme";
+        }
+    }
+
+    @FXML
+    private void handleImportCv(ActionEvent event) {
+
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf"));
+        File SelectedFile = fc.showOpenDialog(null);
+        if (SelectedFile != null) {
+
+            fcs = SelectedFile.toString();
+            int index = fcs.lastIndexOf('\\');
+            if (index > 0) {
+                fileName = fcs.substring(index + 1);
+            }
+            urllabel.setText(fileName);
+
+        }
+
+    }
+
+    @FXML
+    private void formateurSelected(ActionEvent event) {
+        if (chkFormateur.isSelected()) {
+            importCV.setDisable(false);
+        } else {
+            importCV.setDisable(true);
         }
     }
 

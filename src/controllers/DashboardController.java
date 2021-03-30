@@ -103,6 +103,23 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void handleReclamationsBtn(ActionEvent event) {
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Reclamations.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            ReclamationsController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @FXML
@@ -120,14 +137,20 @@ public class DashboardController implements Initializable {
     @FXML
     private void handleUsersBtn(ActionEvent event) {
         
-        try{
-            Parent page1 = FXMLLoader.load(getClass().getResource("/views/GestionUsers.fxml"));
-            Scene scene = new Scene(page1);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        }catch (IOException ex) {
-            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GestionUsers.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            GestionUsersController controller = loader.getController();
+            controller.initData(currentUser);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

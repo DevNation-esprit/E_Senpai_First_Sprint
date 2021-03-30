@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -12,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AccueilController">
@@ -21,7 +18,7 @@
         <items>
           <AnchorPane fx:id="leftPane" maxHeight="648.0" maxWidth="281.0" minHeight="648.0" minWidth="281.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #07000E;" SplitPane.resizableWithParent="false">
                <children>
-                  <Button fx:id="accueilBtn" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="38.0" prefWidth="258.0" style="-fx-text-fill: #EECC8D; -fx-border-color: #EECC8D; -fx-background-color: none;" text="Accueil">
+                  <Button fx:id="accueilBtn" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="38.0" prefWidth="258.0" style="-fx-text-fill: #8A2C02; -fx-border-color: #EECC8D; -fx-background-color: #EECC8D;" text="Accueil">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -49,69 +46,48 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
+                  <Button fx:id="reclamationsBtn" layoutX="12.0" layoutY="546.0" mnemonicParsing="false" onAction="#handleReclamationsBtn" prefHeight="38.0" prefWidth="258.0" style="-fx-background-color: none; -fx-text-fill: #EECC8D; -fx-border-color: #EECC8D;" text="Réclamations">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" SplitPane.resizableWithParent="false">
+            <AnchorPane fx:id="accueilPane" prefHeight="648.0" prefWidth="810.0">
                <children>
-                  <AnchorPane fx:id="profilPane" prefHeight="650.0" prefWidth="811.0">
+                  <Label fx:id="welcomeLabel" layoutX="14.0" prefHeight="61.0" prefWidth="354.0" style="-fx-text-fill: #8A2C02;" text="Bienvenue ">
+                     <font>
+                        <Font name="SansSerif Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="searchInput" layoutX="384.0" layoutY="17.0" prefHeight="25.0" prefWidth="211.0" promptText="Rechercher Utilisateur" style="-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #8A2C02;">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </TextField>
+                  <HBox fx:id="hboxHeader" alignment="CENTER" layoutX="629.0" layoutY="6.0" prefHeight="49.0" prefWidth="147.0" />
+                  <VBox fx:id="searchVbox" layoutX="390.0" layoutY="44.0" prefHeight="91.0" prefWidth="195.0" />
+                  <Button fx:id="chercherBtn" layoutX="603.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleChercherBtn" text="Chercher" />
+                  <AnchorPane layoutX="8.0" layoutY="137.0" prefHeight="223.0" prefWidth="797.0" style="-fx-border-color: #8A2C02;">
                      <children>
-                        <AnchorPane fx:id="profilImagePane" layoutX="341.0" layoutY="58.0" prefHeight="127.0" prefWidth="129.0" style="-fx-border-color: #8A2C02;" />
-                        <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="300.0" layoutY="207.0" prefHeight="27.0" prefWidth="211.0" style="-fx-text-fill: #D75404;" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial" size="21.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="bioLabel" layoutX="99.0" layoutY="259.0" prefHeight="38.0" prefWidth="613.0" style="-fx-text-fill: #07000E;">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <ImageView fx:id="editBtn" fitHeight="38.0" fitWidth="27.0" layoutX="752.0" layoutY="20.0" onMouseClicked="#handleEditBtn" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="166.0" fitWidth="524.0" layoutX="137.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../assets/edit.png" />
+                              <Image url="@../assets/learning.png" />
                            </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
                         </ImageView>
-                        <Line endX="336.0" layoutX="391.0" layoutY="305.0" startX="-307.0" />
-                        <ScrollPane layoutX="86.0" layoutY="363.0" prefHeight="276.0" prefWidth="644.0">
-                           <content>
-                              <VBox prefHeight="362.0" prefWidth="644.0" />
-                           </content>
-                        </ScrollPane>
+                        <Button fx:id="voirFormationsBtn" layoutX="307.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleVoirFormationsBtn" prefHeight="25.0" prefWidth="183.0" text="Voir les formations" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="formationsPane" prefHeight="648.0" prefWidth="811.0" style="-fx-background-color: yellow;" visible="false" />
-                  <AnchorPane fx:id="testPane" layoutY="-1.0" prefHeight="650.0" prefWidth="811.0" style="-fx-background-color: blue;" visible="false" />
-                  <AnchorPane fx:id="accueilPane" prefHeight="650.0" prefWidth="811.0" visible="false">
+                  <AnchorPane layoutX="8.0" layoutY="375.0" prefHeight="247.0" prefWidth="797.0" style="-fx-border-color: #8A2C02;">
                      <children>
-                        <Label fx:id="welcomeLabel" layoutX="14.0" prefHeight="61.0" prefWidth="354.0" style="-fx-text-fill: #8A2C02;" text="Bienvenue ">
-                           <font>
-                              <Font name="SansSerif Bold" size="23.0" />
-                           </font>
-                        </Label>
-                        <TextField layoutX="384.0" layoutY="17.0" prefHeight="25.0" prefWidth="211.0" promptText="Rechercher Utilisateur" style="-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #8A2C02;">
-                           <font>
-                              <Font name="System Italic" size="12.0" />
-                           </font>
-                        </TextField>
-                        <HBox fx:id="hboxHeader" alignment="CENTER" layoutX="629.0" layoutY="6.0" prefHeight="49.0" prefWidth="147.0">
-                           <children>
-                              <ImageView fx:id="notifications" fitHeight="27.0" fitWidth="28.0" onMouseClicked="#handleNotifications" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/noNotifications.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <ImageView fitHeight="178.0" fitWidth="656.0" layoutX="169.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/evaluate.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="voirQuizsBtn" layoutX="307.0" layoutY="208.0" mnemonicParsing="false" onAction="#handleVoirQuizsBtn" prefHeight="25.0" prefWidth="183.0" text="Voir les quizs" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="chatPane" prefHeight="650.0" prefWidth="811.0" style="-fx-background-color: blue;" visible="false" />
-                  <AnchorPane fx:id="blogPane" layoutX="-1.0" layoutY="-1.0" prefHeight="650.0" prefWidth="811.0" style="-fx-background-color: blue;" visible="false" />
                </children>
             </AnchorPane>
         </items>

@@ -27,6 +27,7 @@ public class User {
     private SimpleStringProperty status;
     private SimpleStringProperty photo_profil;
     private SimpleStringProperty biography;
+    private SimpleStringProperty cv;
     
     public User(){
         
@@ -80,6 +81,10 @@ public class User {
         return biography;
     }
     
+    public SimpleStringProperty getCv() {
+        return cv;
+    }
+    
     public void setId(int id) {
         this.id = new SimpleIntegerProperty(id);
     }
@@ -126,6 +131,10 @@ public class User {
 
     public void setBiography(String biography) {
         this.biography = new SimpleStringProperty(biography);
+    }
+    
+    public void setCv(String cv) {
+        this.cv = new SimpleStringProperty(cv);
     }
     
     public boolean equals(Object obj) {

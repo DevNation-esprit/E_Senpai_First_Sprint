@@ -10,6 +10,7 @@ import controllers.AuthentificationController;
 import entities.User;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -135,6 +136,14 @@ public class GestionUsersController implements Initializable {
     int idSelected;
 
     String nomSelected;
+    @FXML
+    private TableColumn<User, String> roleColumn;
+    @FXML
+    private Label suppLabel;
+    @FXML
+    private Button demandesBtn;
+    
+    private User currentAdmin;
 
     /**
      * Initializes the controller class.
@@ -150,8 +159,11 @@ public class GestionUsersController implements Initializable {
         loginColumn.setCellValueFactory(cell -> cell.getValue().getLogin());
         statutColumn.setCellValueFactory(cell -> cell.getValue().getStatus());
         idColumn.setCellValueFactory(cell -> cell.getValue().getId().asString());
+        roleColumn.setCellValueFactory(cell -> cell.getValue().getRole());
         gestionUserPane.setVisible(true);
         addAdminPane.setVisible(false);
+        idSelected=0;
+        nomSelected="";
     }
 
     @FXML
@@ -196,6 +208,15 @@ public class GestionUsersController implements Initializable {
 
     @FXML
     private void handleReclamationsBtn(ActionEvent event) {
+        try{
+            Parent page1 = FXMLLoader.load(getClass().getResource("/views/Reclamations.fxml"));
+            Scene scene = new Scene(page1);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -222,7 +243,7 @@ public class GestionUsersController implements Initializable {
         ObservableList<User> usersFilter = FXCollections.observableArrayList();
         UserService us = UserService.getInstance();
         usersFilter = us.getUsersByNameObservable(name);
-
+        userTable.getItems().clear();
         userTable.setItems(usersFilter);
         nomColumn.setCellValueFactory(cell -> cell.getValue().getNom());
         prenomColumn.setCellValueFactory(cell -> cell.getValue().getPrenom());
@@ -232,6 +253,7 @@ public class GestionUsersController implements Initializable {
         loginColumn.setCellValueFactory(cell -> cell.getValue().getLogin());
         statutColumn.setCellValueFactory(cell -> cell.getValue().getStatus());
         idColumn.setCellValueFactory(cell -> cell.getValue().getId().asString());
+        roleColumn.setCellValueFactory(cell -> cell.getValue().getRole());
 
     }
 
@@ -244,9 +266,9 @@ public class GestionUsersController implements Initializable {
     @FXML
     private void handleSuppUserBtn(ActionEvent event) {
         if (idSelected == 0 && nomSelected.equals("")) {
-            //show label
+            suppLabel.setText("Sélectionner une ligne!");
+            
         } else {
-            UserService us = UserService.getInstance();
             User u = new User();
             u.setId(idSelected);
             u.setNom(nomSelected);
@@ -263,19 +285,22 @@ public class GestionUsersController implements Initializable {
                 SupprimerDialogBoxController controller = loader.getController();
                 controller.initData(u);
 
-                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
                 stage.show();
+                suppLabel.setText("");
 
             } catch (IOException ex) {
                 Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                suppLabel.setText("Sélectionner une ligne!");
             }
         }
     }
 
     @FXML
     private void handleAfficherBtn(ActionEvent event) {
-        userTable.setItems(list.getUsers());
+        ObservableList<User> users=FXCollections.observableArrayList();
+        UserService us=UserService.getInstance();
+        users= us.displayAll();
+        userTable.setItems(users);
         nomColumn.setCellValueFactory(cell -> cell.getValue().getNom());
         prenomColumn.setCellValueFactory(cell -> cell.getValue().getPrenom());
         dateColumn.setCellValueFactory(cell -> cell.getValue().getDate_naissance());
@@ -289,12 +314,27 @@ public class GestionUsersController implements Initializable {
 
     @FXML
     private void handleAnnulerBtn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GestionUsers.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            GestionUsersController controller = loader.getController();
+            controller.initData(currentAdmin);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         gestionUserPane.setVisible(true);
         addAdminPane.setVisible(false);
     }
 
     @FXML
-    private void handleAjoutOk(ActionEvent event) {
+    private void handleAjoutOk(ActionEvent event) throws NoSuchAlgorithmException {
         LocalDate dateN = dateTextField.getValue();
 
         if (nomTextField.getText().equals("") || prenomTextField.getText().equals("") || dateN.toString().equals("") || emailTextField.getText().equals("") || loginTextField.getText().equals("") || passwordTextField.getText().equals("") || verfiPasswordTextField.getText().equals("")) {
@@ -302,7 +342,7 @@ public class GestionUsersController implements Initializable {
         } else {
             UserService us = UserService.getInstance();
             if (!us.isValid(emailTextField.getText())) {
-                erreurLabel.setText("Vérifier votre adresse Mail !");
+                erreurLabel.setText("Vérifier l'adresse Mail !");
             } else {
                 if (passwordTextField.getText().equals(verfiPasswordTextField.getText())) {
                     User u = new User();
@@ -317,10 +357,27 @@ public class GestionUsersController implements Initializable {
                     us.insertAdmin(u);
                     erreurLabel.setText("");
                 } else {
-                    erreurLabel.setText("Vérifier votre mot de passe !");
+                    erreurLabel.setText("Vérifier le mot de passe !");
                 }
             }
         }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GestionUsers.fxml"));
+
+            Scene scene = new Scene(loader.load());
+
+            GestionUsersController controller = loader.getController();
+            controller.initData(currentAdmin);
+
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        gestionUserPane.setVisible(true);
+        addAdminPane.setVisible(false);
     }
 
     @FXML
@@ -335,10 +392,40 @@ public class GestionUsersController implements Initializable {
 
     @FXML
     private void handleUserTableMouseClicked(MouseEvent event) {
-
+        idSelected=0;
         idSelected = list.getUsers().get(userTable.getSelectionModel().getSelectedIndex()).getId().get();
-
+        nomSelected="";
         nomSelected = list.getUsers().get(userTable.getSelectionModel().getSelectedIndex()).getNom().get();
+        
+    }
+    
+    public void initData(User u){
+        this.currentAdmin=u;
+        userTable.setItems(list.getUsers());
+        nomColumn.setCellValueFactory(cell -> cell.getValue().getNom());
+        prenomColumn.setCellValueFactory(cell -> cell.getValue().getPrenom());
+        dateColumn.setCellValueFactory(cell -> cell.getValue().getDate_naissance());
+        sexeColumn.setCellValueFactory(cell -> cell.getValue().getSexe());
+        emailColumn.setCellValueFactory(cell -> cell.getValue().getEmail());
+        loginColumn.setCellValueFactory(cell -> cell.getValue().getLogin());
+        statutColumn.setCellValueFactory(cell -> cell.getValue().getStatus());
+        idColumn.setCellValueFactory(cell -> cell.getValue().getId().asString());
+        roleColumn.setCellValueFactory(cell -> cell.getValue().getRole());
+        gestionUserPane.setVisible(true);
+        addAdminPane.setVisible(false);
+    }
+
+    @FXML
+    private void handleDemandesbtn(ActionEvent event) {
+        try{
+            Parent page1 = FXMLLoader.load(getClass().getResource("/views/DemandesFormateurs.fxml"));
+            Scene scene = new Scene(page1);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

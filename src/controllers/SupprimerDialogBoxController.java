@@ -5,11 +5,14 @@
  */
 package controllers;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import entities.User;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -32,6 +35,8 @@ public class SupprimerDialogBoxController implements Initializable {
     private Button annulerSuppUser;
     
     private User currentUser;
+    @FXML
+    private Label erreurSuppression;
 
     /**
      * Initializes the controller class.
@@ -42,11 +47,15 @@ public class SupprimerDialogBoxController implements Initializable {
     }    
 
     @FXML
-    private void handleSuppUserOk(ActionEvent event) {
+    private void handleSuppUserOk(ActionEvent event){
         UserService us = UserService.getInstance();
-        us.deleteUser(currentUser.getId().get());
+        if(!us.deleteUser(currentUser.getId().get())){
+            erreurSuppression.setText("Erreur Suppression !");
+        }
+        
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+        
     }
 
     @FXML

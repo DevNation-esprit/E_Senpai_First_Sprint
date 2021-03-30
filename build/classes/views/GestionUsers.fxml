@@ -100,19 +100,21 @@
                         <Button fx:id="suppUserBtn" layoutX="605.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleSuppUserBtn" prefHeight="25.0" prefWidth="107.0" text="Supprimer" />
                         <Button fx:id="afficherBtn" layoutX="43.0" layoutY="82.0" mnemonicParsing="false" onAction="#handleAfficherBtn" prefHeight="25.0" prefWidth="129.0" text="Afficher Tout" />
                         <Button fx:id="ajouterAdminBtn" layoutX="589.0" layoutY="82.0" mnemonicParsing="false" onAction="#handleAjouterAdminBtn" prefHeight="25.0" prefWidth="140.0" text="Ajouter Admin" />
-                        <Button layoutX="431.0" layoutY="581.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="281.0" text="Demandes de formateurs" />
-                        <TableView fx:id="userTable" layoutX="43.0" layoutY="123.0" onMouseClicked="#handleUserTableMouseClicked" prefHeight="418.0" prefWidth="756.0">
+                        <Button fx:id="demandesBtn" layoutX="431.0" layoutY="581.0" mnemonicParsing="false" onAction="#handleDemandesbtn" prefHeight="25.0" prefWidth="281.0" text="Demandes de formateurs" />
+                        <TableView fx:id="userTable" layoutX="11.0" layoutY="122.0" onMouseClicked="#handleUserTableMouseClicked" prefHeight="418.0" prefWidth="795.0">
                           <columns>
                             <TableColumn fx:id="idColumn" editable="false" prefWidth="53.0" text="ID" />
                             <TableColumn fx:id="nomColumn" editable="false" prefWidth="97.0" text="Nom" />
                               <TableColumn fx:id="prenomColumn" editable="false" prefWidth="96.0" text="Prénom" />
                               <TableColumn fx:id="dateColumn" editable="false" prefWidth="104.0" text="DateNaissance" />
                               <TableColumn fx:id="sexeColumn" editable="false" prefWidth="70.0" text="Sexe" />
-                              <TableColumn fx:id="emailColumn" editable="false" prefWidth="165.0" text="E-mail" />
-                              <TableColumn fx:id="loginColumn" editable="false" prefWidth="89.0" text="Login" />
-                              <TableColumn fx:id="statutColumn" editable="false" text="Statut" />
+                              <TableColumn fx:id="emailColumn" editable="false" prefWidth="112.0" text="E-mail" />
+                              <TableColumn fx:id="loginColumn" editable="false" prefWidth="102.0" text="Login" />
+                              <TableColumn fx:id="statutColumn" editable="false" prefWidth="64.0" text="Statut" />
+                              <TableColumn fx:id="roleColumn" editable="false" prefWidth="145.0" text="Rôle" />
                           </columns>
                         </TableView>
+                        <Label fx:id="suppLabel" alignment="CENTER" layoutX="554.0" layoutY="52.0" prefHeight="17.0" prefWidth="210.0" textFill="RED" />
                      </children>
                   </AnchorPane>
                </children>

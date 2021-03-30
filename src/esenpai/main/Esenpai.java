@@ -6,6 +6,7 @@
 package esenpai.main;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import services.AES;
+import services.HashCode;
+import services.Host;
 
 /**
  *
@@ -21,12 +25,10 @@ import javafx.stage.StageStyle;
 public class Esenpai extends Application {
     
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, NoSuchAlgorithmException {
         
         FXMLLoader laoder = new FXMLLoader(getClass().getResource("/views/Authentification.fxml"));
         Parent root = laoder.load();
-        
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
         
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -36,6 +38,9 @@ public class Esenpai extends Application {
         primaryStage.setResizable(false);
         
         primaryStage.show();
+        
+        Host host = Host.getInstance();
+        host.setHostServices(getHostServices());
         
     }
 
