@@ -8,17 +8,24 @@ package controllers;
 import entities.Evenement;
 import entities.Participation;
 import entities.User;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import services.EvenementService;
 import services.ParticipationService;
 
@@ -45,8 +52,6 @@ public class ParticipationListController implements Initializable {
     private Button btnEvent;
     @FXML
     private TableView<Evenement> tableEvent;
-    @FXML
-    private TableColumn<Evenement, Image> columnImage;
     @FXML
     private TableColumn<Evenement, String> columnTitre;
     @FXML
@@ -122,6 +127,19 @@ public class ParticipationListController implements Initializable {
 
     @FXML
     private void handleEvent(ActionEvent event) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Participation.fxml"));
+            Scene scene = new Scene(loader.load());
+            
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @FXML

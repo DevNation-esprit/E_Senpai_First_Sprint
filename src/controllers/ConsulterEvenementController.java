@@ -6,11 +6,18 @@
 package controllers;
 
 import entities.Evenement;
+import entities.User;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -19,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -60,6 +68,7 @@ public class ConsulterEvenementController implements Initializable {
     private Evenement ev;
     @FXML
     private AnchorPane imagePane;
+    User currentUser;
 
     /**
      * Initializes the controller class.
@@ -69,7 +78,8 @@ public class ConsulterEvenementController implements Initializable {
 
     }
 
-    public void initData(Evenement E) {
+    public void initData(Evenement E,User u) {
+        this.currentUser=u;
         this.ev = E;
         labelTitre.setText(ev.getTitre().get());
         labelTitre.setFont(new Font(60));
@@ -103,6 +113,35 @@ public class ConsulterEvenementController implements Initializable {
 
     @FXML
     private void handleDeconnectBtn(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleEvenement(ActionEvent event) {
+        
+        try {
+            if ("Admin".equals(this.currentUser.getRole())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Evenement.fxml"));
+                Scene scene = new Scene(loader.load());
+                EvenementController controller = loader.getController();
+                controller.initData(this.currentUser);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } else if ("Etudiant".equals(this.currentUser.getRole()) || "Formateur".equals(this.currentUser.getRole())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Participation.fxml"));
+                Scene scene = new Scene(loader.load());
+                ParticipationController controller = loader.getController();
+                controller.initData(this.currentUser);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }

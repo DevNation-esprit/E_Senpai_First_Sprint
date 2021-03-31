@@ -24,6 +24,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 import services.EvenementService;
 
@@ -128,6 +129,49 @@ public class AjoutEvenementController implements Initializable {
 
     @FXML
     private void handleAjout(ActionEvent event) {
+        
+        
+        if (textTitre.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Le titre est vide");
+        }
+        if (textEmplacement.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "L\'emplacement est vide");
+        }
+        try{
+        Integer.parseInt(textPrix.getText());
+            
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Vous devez donner un Entier dans le prix");
+            }
+        if(textPrix.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Le prix est vide");
+        }
+        if(Integer.parseInt(textPrix.getText())<0)
+        {
+            JOptionPane.showMessageDialog(null, "Le prix doit étre positif");
+        }
+         if(textFondation.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Le prix est vide");
+        }
+         if(textDuree.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Le durée est vide");
+        }
+        try{
+        Integer.parseInt(textNbMax.getText());
+            
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Vous devez donner un Entier dans le nombre max de participants");
+            }
+        if(textNbMax.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Le nombre max de participants est vide");
+        } 
+        if(Integer.parseInt(textPrix.getText())<0)
+        {
+            JOptionPane.showMessageDialog(null, "Le nombre max de participants doit étre positif");
+        }
+        
+        
+        
         EvenementService es = EvenementService.getInstance();
 
         e.setTitre(textTitre.getText());

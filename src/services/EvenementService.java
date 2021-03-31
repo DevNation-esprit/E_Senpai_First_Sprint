@@ -99,6 +99,36 @@ public class EvenementService {
         return list;
     }
     
+    
+    
+     public ObservableList<Evenement> getAllEvenementObservableUpdated() {
+        String req = "select * from evenement where nbMaxParticipants > 0";
+        
+        ObservableList<Evenement> list = FXCollections.observableArrayList();
+        
+        try {
+            rs = st.executeQuery(req);
+            while (rs.next()) {
+                Evenement E = new Evenement();
+                E.setId(rs.getInt("id"));
+                E.setTitre(rs.getString("titre"));
+                E.setEmplacement(rs.getString("emplacement"));
+                E.setPrix(rs.getInt("prix"));
+                E.setDate_event(rs.getString("date_event"));
+                E.setImage_event(rs.getString("image_event"));
+                E.setFondation(rs.getString("fondation"));
+                E.setNbMaxParticipants(rs.getInt("nbMaxParticipants"));
+                E.setDuree(rs.getString("duree"));
+                list.add(E);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EvenementService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    
     public ObservableList<Evenement> getAllEvenementObservable() {
         String req = "select * from evenement";
         

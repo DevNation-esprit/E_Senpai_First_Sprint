@@ -244,7 +244,7 @@ public class EvenementController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ConsulterEvenement.fxml"));
             Scene scene = new Scene(loader.load());
             ConsulterEvenementController controller = loader.getController();
-            controller.initData(E);
+            controller.initData(E,this.currentUser);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

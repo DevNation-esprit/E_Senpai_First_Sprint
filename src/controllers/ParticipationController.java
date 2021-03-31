@@ -26,7 +26,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import services.EvenementService;
@@ -59,8 +61,6 @@ public class ParticipationController implements Initializable {
     @FXML
     private TableView<Evenement> tableEvent;
     @FXML
-    private TableColumn<Evenement, Image> columnImage;
-    @FXML
     private TableColumn<Evenement, String> columnTitre;
     @FXML
     private TableColumn<Evenement, String> columnEmplacement;
@@ -85,6 +85,8 @@ public class ParticipationController implements Initializable {
     private User currentUser;
     @FXML
     private Button btnListParticipation;
+    @FXML
+    private Button btnConsulter;
 
     /**
      * Initializes the controller class.
@@ -92,7 +94,7 @@ public class ParticipationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         EvenementService es = EvenementService.getInstance();
-        list = es.getAllEvenementObservable();
+        list = es.getAllEvenementObservableUpdated();
         tableEvent.setItems(list);
         columnTitre.setCellValueFactory(cell -> cell.getValue().getTitre());
         columnEmplacement.setCellValueFactory(cell -> cell.getValue().getEmplacement());
@@ -182,6 +184,25 @@ public class ParticipationController implements Initializable {
             stage.setScene(scene);
             stage.show();
 
+        } catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleConsulter(ActionEvent event) {
+                Evenement E = tableEvent.getSelectionModel().getSelectedItem();
+        EvenementService es = EvenementService.getInstance();
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ConsulterEvenement.fxml"));
+            Scene scene = new Scene(loader.load());
+            ConsulterEvenementController controller = loader.getController();
+            controller.initData(E,this.currentUser);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException ex) {
             Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
