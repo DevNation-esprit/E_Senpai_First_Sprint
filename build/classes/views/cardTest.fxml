@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="testBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getClickedQuiz" prefHeight="220.0" prefWidth="475.0" spacing="15.0" style="-fx-background-radius: 8; -fx-border-color: #EECC8D; -fx-border-width: 5;" styleClass="boxes" stylesheets="@../assets/acceuiletudiant.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardTestController">
+<VBox fx:id="testBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getClickedQuiz" prefHeight="160.0" prefWidth="342.0" spacing="15.0" style="-fx-background-radius: 8; -fx-border-color: #EECC8D; -fx-border-width: 5;" styleClass="boxes" stylesheets="@../assets/acceuiletudiant.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardTestController">
    <children>
       <Label fx:id="lbType" text="Type ">
          <VBox.margin>
@@ -28,7 +28,7 @@
                   <Font name="Berlin Sans FB" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lbSujet" prefHeight="21.0" prefWidth="392.0" text="Java">
+            <Label fx:id="lbSujet" prefHeight="30.0" prefWidth="266.0" text="Java">
                <font>
                   <Font name="Berlin Sans FB" size="26.0" />
                </font>

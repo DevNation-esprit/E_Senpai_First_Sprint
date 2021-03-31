@@ -121,6 +121,9 @@ public class Quiz {
         return sumNote ;
     }
     
+    public float getMoyenneTest(){
+        return this.getTotalNote()/2 ;
+    }
     
     
 }

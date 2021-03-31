@@ -77,7 +77,7 @@ public class AccueilController implements Initializable {
              
             if(currentUser.getRole().equals("Etudiant")){
                 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/acceuilEtudiant.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/TestEtudiant.fxml"));
                  Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(
                         new Scene(loader.load())
@@ -86,7 +86,7 @@ public class AccueilController implements Initializable {
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
                 stage.setResizable(false);
 
-               AcceuilEtudiantController controller = loader.getController() ;
+               TestEtudiantController controller = loader.getController() ;
                controller.initData(currentUser);
                
                Session  s = new Session() ;

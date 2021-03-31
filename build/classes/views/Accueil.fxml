@@ -5,18 +5,18 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="1000.0" prefWidth="1900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AccueilController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AccueilController">
    <children>
-      <SplitPane dividerPositions="0.2586520947176685" prefHeight="1000.0" prefWidth="1900.0">
+      <SplitPane dividerPositions="0.21338250790305585" prefHeight="850.0" prefWidth="1500.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #07000E;" SplitPane.resizableWithParent="false">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="994.0" prefWidth="435.0" style="-fx-background-color: #07000E;" SplitPane.resizableWithParent="false">
                <children>
-                  <Button fx:id="accueilBtn" layoutX="60.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Accueil" />
-                  <Button fx:id="profilBtn" layoutX="60.0" layoutY="223.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Profil" />
-                  <Button fx:id="formationsBtn" layoutX="60.0" layoutY="324.0" mnemonicParsing="false" onAction="#HandleAccueilBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Formations" />
-                  <Button fx:id="test_quizBtn" layoutX="60.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleTestQuizBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quizs" />
-                  <Button fx:id="chatBtn" layoutX="60.0" layoutY="538.0" mnemonicParsing="false" onAction="#handleChatBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Chat" />
-                  <Button fx:id="deconnectBtn" layoutX="69.0" layoutY="854.0" mnemonicParsing="false" onAction="#handleDeconnectBtn" prefHeight="60.0" prefWidth="350.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Déconnecter" />
+                  <Button fx:id="accueilBtn" layoutX="8.0" layoutY="117.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Accueil" />
+                  <Button fx:id="profilBtn" layoutX="8.0" layoutY="172.0" mnemonicParsing="false" onAction="#handleAccueilBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Profil" />
+                  <Button fx:id="formationsBtn" layoutX="8.0" layoutY="228.0" mnemonicParsing="false" onAction="#HandleAccueilBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Formations" />
+                  <Button fx:id="test_quizBtn" layoutX="8.0" layoutY="283.0" mnemonicParsing="false" onAction="#handleTestQuizBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Tests &amp; Quizs" />
+                  <Button fx:id="chatBtn" layoutX="8.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleChatBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Chat" />
+                  <Button fx:id="deconnectBtn" layoutX="8.0" layoutY="695.0" mnemonicParsing="false" onAction="#handleDeconnectBtn" prefHeight="45.0" prefWidth="300.0" styleClass="buttonsQuiz" stylesheets="@../assets/acceuiletudiant.css" text="Déconnecter" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="665.0" prefWidth="900.0" SplitPane.resizableWithParent="false">

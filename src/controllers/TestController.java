@@ -49,11 +49,11 @@ import services.TestDao;
 /**
  * FXML Controller class
  *
- * @author damos
+ * @author damos 
  */
 public class TestController implements Initializable {
      User currentUser;
-     Quiz q ;
+     Quiz q = null;
      int currentQuestionIndex = 0;
     @FXML
     private TextField tfSujet;
@@ -208,29 +208,34 @@ public class TestController implements Initializable {
 
     @FXML
     private void prevQuestion(ActionEvent event) {
-        System.out.println(currentQuestionIndex);
-        if(currentQuestionIndex > 0 && currentQuestionIndex < q.getQuestions().size()){
-            currentQuestionIndex -= 1 ;
-            showAddedQuestion(currentQuestionIndex);
-        }
-        else{
-            showAddedQuestion(0);
-        }
+        if(q != null){
+            if(currentQuestionIndex > 0 && currentQuestionIndex < q.getQuestions().size()){
+                currentQuestionIndex -= 1 ;
+                showAddedQuestion(currentQuestionIndex);
+            }
+            else{
+                showAddedQuestion(0);
+            }
+        }     
     }
 
     @FXML
     private void nextQuestion(ActionEvent event) {
-        if(currentQuestionIndex >=0 && currentQuestionIndex < q.getQuestions().size()-1){
-            currentQuestionIndex += 1 ;
-            showAddedQuestion(currentQuestionIndex);
-        }else{
-            showAddedQuestion(q.getQuestions().size()-1);
+        if(q != null){
+            if(currentQuestionIndex >=0 && currentQuestionIndex < q.getQuestions().size()-1){
+                currentQuestionIndex += 1 ;
+                showAddedQuestion(currentQuestionIndex);
+            }else{
+                showAddedQuestion(q.getQuestions().size()-1);
+            }
         }
+        
     }
 
     @FXML
     private void addQuestion(ActionEvent event) {
         int idTest = 0 ;
+        int duree = 0 ;
         if(comboType.getValue() == null){
             showAlertMessageError("Ajouter Quiz/Test", "Veuillez choisir le type de devoir");
         }
@@ -246,6 +251,7 @@ public class TestController implements Initializable {
                     TestDao tdao = TestDao.getInstance() ;
                     Formation f = tdao.getFormationbyTitre(comboFormation.getValue()) ;
                     idTest = f.getId() ;
+                    duree = (comboHeure.getValue()*3600) + (comboMinutes.getValue()*60) ;
                 }
             }
             
@@ -256,8 +262,7 @@ public class TestController implements Initializable {
                 String rCorrecte = tfRcorrecte.getText() ;
                 String mRep1 = tfMrep1.getText() ;
                 String mRep2 = tfMrep2.getText() ;
-                String mRep3 = tfMrep3.getText() ;
-                int duree = (comboHeure.getValue()*3600) + (comboMinutes.getValue()*60) ;
+                String mRep3 = tfMrep3.getText() ;                
                 
                 if(!qPosee.isEmpty() && !rCorrecte.isEmpty() && !mRep1.isEmpty() && !mRep2.isEmpty() && !mRep3.isEmpty()
                         && !tfnote.getText().isEmpty()){
@@ -351,7 +356,7 @@ public class TestController implements Initializable {
             }
             
             
-            q = new  Quiz() ;
+            q = null ;
             
             labelQuestion.setText("");
             rbtn1.setText("");
@@ -411,10 +416,9 @@ public class TestController implements Initializable {
            //System.out.println(quiz.getClass().getSimpleName());
        }
        
-       
        ObservableList<Question> listQuestion = FXCollections.observableArrayList();
        listQuestion.addAll(questions) ;
-        afficherQuestion(listQuestion);
+       afficherQuestion(listQuestion);
     }
     
     private void afficherQuestion(ObservableList<Question> listQuestion){
@@ -615,27 +619,28 @@ public class TestController implements Initializable {
     @FXML
     private Quiz showSelectedQuiz(MouseEvent event) {
         Quiz quiz = tvQuiz.getSelectionModel().getSelectedItem() ;
-        if(quiz.getClass().getSimpleName().toLowerCase().equals("test")){
-            
-           ObservableList<Integer> heures = FXCollections.observableArrayList();
-           ObservableList<Integer> minutes = FXCollections.observableArrayList();
-           
-           int i;
-           for(i = 0; i < 24; i++){
-               heures.add(i) ;
-           }
-           
-           for(i = 0; i < 60; i++){
-               minutes.add(i) ;
-           }
-           int duree = ((Test)quiz).getDuree() ;
-           int heure = duree / 3600 ;
-           int min = (duree%3600)/60 ;
-           comboHeureUpdate.setItems(heures);
-           comboMinUpdate.setItems(minutes);
-           comboHeureUpdate.setVisible(true);
-           comboMinUpdate.setVisible(true);
-        }
+        if(quiz != null){
+            if(quiz.getClass().getSimpleName().toLowerCase().equals("test")){          
+                ObservableList<Integer> heures = FXCollections.observableArrayList();
+                ObservableList<Integer> minutes = FXCollections.observableArrayList();
+
+                int i;
+                for(i = 0; i < 24; i++){
+                    heures.add(i) ;
+                }
+
+                for(i = 0; i < 60; i++){
+                    minutes.add(i) ;
+                }
+                int duree = ((Test)quiz).getDuree() ;
+                int heure = duree / 3600 ;
+                int min = (duree%3600)/60 ;
+                comboHeureUpdate.setItems(heures);
+                comboMinUpdate.setItems(minutes);
+                comboHeureUpdate.setVisible(true);
+                comboMinUpdate.setVisible(true);
+             }
+        }      
         else{
             comboHeureUpdate.setVisible(false);
             comboMinUpdate.setVisible(false);

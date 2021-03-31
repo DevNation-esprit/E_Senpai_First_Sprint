@@ -40,6 +40,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.NoteDao;
 import services.TestDao;
+import services.UserService;
 
 /**
  * FXML Controller class
@@ -97,9 +98,12 @@ public class PasserQuizController implements Initializable {
     @FXML
     private Label labelSec;
 
-    private Integer seconds ;
+    private Integer duree ;
     @FXML
     private HBox hboxTimer;
+    Timeline time ;
+    @FXML
+    private Button btnVoirCertificat;
 
     /**
      * Initializes the controller class.
@@ -112,6 +116,7 @@ public class PasserQuizController implements Initializable {
          Session s = new Session() ;
          currentUser = Session.getUser() ;
          hboxTimer.setVisible(false);
+         btnVoirCertificat.setVisible(false);
         
     }
  
@@ -124,13 +129,27 @@ public class PasserQuizController implements Initializable {
             System.out.println("cava ");
         }
         else if(q.getClass().getSimpleName().toLowerCase().equals("test")){
-            hboxTimer.setVisible(true);
-            quiz = (Test)q ;  
-            lbSujet.setText(q.getSujet());
-            showQuestion(currentQuestionIndex) ;
-            reponses = new HashMap<>(quiz.getQuestions().size()) ;
-            seconds = ((Test) q).getDuree();
-            setTimer() ;
+            NoteDao ndao = NoteDao.getInstance() ;
+            Note n = ndao.getNoteById(currentUser.getId(), q.getId()) ;
+            if(n!= null && n.getNoteObtnue() >= q.getMoyenneTest()){
+                btnVoirCertificat.setVisible(true);
+                btnValider.setVisible(false);
+                quiz = (Test)q ; 
+                lbSujet.setText(q.getSujet());
+                showQuestion(currentQuestionIndex) ;
+                reponses = new HashMap<>(quiz.getQuestions().size()) ;
+               
+            }
+            else{
+                hboxTimer.setVisible(true);
+                quiz = (Test)q ;  
+                lbSujet.setText(q.getSujet());
+                showQuestion(currentQuestionIndex) ;
+                reponses = new HashMap<>(quiz.getQuestions().size()) ;
+                duree = ((Test) q).getDuree();
+                setTimer() ;
+            }
+            
             
         }
         rbtn1.setSelected(false);
@@ -148,26 +167,24 @@ public class PasserQuizController implements Initializable {
     } 
     
     private void setTimer(){
-        //Duration duration = Duration.ofSeconds(10000);
-        Timeline time = new Timeline();
+        time = new Timeline();
         time.setCycleCount(Timeline.INDEFINITE);
-        if(time != null){//if the time is equal to zero it is finished but if it is not equal to something then it is //doing something
+        if(time != null){
             time.stop();
         }
-        KeyFrame frame = new KeyFrame(javafx.util.Duration.seconds(1), new EventHandler<ActionEvent>(){
-                        //every one second of the timeline the keyframe will do something (i.e., perform a job and that job //is defined by the event handler)
+        KeyFrame frame = new KeyFrame(javafx.util.Duration.seconds(1), new EventHandler<ActionEvent>(){                    
                         @Override
                         public void handle(ActionEvent event){  
-                            seconds--;
-                          int hours = (seconds/3600) ;
-                          int min = ((seconds%3600)/60) ;
-                          int sec = ((seconds % 3600)%60);
+                            duree--;
+                          int hours = (duree/3600) ;
+                          int min = ((duree%3600)/60) ;
+                          int sec = ((duree % 3600)%60);
                            labelSec.setText(sec + "");
                            labelMin.setText(min+"  :");
                            labelHeure.setText(hours+"  :");
                     
-                            if(seconds <= 0){
-                                time.stop();
+                            if(duree <= 0){
+                                stopTimer();
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("temps de devoir écoulé!");
                                 alert.show();
@@ -178,6 +195,10 @@ public class PasserQuizController implements Initializable {
         time.getKeyFrames().add(frame);
         time.playFromStart();
 
+    }
+    
+    private void stopTimer(){
+        time.stop();
     }
        
     public void setUser(User u){
@@ -230,7 +251,10 @@ public class PasserQuizController implements Initializable {
             Optional<ButtonType> result =  alert.showAndWait() ;
             
             if(result.get() == ButtonType.OK){
-                 checkAnswers();
+                if(quiz.getClass().getSimpleName().toLowerCase().equals("test")){
+                     stopTimer();
+                }              
+                 checkAnswers();                
             }
         
     }
@@ -259,7 +283,8 @@ public class PasserQuizController implements Initializable {
 
         if(percent < 100){
             btnReessayer.setVisible(true);
-            btnVoirReponses.setVisible(true);
+            if(quiz.getClass().getSimpleName().toLowerCase().equals("quiz"))
+                btnVoirReponses.setVisible(true);
         }
 
         Note n = new Note(quiz.getId(), currentUser.getId(), note) ;
@@ -271,6 +296,9 @@ public class PasserQuizController implements Initializable {
 
             if(percent >= 50){
                 tdao.updateNbreEtudiantsAdmis(quiz.getId()) ;
+                btnVoirCertificat.setVisible(true);
+                btnVoirReponses.setVisible(false);
+                 
             }
         }
     }
@@ -369,6 +397,11 @@ public class PasserQuizController implements Initializable {
 
     @FXML
     private void ressayer(ActionEvent event) {
+        if(quiz.getClass().getSimpleName().toLowerCase().equals("test")){
+            duree = ((Test)quiz).getDuree() ;
+            setTimer();
+        }
+        
         btnReessayer.setVisible(false);
         btnVoirReponses.setVisible(false);
         lbResultat.setVisible(false);
@@ -479,7 +512,7 @@ public class PasserQuizController implements Initializable {
 
     @FXML
     private void retourAcceuilTest(ActionEvent event) throws IOException {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/acceuilEtudiant.fxml"));
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/TestEtudiant.fxml"));
                  Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(
                         new Scene(loader.load())
@@ -488,11 +521,36 @@ public class PasserQuizController implements Initializable {
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
                 stage.setResizable(false);
 
-               AcceuilEtudiantController controller = loader.getController() ;
+               TestEtudiantController controller = loader.getController() ;
                controller.initData(currentUser);
                
                Session  s = new Session() ;
                Session.setUser(currentUser);
+
+                Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                oldStage.close();
+
+                stage.show();
+    }
+
+    @FXML
+    private void afficherCertificat(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Certificat.fxml"));
+                Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(
+                        new Scene(loader.load())
+                );
+                stage.setTitle("E-SENPAI | E-Learning Platform");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+                stage.setResizable(false);
+
+                CertificatController controller = loader.getController();
+                UserService us = UserService.getInstance() ;
+                User u =  us.getUserById(quiz.getIdFormateur()) ;
+                String nomEtudiant = currentUser.getPrenom() + " " + currentUser.getNom() ;
+                String nomFormateur = u.getPrenom() + " " + u.getNom() ;
+                String formation = quiz.getSujet() ;
+                controller.setDataCertificat(nomEtudiant, nomFormateur, formation);
 
                 Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 oldStage.close();

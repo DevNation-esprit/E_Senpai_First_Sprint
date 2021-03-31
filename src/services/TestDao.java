@@ -295,6 +295,21 @@ public class TestDao {
         return false ;
     }
     
+    public int countTest(){
+        String req = "SELECT COUNT(id) FROM test";
+        int sum=0;
+        try {
+            rs = st.executeQuery(req);
+            while (rs.next()) {
+                sum=rs.getInt(1);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sum;
+    }
+    
      public List<Formation> getFormations(int idFormateur){
          ArrayList<Formation> list = new ArrayList<>() ;
          String query = "select *from formation where id_formateur = "+idFormateur+"" ;

@@ -2,14 +2,16 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ESENPAI.jnlp">
   <information>
     <title>ESENPAI</title>
-    <vendor>Dahmani</vendor>
+    <vendor>Damos</vendor>
     <description>null</description>
     <offline-allowed/>
+  <shortcut><desktop/></shortcut>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ESENPAI.jar" size="517946" download="eager" />
+    <jar href="ESENPAI.jar" size="4140663" download="eager" />
     <jar href="lib\hamcrest-core-1.3.jar" size="45024" download="eager" />
+    <jar href="lib\itextpdf-5.5.9.jar" size="2287148" download="eager" />
     <jar href="lib\jcommon-1.0.23.jar" size="330246" download="eager" />
     <jar href="lib\jfreechart-1.0.19-experimental.jar" size="13796" download="eager" />
     <jar href="lib\jfreechart-1.0.19-swt.jar" size="79793" download="eager" />

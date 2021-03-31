@@ -143,13 +143,16 @@ public class TestQuizAdminController implements Initializable {
     @FXML
     private void getClickedTest(MouseEvent event) {
         Quiz q = tvQuiz.getSelectionModel().getSelectedItem() ;
-        ObservableList<Question> listquestion = FXCollections.observableArrayList() ;
-        listquestion.addAll(q.getQuestions()) ;
-        setQuestionToTable(listquestion);
-        if(q.getClass().getSimpleName().toLowerCase().equals("test")){
-            Test t = (Test)q ;
-            barChart.getData().clear();
-            setDataToBarChart(t);
+        if(q != null){
+            ObservableList<Question> listquestion = FXCollections.observableArrayList() ;
+            listquestion.addAll(q.getQuestions()) ;
+            setQuestionToTable(listquestion);
+            if(q.getClass().getSimpleName().toLowerCase().equals("test")){
+                Test t = (Test)q ;
+                barChart.getData().clear();
+                setDataToBarChart(t);
+            }
         }
+        
     }
 }
