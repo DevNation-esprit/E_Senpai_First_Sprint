@@ -88,19 +88,31 @@ public class DiscussionController implements Initializable {
     private void handleButton(ActionEvent event) {
 
         try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChatBot.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChatBot.fxml"));
+            Scene scene = new Scene(loader.load());
+            ChatBotController cb = loader.getController();
+            DiscussionService ds = DiscussionService.getInstance();
+            if (ds.verif(currentUser.getId(), 666)) {
+                Discussion d = new Discussion();
+                d.setUser1(currentUser.getId());
+                d.setUser2(666);
+                
+                ds.insertDiscussion(d);
+                d.setId(ds.getDiscussionbytwo(d.getUser1(), d.getUser2()).getId());
+                cb.current(d, currentUser);
 
-                        Scene scene = new Scene(loader.load());
+            } else {
+                Discussion d = new Discussion();
+                d = ds.getDiscussionbytwo(currentUser.getId(), 666);
+                cb.current(d, currentUser);
+            }
+            Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            oldStage.setScene(scene);
+            oldStage.show();
 
-                        ChatBotController cb = loader.getController();
-                        cb.current( currentUser);
-
-                        Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        oldStage.setScene(scene);
-                        oldStage.show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        } catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void handleAjoutDicussion(ActionEvent event) {
@@ -119,16 +131,13 @@ public class DiscussionController implements Initializable {
         list = ds.getAllDiscussion(u.getId());
         for (Discussion d : list) {
             if (ds.messagesById(d.getId())) {
-
                 HBox hbox = new HBox(8);
                 Button btn = new Button();
                 if (u.getId() == d.getUser1()) {
                     btn.setText("" + us.getUserbyId(d.getUser2()).getNom() + " " + us.getUserbyId(d.getUser2()).getPrenom());
-
                 }
                 if (u.getId() == d.getUser2()) {
                     btn.setText("" + us.getUserbyId(d.getUser1()).getNom() + " " + us.getUserbyId(d.getUser1()).getPrenom());
-
                 }
                 btn.setOnAction(event -> {
                     try {

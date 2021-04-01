@@ -6,7 +6,7 @@
 package services;
 
 import database.Database;
-import entities.Message;
+import entities.MyMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,14 +41,14 @@ public class MessageService {
         return instance;
     }
 
-    public List<Message> getAllMessage(int id) {
+    public List<MyMessage> getAllMessage(int id) {
         String req = "select * from message where id_discussion=" + id + " ORDER BY date_msg ";
-        List<Message> list = new ArrayList<Message>();
+        List<MyMessage> list = new ArrayList<MyMessage>();
 
         try {
             rs = st.executeQuery(req);
             while (rs.next()) {
-                Message m = new Message();
+                MyMessage m = new MyMessage();
                 m.setId(rs.getInt("id"));
                 m.setUser(rs.getInt("id_user_emetteur"));
                 m.setDiscussion(rs.getInt("id_discussion"));
@@ -64,7 +64,7 @@ public class MessageService {
         return list;
     }
 
-    public void sendMsg(Message m) {
+    public void sendMsg(MyMessage m) {
         String req = "insert into message (id_user_emetteur,id_discussion,contenu) values (" + m.getUser() + ",'" + m.getDiscussion() + "','" + m.getContenu() + "')";
         try {
             st.executeUpdate(req);
@@ -82,9 +82,9 @@ public class MessageService {
         }
     }
 
-    public Message getLastMsg(int id) {
+    public MyMessage getLastMsg(int id) {
         String req = " Select * from message where id_discussion =" + id + " order by date_msg desc limit 1";
-        Message m = new Message();
+        MyMessage m = new MyMessage();
         try {
             rs = st.executeQuery(req);
             while (rs.next()) {

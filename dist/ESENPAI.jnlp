@@ -8,8 +8,13 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ESENPAI.jar" size="493680" download="eager" />
+    <jar href="ESENPAI.jar" size="499853" download="eager" />
+    <jar href="lib\javax.mail.jar" size="659033" download="eager" />
     <jar href="lib\mysql-connector-java-5.1.23-bin.jar" size="834126" download="eager" />
+    <jar href="lib\twilio-8.9.0-jar-with-dependencies.jar" size="8358946" download="eager" />
+    <jar href="lib\twilio-8.9.0-javadoc.jar" size="14288596" download="eager" />
+    <jar href="lib\twilio-8.9.0-sources.jar" size="2819853" download="eager" />
+    <jar href="lib\twilio-8.9.0.jar" size="4206744" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ESENPAI" >
     <param name="requiredFXVersion" value="8.0+"/>

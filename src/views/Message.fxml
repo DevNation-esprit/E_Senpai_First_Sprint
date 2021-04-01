@@ -16,5 +16,7 @@
       <TextField fx:id="text_field" layoutY="356.0" prefHeight="45.0" prefWidth="507.0" />
       <Button fx:id="retour_btn" layoutX="37.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleRetourBtn" text="Retour &lt;----" />
       <Button fx:id="envoi_msg" layoutX="507.0" layoutY="356.0" mnemonicParsing="false" onAction="#handleEnvoiMsg" prefHeight="45.0" prefWidth="108.0" text="Envoyer Message" />
+      <Button fx:id="envoi_sms" layoutX="507.0" mnemonicParsing="false" onAction="#handleEnvoiSms" prefHeight="45.0" prefWidth="108.0" text="Sms" />
+      <Button fx:id="envoi_mail" layoutX="399.0" mnemonicParsing="false" onAction="#handleEnvoiMail" prefHeight="45.0" prefWidth="108.0" text="Mail" />
    </children>
 </AnchorPane>

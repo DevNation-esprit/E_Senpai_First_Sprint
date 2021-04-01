@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/controllers/ChatBotController.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>219</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/services/ChatBot.java</file>
+            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/controllers/MailSender.java</file>
+            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/controllers/DiscussionController.java</file>
             <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/controllers/ChatBotController.java</file>
+            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/services/DiscussionService.java</file>
             <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/controllers/MessageController.java</file>
+            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/entities/Discussion.java</file>
+            <file>file:/C:/Users/21656/Desktop/E_Senpai_First_Sprint-main/src/services/UserService.java</file>
         </group>
     </open-files>
 </project-private>
