@@ -9,6 +9,7 @@ import entities.Blog;
 import entities.Post;
 import entities.User;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,6 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterAttributes;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,10 +36,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.BlogService;
 import services.PostService;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -106,11 +119,15 @@ public class ConsulterBlogController implements Initializable {
 
     @FXML
     private void handleAjouterBlog(ActionEvent event) throws IOException {
+                        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ajoutBlog.fxml"));
         Stage stage = new Stage(StageStyle.DECORATED);
-        stage.setScene(
-                new Scene(loader.load())
-        );
+                try {
+                    stage.setScene(
+                            new Scene(loader.load())
+                    );      } catch (IOException ex) {
+                    Logger.getLogger(AjoutBlogController.class.getName()).log(Level.SEVERE, null, ex);
+                }
         stage.setTitle("E-SENPAI | E-Learning Platform");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
         stage.setResizable(false);
@@ -119,6 +136,10 @@ public class ConsulterBlogController implements Initializable {
         controller.initData(currentUser, "", "","","Ajouter",0);
 
         stage.show();
+        
+        
+        
+        
     }
     
     public void initData(User u){
@@ -136,12 +157,14 @@ public class ConsulterBlogController implements Initializable {
             contenu.setMaxHeight(200);
             Button modif = new Button("Modifier");
             Button supp = new Button("Supprimer");
+            Button imprim = new Button("Imprimer");
             hbox.getChildren().add(contenu);
             
             blogsVbox.getChildren().add(imagepost);
             blogsVbox.getChildren().add(hbox);
             blogsVbox.getChildren().add(modif);
             blogsVbox.getChildren().add(supp);
+            blogsVbox.getChildren().add(imprim);
             modif.setOnAction(e -> {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ajoutBlog.fxml"));
                 Stage stage = new Stage(StageStyle.DECORATED);
@@ -164,19 +187,68 @@ public class ConsulterBlogController implements Initializable {
             );
             supp.setOnAction(e -> {
                 ps.supprimerBlog(p);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/suppBlog.fxml"));
-                Stage stage = new Stage(StageStyle.DECORATED);
+                
+                String title ="Blog supprimé avec succés. ";
+               TrayNotification notif=new TrayNotification();
+                AnimationType Type =AnimationType.POPUP;
+                
+                notif.setAnimationType(Type);    
+        notif.setTitle(title);
+        notif.setNotificationType(NotificationType.WARNING);
+        notif.showAndDismiss(javafx.util.Duration.millis(3000));
+        
+        
+                
+                
+                
+                
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/suppBlog.fxml"));
+//                Stage stage = new Stage(StageStyle.DECORATED);
+//                try {
+//                    stage.setScene(
+//                            new Scene(loader.load())
+//                    );
+//                } catch (IOException ex) {
+//                    Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                stage.setTitle("E-SENPAI | E-Learning Platform");
+//                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+//                stage.setResizable(false);
+//                stage.show();
+            });
+            
+            imprim.setOnAction(e -> {
                 try {
-                    stage.setScene(
-                            new Scene(loader.load())
-                    );
-                } catch (IOException ex) {
-                    Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                    printNode(blogsVbox);
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/suppBlog.fxml"));
+//                Stage stage = new Stage(StageStyle.DECORATED);
+//                try {
+//                    stage.setScene(
+//                            new Scene(loader.load())
+//                    );
+//                } catch (IOException ex) {
+//                    Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                stage.setTitle("E-SENPAI | E-Learning Platform");
+//                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
+//                stage.setResizable(false);
+//                stage.show();
+                } catch (NoSuchMethodException ex) {
+                    Logger.getLogger(ConsulterBlogController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(ConsulterBlogController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(ConsulterBlogController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(ConsulterBlogController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                stage.setTitle("E-SENPAI | E-Learning Platform");
-                stage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/icon.png")));
-                stage.setResizable(false);
-                stage.show();
             });
 
         }
@@ -190,6 +262,33 @@ public class ConsulterBlogController implements Initializable {
 //            
 //            
 //        }
+    }
+
+    void initData(User currentUser, String string, String string0, String string1, String ajouter, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static void printNode(final Node node) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    Printer printer = Printer.getDefaultPrinter();
+    PageLayout pageLayout
+        = printer.createPageLayout(Paper.A4, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
+    PrinterAttributes attr = printer.getPrinterAttributes();
+    PrinterJob job = PrinterJob.createPrinterJob();
+    double scaleX
+        = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+    double scaleY
+        = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+    Scale scale = new Scale(scaleX, scaleY);
+    node.getTransforms().add(scale);
+
+    if (job != null && job.showPrintDialog(node.getScene().getWindow())) {
+      boolean success = job.printPage(pageLayout, node);
+      if (success) {
+        job.endJob();
+
+      }
+    }
+    node.getTransforms().remove(scale);
     }
     
 }

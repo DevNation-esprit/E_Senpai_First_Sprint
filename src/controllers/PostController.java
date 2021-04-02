@@ -7,20 +7,20 @@ package controllers;
 
 import entities.Post;
 import entities.User;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import services.Mailing;
 import services.PostService;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -49,7 +49,7 @@ public class PostController implements Initializable {
     }
 
     @FXML
-    private void AddPost(ActionEvent event) {
+    private void AddPost(ActionEvent event) throws Exception {
 
         String Caption = caption.getText();
         String image_post = image.getText();
@@ -65,12 +65,34 @@ public class PostController implements Initializable {
             ps.ajouterPost(p);
             Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                     oldStage.close();
+                                    
+               Mailing.sendMail("amani.methnani@esprit.tn");
+                                    
+               String title ="Post ajouté avec succés.\n Mail envoyé avec succées. ";
+               TrayNotification notif=new TrayNotification();
+                AnimationType Type =AnimationType.POPUP;
+                
+                notif.setAnimationType(Type);    
+        notif.setTitle(title);
+        notif.setNotificationType(NotificationType.SUCCESS);
+        notif.showAndDismiss(javafx.util.Duration.millis(3000));
         }
         else{
             ps.modifierPost(p);
+            
+            String title ="Post modifié avec succés. ";
+               TrayNotification notif=new TrayNotification();
+                AnimationType Type =AnimationType.POPUP;
+                
+                notif.setAnimationType(Type);    
+        notif.setTitle(title);
+        notif.setNotificationType(NotificationType.NOTICE);
+        notif.showAndDismiss(javafx.util.Duration.millis(3000));
+            
             Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                     oldStage.close();
         }
+        
 
 //            Parent loader = FXMLLoader.load(getClass().getResource("Showpost.fxml"));
 //            //  Parent root  = loader.load();
@@ -90,6 +112,7 @@ public class PostController implements Initializable {
           this.image.setText(url);
           addbutton.setText(action);
           this.idPost=idPost;
+          
     }
 
 }

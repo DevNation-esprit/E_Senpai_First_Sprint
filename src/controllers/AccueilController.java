@@ -322,4 +322,8 @@ public class AccueilController implements Initializable {
 
     }
 
+    void initData(User currentUser, String string, String string0, String string1, String ajouter, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
